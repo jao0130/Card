@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>KPOP 小卡收集系統</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Sans+KR:wght@400;500;700&family=Oswald:wght@500;600;700&family=Cinzel:wght@700;900&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="startOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:flex; justify-content:center; align-items:center; z-index:9999; cursor:pointer; flex-direction:column; color:white;">
+    <h2 style="margin-bottom:20px; letter-spacing:2px;">KPOP COLLECTION</h2>
+    <button style="padding:15px 40px; font-size:1.2rem; background:white; color:black; border:none; border-radius:50px; cursor:pointer; font-weight:bold;">ENTER STAGE</button>
+    <p style="margin-top:15px; font-size:0.8rem; opacity:0.6;">Click to Start with Music</p>
+  </div>
+  <div class="app-container">
+    <!-- Navigation -->
+    <nav class="nav-container">
+      <div class="nav-tabs">
+        <button class="nav-tab active" data-page="lobby"><span>大廳</span></button>
+        <button class="nav-tab" data-page="collection"><span>圖鑑</span></button>
+      </div>
+    </nav>
+
+    <!-- Lobby Page -->
+    <div class="page lobby-page active" id="lobbyPage">
+      <div class="lobby-header">
+        <h1 class="lobby-title">卡包選擇區</h1>
+        <p class="lobby-subtitle">選擇你想要開啟的卡包</p>
+      </div>
+      <div class="pack-grid" id="packGrid"></div>
+    </div>
+
+    <!-- Pack Opening Page -->
+    <div class="page pack-page" id="packPage">
+      <button class="back-btn" id="backToLobbyBtn">← 返回大廳</button>
+      <div class="pack-page-header">
+        <h2 class="pack-page-title" id="packPageTitle"></h2>
+        <p class="pack-page-subtitle" id="packPageSubtitle"></p>
+      </div>
+      <div class="pack-scene">
+        <div class="card-pack" id="cardPack">
+          <div class="pack-foil-wrapper">
+            <div class="pack-holographic-layer"></div>
+            <div class="pack-shine-primary"></div>
+            <div class="pack-edge-highlight"></div>
+            <div class="pack-tear-top">
+              <div class="tear-notch left"></div>
+              <div class="tear-notch right"></div>
+            </div>
+            <div class="pack-seal-bottom"></div>
+            <div class="pack-preview" id="packPreview"></div>
+            <div class="pack-content-area">
+              <div class="pack-brand">
+                <div class="pack-brand-title" id="packBrandTitle"></div>
+                <div class="pack-brand-sub" id="packBrandSub"></div>
+              </div>
+              <div class="pack-info">
+                <div class="pack-info-title" id="packInfoTitle"></div>
+                <div class="pack-info-count">
+                  <span>✦</span>
+                  <span id="packCardCount"></span>
+                  <span>✦</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="open-pack-btn" id="openPackBtn">撕開卡包</button>
+    </div>
+
+    <!-- Collection Page -->
+    <div class="page collection-page" id="collectionPage">
+      <h2 class="page-title">我的收藏</h2>
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-value" id="totalCards">0</div>
+          <div class="stat-label">總卡片數</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="uniqueCards">0</div>
+          <div class="stat-label">獨特卡片</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="completionRate">0%</div>
+          <div class="stat-label">完成度</div>
+        </div>
+      </div>
+      <div class="collection-grid" id="collectionGrid"></div>
+    </div>
+
+    <!-- Cards Overlay -->
+    <div class="cards-overlay" id="cardsOverlay">
+      <div class="cards-container" id="cardsContainer"></div>
+      <div class="overlay-buttons">
+        <button class="flip-all-btn" id="flipAllBtn">一次翻開</button>
+        <button class="close-overlay-btn" id="closeOverlayBtn">收藏並關閉</button>
+      </div>
+    </div>
+
+    <!-- Card Detail Modal -->
+    <div class="card-detail-overlay" id="cardDetailOverlay">
+      <div class="card-detail-container">
+        <button class="card-detail-close" id="cardDetailClose">×</button>
+        <div class="card-detail" id="cardDetail"></div>
+        <p class="card-detail-hint">點擊卡片翻面 · 點擊外部關閉</p>
+      </div>
+    </div>
+
+    <!-- Legendary Card Animation Overlay (預留大獎動畫) -->
+    <div class="legendary-animation-overlay" id="legendaryAnimationOverlay">
+      <div class="legendary-animation-container" id="legendaryAnimationContainer">
+        <!-- 傳說卡中獎動畫內容區域 -->
+        <div class="legendary-animation-content">
+          <div class="legendary-rays"></div>
+          <div class="legendary-particles" id="legendaryParticles"></div>
+          <div class="legendary-card-showcase" id="legendaryCardShowcase"></div>
+          <div class="legendary-text">
+            <div class="legendary-congrats">LEGENDARY!</div>
+            <div class="legendary-card-name" id="legendaryCardName"></div>
+          </div>
+        </div>
+        <button class="legendary-continue-btn" id="legendaryContinueBtn">繼續</button>
+      </div>
+    </div>
+
+    <!-- Volume Control Panel -->
+    <div class="volume-control-panel" id="volumeControlPanel">
+      <button class="volume-toggle-btn" id="volumeToggleBtn" title="音量設定">
+        <span class="volume-icon">🔊</span>
+      </button>
+      <div class="volume-sliders" id="volumeSliders">
+        <div class="volume-slider-group">
+          <label class="volume-label">
+            <span>🎵 背景音樂</span>
+            <span class="volume-value" id="bgmVolumeValue">30%</span>
+          </label>
+          <input type="range" class="volume-slider" id="bgmVolumeSlider" min="0" max="100" value="30">
+        </div>
+        <div class="volume-slider-group">
+          <label class="volume-label">
+            <span>🔔 音效</span>
+            <span class="volume-value" id="sfxVolumeValue">80%</span>
+          </label>
+          <input type="range" class="volume-slider" id="sfxVolumeSlider" min="0" max="100" value="80">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
