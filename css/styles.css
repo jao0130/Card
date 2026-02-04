@@ -858,7 +858,100 @@
   
   .open-pack-btn:hover::before { opacity: 1; }
   .open-pack-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-  
+
+  /* Probability Info */
+  .pack-probability-info {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: var(--surface-1);
+    border-radius: var(--radius-md);
+    max-width: 360px;
+    width: 100%;
+  }
+
+  .probability-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--spacing-sm);
+    text-align: center;
+  }
+
+  .probability-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-xs);
+  }
+
+  .probability-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    background: var(--surface-2);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+  }
+
+  .probability-item .rarity-name {
+    font-weight: 600;
+  }
+
+  .probability-item .rarity-chance {
+    color: var(--text-secondary);
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  .probability-item.rarity-normal .rarity-name { color: #9CA3AF; }
+  .probability-item.rarity-common .rarity-name { color: #6B7280; }
+  .probability-item.rarity-rare .rarity-name { color: #3B82F6; }
+  .probability-item.rarity-superrare .rarity-name { color: #8B5CF6; }
+  .probability-item.rarity-ultrarare .rarity-name { color: #EC4899; }
+  .probability-item.rarity-epic .rarity-name { color: #A855F7; }
+  .probability-item.rarity-legendary .rarity-name { color: #F59E0B; }
+
+  .legendary-section {
+    margin-top: var(--spacing-sm);
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid var(--surface-3);
+  }
+
+  .legendary-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #F59E0B;
+    margin-bottom: var(--spacing-xs);
+    text-align: center;
+  }
+
+  .legendary-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .legendary-card-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+  }
+
+  .legendary-card-item .card-name {
+    color: var(--text-secondary);
+  }
+
+  .legendary-card-item .card-chance {
+    color: #F59E0B;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-weight: 600;
+  }
+
   /* ============================================
      CARDS OVERLAY
      ============================================ */

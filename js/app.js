@@ -262,6 +262,7 @@
     DOM.packPreview = document.getElementById('packPreview');
     DOM.packInfoTitle = document.getElementById('packInfoTitle');
     DOM.packCardCount = document.getElementById('packCardCount');
+    DOM.packProbabilityInfo = document.getElementById('packProbabilityInfo');
 
     // Stats
     DOM.totalCards = document.getElementById('totalCards');
@@ -572,26 +573,39 @@
 
     if (availableCards.length === 0) return null;
 
-    // Weighted random selection
-    const roll = Math.random() * 100;
     const weights = CONFIG.RARITY.WEIGHTS;
-    let cumulative = 0;
-    let selectedRarity = 'rare';
 
-    for (const [rarity, weight] of Object.entries(weights)) {
-      cumulative += weight;
+    // 按稀有度分組卡片
+    const rarityGroups = {};
+    for (const card of availableCards) {
+      if (!rarityGroups[card.rarity]) {
+        rarityGroups[card.rarity] = [];
+      }
+      rarityGroups[card.rarity].push(card);
+    }
+
+    // 計算卡包中存在的稀有度總權重
+    const availableRarities = Object.keys(rarityGroups);
+    let totalWeight = 0;
+    for (const rarity of availableRarities) {
+      totalWeight += weights[rarity] || 0;
+    }
+
+    // 根據重新分配的權重選擇稀有度
+    const roll = Math.random() * totalWeight;
+    let cumulative = 0;
+    let selectedRarity = availableRarities[0];
+
+    for (const rarity of availableRarities) {
+      cumulative += weights[rarity] || 0;
       if (roll < cumulative) {
         selectedRarity = rarity;
         break;
       }
     }
 
-    const cardsOfRarity = availableCards.filter(c => c.rarity === selectedRarity);
-
-    if (cardsOfRarity.length === 0) {
-      return availableCards[Math.floor(Math.random() * availableCards.length)];
-    }
-
+    // 從選中的稀有度中等機率選擇卡片
+    const cardsOfRarity = rarityGroups[selectedRarity];
     return cardsOfRarity[Math.floor(Math.random() * cardsOfRarity.length)];
   }
 
@@ -602,6 +616,93 @@
       if (card) cards.push(card);
     }
     return cards;
+  }
+
+  // ========================================
+  // 機率顯示
+  // ========================================
+  function renderProbabilityInfo(pack) {
+    if (!pack || !DOM.packProbabilityInfo) return;
+
+    const availableCards = pack.cards
+      .map(id => cardMap.get(id))
+      .filter(Boolean);
+
+    if (availableCards.length === 0) {
+      DOM.packProbabilityInfo.innerHTML = '';
+      return;
+    }
+
+    const weights = CONFIG.RARITY.WEIGHTS;
+    const rarityText = CONFIG.RARITY.TEXT;
+
+    // 按稀有度分組卡片
+    const rarityGroups = {};
+    for (const card of availableCards) {
+      if (!rarityGroups[card.rarity]) {
+        rarityGroups[card.rarity] = [];
+      }
+      rarityGroups[card.rarity].push(card);
+    }
+
+    // 計算總權重
+    const availableRarities = Object.keys(rarityGroups);
+    let totalWeight = 0;
+    for (const rarity of availableRarities) {
+      totalWeight += weights[rarity] || 0;
+    }
+
+    // 稀有度排序（從低到高）
+    const rarityOrder = ['normal', 'common', 'rare', 'superrare', 'ultrarare', 'epic', 'legendary'];
+    const sortedRarities = availableRarities.sort((a, b) =>
+      rarityOrder.indexOf(a) - rarityOrder.indexOf(b)
+    );
+
+    // 建構稀有度機率 HTML
+    let rarityHtml = '';
+    for (const rarity of sortedRarities) {
+      const weight = weights[rarity] || 0;
+      const probability = ((weight / totalWeight) * 100).toFixed(1);
+      rarityHtml += `
+        <div class="probability-item rarity-${rarity}">
+          <span class="rarity-name">${rarityText[rarity] || rarity}</span>
+          <span class="rarity-chance">${probability}%</span>
+        </div>
+      `;
+    }
+
+    // 建構傳說卡機率 HTML
+    let legendaryHtml = '';
+    const legendaryCards = rarityGroups['legendary'] || [];
+    if (legendaryCards.length > 0) {
+      const legendaryWeight = weights['legendary'] || 0;
+      const legendaryTotalProb = (legendaryWeight / totalWeight) * 100;
+      const perCardProb = legendaryTotalProb / legendaryCards.length;
+
+      let legendaryCardsHtml = '';
+      for (const card of legendaryCards) {
+        const displayName = card.nameChinese || card.nameEnglish;
+        legendaryCardsHtml += `
+          <div class="legendary-card-item">
+            <span class="card-name">${displayName}</span>
+            <span class="card-chance">${perCardProb.toFixed(2)}%</span>
+          </div>
+        `;
+      }
+
+      legendaryHtml = `
+        <div class="legendary-section">
+          <div class="legendary-title">✦ 傳說卡個別機率 ✦</div>
+          <div class="legendary-cards">${legendaryCardsHtml}</div>
+        </div>
+      `;
+    }
+
+    DOM.packProbabilityInfo.innerHTML = `
+      <div class="probability-title">抽卡機率</div>
+      <div class="probability-grid">${rarityHtml}</div>
+      ${legendaryHtml}
+    `;
   }
 
   // ========================================
@@ -640,6 +741,9 @@
     DOM.packPreview.innerHTML = currentPack.image
       ? `<img src="${currentPack.image}" alt="${currentPack.name}" loading="lazy">`
       : `<div class="pack-preview-placeholder">${currentPack.emoji}</div>`;
+
+    // Render probability info
+    renderProbabilityInfo(currentPack);
 
     // Reset pack state
     DOM.cardPack.style.visibility = 'visible';

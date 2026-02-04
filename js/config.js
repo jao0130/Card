@@ -87,7 +87,6 @@ const CONFIG = {
       'sounds/bgm/UNFORGIVEN.mp3',
       'sounds/bgm/Bubble.mp3',
       'sounds/bgm/Cupid.mp3',
-      'sounds/bgm/OMG.mp3',
       'sounds/bgm/The Feels.mp3',
     ],
 
@@ -197,11 +196,16 @@ const CONFIG = {
     { id: 'drama', name: 'DRAMA COLLECTION', order: 9 },
     { id: 'arma', name: 'ARMAGEDDON COLLECTION', order: 10 },
     { id: 'ex-aespa', name: 'EX AESPA COLLECTION', order: 11 },
+    { id: 'newjeans', name: 'EX NEWJEANS COLLECTION', order: 12 },
+    { id: 'howsweet', name: 'HOW SWEET COLLECTION', order: 13 },
+    { id: 'omg', name: 'OMG COLLECTION', order: 14 },
+    { id: 'getup', name: 'GET UP COLLECTION', order: 15 },
+    
     { id: 'itzyI', name: 'itzy COLLECTION', order: 20 },
   ],
 
   // ========================================
-  // 卡包資料
+  // 卡包資料    91, 92, 93, 94, 95, 96, 97, 98, 99, 100
   // ========================================
   PACKS: [
     {
@@ -224,7 +228,7 @@ const CONFIG = {
       brandTitle: 'ITZY',
       brandSub: '*+special+*',
       packLabel: '',
-      cardCount: 8,
+      cardCount: 10,
       image: 'images/packs/itzy-1.jpg',
       emoji: '',
       bgm: 'sounds/bgm/WANNABE.mp3',  // 卡包專屬 BGM
@@ -242,7 +246,20 @@ const CONFIG = {
       emoji: '',
       bgm: 'sounds/bgm/NextLevel.mp3',  // 卡包專屬 BGM
       cards: [51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70]
-    }
+    },
+    {
+      id: 'newjeans',
+      name: 'NEWJEANS-I',
+      description: 'HOWSWEET、OMG、GETUP',
+      brandTitle: 'NEWJEANS',
+      brandSub: '',
+      packLabel: 'first',
+      cardCount: 10,
+      image: 'images/packs/newjeans-1.jpg',
+      emoji: '',
+      bgm:'sounds/bgm/OMG.mp3',  // 卡包專屬 BGM
+      cards: [71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90]
+    },
   ],
 
   // ========================================
@@ -257,17 +274,17 @@ const CONFIG = {
     { id: 5, nameChinese: '洪恩采', nameEnglish: 'Hong Eunchae', nameKorean: '홍은채', image: 'images/cards/lesserafim/antifragile-eunchae.jpg', rarity: 'rare', series: 'antifragile' },
 
     // ===== FEARLESS 系列 =====
-    { id: 6, nameChinese: '宮脇咲良', nameEnglish: 'Sakura Miyawaki', nameKorean: '미야와키 사쿠라', image: 'images/cards/lesserafim/fearless-sakura.jpg', rarity: 'normal', series: 'fearless' },
+    { id: 6, nameChinese: '宮脇咲良', nameEnglish: 'Sakura Miyawaki', nameKorean: '미야와키 사쿠라', image: 'images/cards/lesserafim/fearless-sakura.jpg', rarity: 'common', series: 'fearless' },
     { id: 7, nameChinese: '許允眞', nameEnglish: 'Huh Yunjin', nameKorean: '허윤진', image: 'images/cards/lesserafim/fearless-yunjin.jpg', rarity: 'superrare', series: 'fearless' },
     { id: 8, nameChinese: '中村一葉', nameEnglish: 'Kazuha Nakamura', nameKorean: '나카무라 카즈하', image: 'images/cards/lesserafim/fearless-kazuha.jpg', rarity: 'rare', series: 'fearless' },
     { id: 9, nameChinese: '洪恩采', nameEnglish: 'Hong Eunchae', nameKorean: '홍은채', image: 'images/cards/lesserafim/fearless-eunchae.jpg', rarity: 'normal', series: 'fearless' },
     { id: 10, nameChinese: '金采源', nameEnglish: 'Kim Chaewon', nameKorean: '김채원', image: 'images/cards/lesserafim/fearless-chaewon.jpg', rarity: 'ultrarare', series: 'fearless' },
 
     // ===== UNFORGIVEN 系列 =====
-    { id: 11, nameChinese: '許允眞', nameEnglish: 'Huh Yunjin', nameKorean: '허윤진', image: 'images/cards/lesserafim/unforgiven-yunjin.jpg', rarity: 'ultrarare', series: 'unforgiven' },
+    { id: 11, nameChinese: '許允眞', nameEnglish: 'Huh Yunjin', nameKorean: '허윤진', image: 'images/cards/lesserafim/unforgiven-yunjin.jpg', rarity: 'epic', series: 'unforgiven' },
     { id: 12, nameChinese: '中村一葉', nameEnglish: 'Kazuha Nakamura', nameKorean: '나카무라 카즈하', image: 'images/cards/lesserafim/unforgiven-kazuha.jpg', rarity: 'superrare', series: 'unforgiven' },
-    { id: 13, nameChinese: '洪恩采', nameEnglish: 'Hong Eunchae', nameKorean: '홍은채', image: 'images/cards/lesserafim/unforgiven-eunchae.jpg', rarity: 'superrare', series: 'unforgiven' },
-    { id: 14, nameChinese: '宮脇咲良', nameEnglish: 'Sakura Miyawaki', nameKorean: '미야와키 사쿠라', image: 'images/cards/lesserafim/unforgiven-sakura.jpg', rarity: 'normal', series: 'unforgiven' },
+    { id: 13, nameChinese: '洪恩采', nameEnglish: 'Hong Eunchae', nameKorean: '홍은채', image: 'images/cards/lesserafim/unforgiven-eunchae.jpg', rarity: 'rare', series: 'unforgiven' },
+    { id: 14, nameChinese: '宮脇咲良', nameEnglish: 'Sakura Miyawaki', nameKorean: '미야와키 사쿠라', image: 'images/cards/lesserafim/unforgiven-sakura.jpg', rarity: 'common', series: 'unforgiven' },
     { id: 15, nameChinese: '金采源', nameEnglish: 'Kim Chaewon', nameKorean: '김채원', image: 'images/cards/lesserafim/unforgiven-chaewon.jpg', rarity: 'ultrarare', series: 'unforgiven' },
 
     // ===== CRAZY 系列 =====
@@ -280,63 +297,91 @@ const CONFIG = {
     // ===== PERFECT NIGHT 系列 =====
     { id: 21, nameChinese: '宮脇咲良', nameEnglish: 'Sakura Miyawaki', nameKorean: '미야와키 사쿠라', image: 'images/cards/lesserafim/perfectnight-sakura.jpg', rarity: 'superrare', series: 'perfectnight' },
     { id: 22, nameChinese: '許允眞', nameEnglish: 'Huh Yunjin', nameKorean: '허윤진', image: 'images/cards/lesserafim/perfectnight-yunjin.jpg', rarity: 'rare', series: 'perfectnight' },
-    { id: 23, nameChinese: '中村一葉', nameEnglish: 'Kazuha Nakamura', nameKorean: '나카무라 카즈하', image: 'images/cards/lesserafim/perfectnight-kazuha.jpg', rarity: 'ultrarare', series: 'perfectnight' },
+    { id: 23, nameChinese: '中村一葉', nameEnglish: 'Kazuha Nakamura', nameKorean: '나카무라 카즈하', image: 'images/cards/lesserafim/perfectnight-kazuha.jpg', rarity: 'epic', series: 'perfectnight' },
     { id: 24, nameChinese: '洪恩采', nameEnglish: 'Hong Eunchae', nameKorean: '홍은채', image: 'images/cards/lesserafim/perfectnight-eunchae.jpg', rarity: 'common', series: 'perfectnight' },
     { id: 25, nameChinese: '金采源', nameEnglish: 'Kim Chaewon', nameKorean: '김채원', image: 'images/cards/lesserafim/perfectnight-chaewon.jpg', rarity: 'ultrarare', series: 'perfectnight' },
 
     // ===== EX COLLECTION 系列 =====
-    { id: 26, nameChinese: '宮脇咲良', nameEnglish: 'Sakura Miyawaki', nameKorean: '미야와키 사쿠라', image: 'images/cards/lesserafim/EX_CRAZY-SAKURA.gif', rarity: 'legendary', series: 'ex' },
-    { id: 27, nameChinese: '許允眞', nameEnglish: 'Huh Yunjin', nameKorean: '허윤진', image: 'images/cards/lesserafim/EX_FEARLESS-YUNJIN.gif', rarity: 'legendary', series: 'ex' },
-    { id: 28, nameChinese: '中村一葉', nameEnglish: 'Kazuha Nakamura', nameKorean: '나카무라 카즈하', image: 'images/cards/lesserafim/EX_UNFORGIVEN-KAZUHA.gif', rarity: 'legendary', series: 'ex' },
-    { id: 29, nameChinese: '洪恩采', nameEnglish: 'Hong Eunchae', nameKorean: '홍은채', image: 'images/cards/lesserafim/EX_UNFORGIVEN-EUNCHAE.gif', rarity: 'legendary', series: 'ex' },
-    { id: 30, nameChinese: '金采源', nameEnglish: 'Kim Chaewon', nameKorean: '김채원', image: 'images/cards/lesserafim/EX_FEARLESS-CHAEWON.gif', rarity: 'legendary', series: 'ex' },
+    { id: 26, nameChinese: 'CRAZY 宮脇咲良', nameEnglish: 'Sakura Miyawaki', nameKorean: '미야와키 사쿠라', image: 'images/cards/lesserafim/EX_CRAZY-SAKURA.gif', rarity: 'legendary', series: 'ex' },
+    { id: 27, nameChinese: 'FEARLESS 許允眞', nameEnglish: 'Huh Yunjin', nameKorean: '허윤진', image: 'images/cards/lesserafim/EX_FEARLESS-YUNJIN.gif', rarity: 'legendary', series: 'ex' },
+    { id: 28, nameChinese: 'UNFORGIVEN 中村一葉', nameEnglish: 'Kazuha Nakamura', nameKorean: '나카무라 카즈하', image: 'images/cards/lesserafim/EX_UNFORGIVEN-KAZUHA.gif', rarity: 'legendary', series: 'ex' },
+    { id: 29, nameChinese: 'UNFORGIVEN 洪恩采', nameEnglish: 'Hong Eunchae', nameKorean: '홍은채', image: 'images/cards/lesserafim/EX_UNFORGIVEN-EUNCHAE.gif', rarity: 'legendary', series: 'ex' },
+    { id: 30, nameChinese: 'FEARLESS 金采源', nameEnglish: 'Kim Chaewon', nameKorean: '김채원', image: 'images/cards/lesserafim/EX_FEARLESS-CHAEWON.gif', rarity: 'legendary', series: 'ex' },
     
     // ===== ITZY 系列 =====
-    { id: 31, nameChinese: '黃禮志', nameEnglish: 'Yeji', nameKorean: '황예지', image: 'images/cards/itzy/EX-YEJI.gif', rarity: 'legendary', series: 'itzyI' },
+    { id: 31, nameChinese: 'WATERBOMB 黃禮志', nameEnglish: 'Yeji', nameKorean: '황예지', image: 'images/cards/itzy/EX-YEJI.gif', rarity: 'legendary', series: 'itzyI' },
     { id: 32, nameChinese: '崔智壽', nameEnglish: 'Lia', nameKorean: '최지수', image: 'images/cards/itzy/lia01.jpg', rarity: 'superrare', series: 'itzyI' },
     { id: 33, nameChinese: '申留眞', nameEnglish: 'Ryujin', nameKorean: '신류진', image: 'images/cards/itzy/EX-ryujin.gif', rarity: 'epic', series: 'itzyI' },
-    { id: 34, nameChinese: '李彩領', nameEnglish: 'Chaeryeong', nameKorean: '이채령', image: 'images/cards/itzy/EX-CHAEYEONG.gif', rarity: 'legendary', series: 'itzyI' },
-    { id: 35, nameChinese: '申有娜', nameEnglish: 'Yuna', nameKorean: '신유나', image: 'images/cards/itzy/EX-YUNA.gif', rarity: 'legendary', series: 'itzyI' },
+    { id: 34, nameChinese: 'SBS 李彩領', nameEnglish: 'Chaeryeong', nameKorean: '이채령', image: 'images/cards/itzy/EX-CHAEYEONG.gif', rarity: 'legendary', series: 'itzyI' },
+    { id: 35, nameChinese: '2021 W-KPOP 申有娜', nameEnglish: 'Yuna', nameKorean: '신유나', image: 'images/cards/itzy/EX-YUNA.gif', rarity: 'legendary', series: 'itzyI' },
     { id: 36, nameChinese: '黃禮志', nameEnglish: 'Yeji', nameKorean: '황예지', image: 'images/cards/itzy/yeji01.jpg', rarity: 'superrare', series: 'itzyI' },
-    { id: 37, nameChinese: '崔智壽', nameEnglish: 'Lia', nameKorean: '최지수', image: 'images/cards/itzy/lia02.jpg', rarity: 'ultrarare', series: 'itzyI' },
+    { id: 37, nameChinese: '崔智壽', nameEnglish: 'Lia', nameKorean: '최지수', image: 'images/cards/itzy/lia02.jpg', rarity: 'epic', series: 'itzyI' },
     { id: 38, nameChinese: '申留眞', nameEnglish: 'Ryujin', nameKorean: '신류진', image: 'images/cards/itzy/ryujin01.jpg', rarity: 'superrare', series: 'itzyI' },
-    { id: 39, nameChinese: '李彩領', nameEnglish: 'Chaeryeong', nameKorean: '이채령', image: 'images/cards/itzy/chaeryeong01.jpg', rarity: 'epic', series: 'itzI' },
+    { id: 39, nameChinese: '李彩領', nameEnglish: 'Chaeryeong', nameKorean: '이채령', image: 'images/cards/itzy/chaeryeong01.jpg', rarity: 'epic', series: 'itzyI' },
     { id: 40, nameChinese: '申有娜', nameEnglish: 'Yuna', nameKorean: '신유나', image: 'images/cards/itzy/yuna01.jpg', rarity: 'superrare', series: 'itzyI' },
     { id: 41, nameChinese: '黃禮志', nameEnglish: 'Yeji', nameKorean: '황예지', image: 'images/cards/itzy/yeji02.jpg', rarity: 'epic', series: 'itzyI' },
     { id: 42, nameChinese: '崔智壽', nameEnglish: 'Lia', nameKorean: '최지수', image: 'images/cards/itzy/lia03.jpg', rarity: 'normal', series: 'itzyI' },
     { id: 43, nameChinese: '申留眞', nameEnglish: 'Ryujin', nameKorean: '신류진', image: 'images/cards/itzy/ryujin02.jpg', rarity: 'rare', series: 'itzyI' },
     { id: 44, nameChinese: '李彩領', nameEnglish: 'Chaeryeong', nameKorean: '이채령', image: 'images/cards/itzy/chaeryeong02.jpg', rarity: 'ultrarare', series: 'itzyI' },
-    { id: 45, nameChinese: '申有娜', nameEnglish: 'Yuna', nameKorean: '신유나', image: 'images/cards/itzy/yuna02.jpg', rarity: 'superrare', series: 'itzyI' },
+    { id: 45, nameChinese: '申有娜', nameEnglish: 'Yuna', nameKorean: '신유나', image: 'images/cards/itzy/yuna02.jpg', rarity: 'ultrarare', series: 'itzyI' },
     { id: 46, nameChinese: '黃禮志', nameEnglish: 'Yeji', nameKorean: '황예지', image: 'images/cards/itzy/yeji03.jpg', rarity: 'ultrarare', series: 'itzyI' },
     { id: 47, nameChinese: '崔智壽', nameEnglish: 'Lia', nameKorean: '최지수', image: 'images/cards/itzy/lia04.jpg', rarity: 'rare', series: 'itzyI' },
     { id: 48, nameChinese: '申留眞', nameEnglish: 'Ryujin', nameKorean: '신류진', image: 'images/cards/itzy/ryujin03.jpg', rarity: 'common', series: 'itzyI' },
-    { id: 49, nameChinese: '李彩領', nameEnglish: 'Chaeryeong', nameKorean: '이채령', image: 'images/cards/itzy/chaeryeong03.jpg', rarity: 'rare', series: 'itzyI' },
+    { id: 49, nameChinese: '李彩領', nameEnglish: 'Chaeryeong', nameKorean: '이채령', image: 'images/cards/itzy/chaeryeong03.jpg', rarity: 'common', series: 'itzyI' },
     { id: 50, nameChinese: '申有娜', nameEnglish: 'Yuna', nameKorean: '신유나', image: 'images/cards/itzy/yuna03.jpg', rarity: 'epic', series: 'itzyI' },
+
+
     // ===== DRAMA 系列 =====
-    { id: 51, nameChinese: '劉知珉', nameEnglish: 'Karina', nameKorean: '유지민', image: 'images/cards/aespa/Karina01.gif', rarity: 'legendary', series: 'drama' },
-    { id: 52, nameChinese: '金枝利', nameEnglish: 'Giselle', nameKorean: '김애리', image: 'images/cards/aespa/Giselle01.jpg', rarity: 'common', series: 'drama' },
+    { id: 51, nameChinese: 'DRAMA 劉知珉', nameEnglish: 'Karina', nameKorean: '유지민', image: 'images/cards/aespa/Karina01.gif', rarity: 'legendary', series: 'drama' },
+    { id: 52, nameChinese: '金枝利', nameEnglish: 'Giselle', nameKorean: '김애리', image: 'images/cards/aespa/Giselle01.jpg', rarity: 'superrare', series: 'drama' },
     { id: 53, nameChinese: '金旼炡', nameEnglish: 'Winter', nameKorean: '김민정', image: 'images/cards/aespa/Winter01.jpg', rarity: 'epic', series: 'drama' },
-    { id: 54, nameChinese: '寧藝卓', nameEnglish: 'Ningning', nameKorean: '닝이줘', image: 'images/cards/aespa/Ningning01.jpg', rarity: 'common', series: 'drama' },
+    { id: 54, nameChinese: '寧藝卓', nameEnglish: 'Ningning', nameKorean: '닝이줘', image: 'images/cards/aespa/Ningning01.jpg', rarity: 'superrare', series: 'drama' },
     // ===== NEXTLEVEL 系列 =====
     { id: 55, nameChinese: '劉知珉', nameEnglish: 'Karina', nameKorean: '유지민', image: 'images/cards/aespa/Karina02.jpg', rarity: 'superrare', series: 'next' },
-    { id: 56, nameChinese: '金枝利', nameEnglish: 'Giselle', nameKorean: '김애리', image: 'images/cards/aespa/Giselle02.jpg', rarity: 'normal', series: 'next' },
+    { id: 56, nameChinese: '金枝利', nameEnglish: 'Giselle', nameKorean: '김애리', image: 'images/cards/aespa/Giselle02.jpg', rarity: 'common', series: 'next' },
     { id: 57, nameChinese: '金旼炡', nameEnglish: 'Winter', nameKorean: '김민정', image: 'images/cards/aespa/Winter02.jpg', rarity: 'rare', series: 'next' },
     { id: 58, nameChinese: '寧藝卓', nameEnglish: 'Ningning', nameKorean: '닝이줘', image: 'images/cards/aespa/Ningning02.jpg', rarity: 'normal', series: 'next' },
     // ===== SAVAGE 系列 =====
     { id: 59, nameChinese: '劉知珉', nameEnglish: 'Karina', nameKorean: '유지민', image: 'images/cards/aespa/Karina03.jpg', rarity: 'ultrarare', series: 'savage' },
     { id: 60, nameChinese: '金枝利', nameEnglish: 'Giselle', nameKorean: '김애리', image: 'images/cards/aespa/Giselle03.jpg', rarity: 'common', series: 'savage' },
-    { id: 61, nameChinese: '金旼炡', nameEnglish: 'Winter', nameKorean: '김민정', image: 'images/cards/aespa/Winter03.jpg', rarity: 'ultrarare', series: 'savage' },
-    { id: 62, nameChinese: '寧藝卓', nameEnglish: 'Ningning', nameKorean: '닝이줘', image: 'images/cards/aespa/Ningning03.jpg', rarity: 'superrare', series: 'savage' },
+    { id: 61, nameChinese: '金旼炡', nameEnglish: 'Winter', nameKorean: '김민정', image: 'images/cards/aespa/Winter03.jpg', rarity: 'epic', series: 'savage' },
+    { id: 62, nameChinese: '寧藝卓', nameEnglish: 'Ningning', nameKorean: '닝이줘', image: 'images/cards/aespa/Ningning03.jpg', rarity: 'rare', series: 'savage' },
     // ===== ARMAGEDDON 系列 =====
-    { id: 63, nameChinese: '劉知珉', nameEnglish: 'Karina', nameKorean: '유지민', image: 'images/cards/aespa/Karina04.jpg', rarity: 'epic', series: 'arma' },
+    { id: 63, nameChinese: '劉知珉', nameEnglish: 'Karina', nameKorean: '유지민', image: 'images/cards/aespa/Karina04.jpg', rarity: 'ultrarare', series: 'arma' },
     { id: 64, nameChinese: '金枝利', nameEnglish: 'Giselle', nameKorean: '김애리', image: 'images/cards/aespa/Giselle04.jpg', rarity: 'superrare', series: 'arma' },
-    { id: 65, nameChinese: '金旼炡', nameEnglish: 'Winter', nameKorean: '김민정', image: 'images/cards/aespa/Winter04.jpg', rarity: 'rare', series: 'arma' },
+    { id: 65, nameChinese: '金旼炡', nameEnglish: 'Winter', nameKorean: '김민정', image: 'images/cards/aespa/Winter04.jpg', rarity: 'common', series: 'arma' },
     { id: 66, nameChinese: '寧藝卓', nameEnglish: 'Ningning', nameKorean: '닝이줘', image: 'images/cards/aespa/Ningning04.jpg', rarity: 'ultrarare', series: 'arma' },
     // ===== EX 系列 =====
-    { id: 67, nameChinese: '劉知珉', nameEnglish: 'Karina', nameKorean: '유지민', image: 'images/cards/aespa/Karina.gif', rarity: 'legendary', series: 'ex-aespa' },
-    { id: 68, nameChinese: '金枝利', nameEnglish: 'Giselle', nameKorean: '김애리', image: 'images/cards/aespa/Giselle.gif', rarity: 'legendary', series: 'ex-aespa' },
-    { id: 69, nameChinese: '金旼炡', nameEnglish: 'Winter', nameKorean: '김민정', image: 'images/cards/aespa/Winter.gif', rarity: 'legendary', series: 'ex-aespa' },
-    { id: 70, nameChinese: '寧藝卓', nameEnglish: 'Ningning', nameKorean: '닝이줘', image: 'images/cards/aespa/Ningning.gif', rarity: 'legendary', series: 'ex-aespa' },
+    { id: 67, nameChinese: 'SALTY&SWEET 劉知珉', nameEnglish: 'Karina', nameKorean: '유지민', image: 'images/cards/aespa/Karina.gif', rarity: 'legendary', series: 'ex-aespa' },
+    { id: 68, nameChinese: 'DIRTYWORK 金枝利', nameEnglish: 'Giselle', nameKorean: '김애리', image: 'images/cards/aespa/Giselle.gif', rarity: 'legendary', series: 'ex-aespa' },
+    { id: 69, nameChinese: 'SUPERNOVA 金旼炡', nameEnglish: 'Winter', nameKorean: '김민정', image: 'images/cards/aespa/Winter.gif', rarity: 'legendary', series: 'ex-aespa' },
+    { id: 70, nameChinese: 'W-KOREA 寧藝卓', nameEnglish: 'Ningning', nameKorean: '닝이줘', image: 'images/cards/aespa/Ningning.gif', rarity: 'legendary', series: 'ex-aespa' },
+
+
+   // ===== EX 系列 =====
+    { id: 75, nameChinese: 'ZERO 范玉欣', nameEnglish: 'Hanni', nameKorean: '하니', image: 'images/cards/newjeans/hanni.gif', rarity: 'legendary', series: 'newjeans' },    
+    { id: 83, nameChinese: 'NEWJEANS 姜諧潾', nameEnglish: 'Haerin', nameKorean: '강해린', image: 'images/cards/newjeans/haerin.gif', rarity: 'legendary', series: 'newjeans' },
+    { id: 79, nameChinese: 'OMG 牟智慧', nameEnglish: 'Danielle', nameKorean: '모지혜', image: 'images/cards/newjeans/danielle.gif', rarity: 'legendary', series: 'newjeans' },
+    { id: 87, nameChinese: 'HYPEBOY 李惠仁', nameEnglish: 'Hyein', nameKorean: '이혜인', image: 'images/cards/newjeans/hyein.gif', rarity: 'legendary', series: 'newjeans' },
+    { id: 74, nameChinese: 'KORF 金玟池', nameEnglish: 'Minji', nameKorean: '김민지', image: 'images/cards/newjeans/minji.gif', rarity: 'legendary', series: 'newjeans' },
+   // ===== How Sweet 系列 =====
+    { id: 71, nameChinese: '金玟池', nameEnglish: 'Minji', nameKorean: '김민지', image: 'images/cards/newjeans/minji01.jpg', rarity: 'superrare', series: 'howsweet' },
+    { id: 76, nameChinese: '范玉欣', nameEnglish: 'Hanni', nameKorean: '하니', image: 'images/cards/newjeans/hanni01.jpg', rarity: 'ultrarare', series: 'howsweet' },
+    { id: 80, nameChinese: '牟智慧', nameEnglish: 'Danielle', nameKorean: '모지혜', image: 'images/cards/newjeans/danielle01.jpg', rarity: 'ultrarare', series: 'howsweet' },
+    { id: 84, nameChinese: '姜諧潾', nameEnglish: 'Haerin', nameKorean: '강해린', image: 'images/cards/newjeans/haerin01.jpg', rarity: 'epic', series: 'howsweet' },
+    { id: 88, nameChinese: '李惠仁', nameEnglish: 'Hyein', nameKorean: '이혜인', image: 'images/cards/newjeans/hyein01.jpg', rarity: 'normal', series: 'howsweet' },
+   // ===== OMG 系列 =====
+    { id: 72, nameChinese: '金玟池', nameEnglish: 'Minji', nameKorean: '김민지', image: 'images/cards/newjeans/minji02.jpg', rarity: 'ultrarare', series: 'omg' },
+    { id: 77, nameChinese: '范玉欣', nameEnglish: 'Hanni', nameKorean: '하니', image: 'images/cards/newjeans/hanni02.jpg', rarity: 'common', series: 'omg' },
+    { id: 81, nameChinese: '牟智慧', nameEnglish: 'Danielle', nameKorean: '모지혜', image: 'images/cards/newjeans/danielle02.jpg', rarity: 'rare', series: 'omg' },
+    { id: 85, nameChinese: '姜諧潾', nameEnglish: 'Haerin', nameKorean: '강해린', image: 'images/cards/newjeans/haerin02.jpg', rarity: 'epic', series: 'omg' },
+    { id: 89, nameChinese: '李惠仁', nameEnglish: 'Hyein', nameKorean: '이혜인', image: 'images/cards/newjeans/hyein02.jpg', rarity: 'superrare', series: 'omg' },
+    // ===== Get Up 系列 =====
+    { id: 73, nameChinese: '金玟池', nameEnglish: 'Minji', nameKorean: '김민지', image: 'images/cards/newjeans/minji03.jpg', rarity: 'epic', series: 'getup' },
+    { id: 82, nameChinese: '牟智慧', nameEnglish: 'Danielle', nameKorean: '모지혜', image: 'images/cards/newjeans/danielle03.jpg', rarity: 'normal', series: 'getup' },
+    { id: 78, nameChinese: '范玉欣', nameEnglish: 'Hanni', nameKorean: '하니', image: 'images/cards/newjeans/hanni03.jpg', rarity: 'ultrarare', series: 'getup' },
+    { id: 86, nameChinese: '姜諧潾', nameEnglish: 'Haerin', nameKorean: '강해린', image: 'images/cards/newjeans/haerin03.jpg', rarity: 'superrare', series: 'getup' },
+    { id: 90, nameChinese: '李惠仁', nameEnglish: 'Hyein', nameKorean: '이혜인', image: 'images/cards/newjeans/hyein03.jpg', rarity: 'common', series: 'getup' },
 
   ]
 
