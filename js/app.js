@@ -372,7 +372,6 @@
       const packDisplayId = parentPack ? parentPack.id.toUpperCase() : 'UNKNOWN';
       const newBadgeHTML = isFirstTime ? `<div class="new-card-badge"><span class="new-badge-text">NEW</span></div>` : '';
       return `
-        ${newBadgeHTML}
         <div class="card-inner ${isLegendary ? 'legendary-aura' : ''}">
           <div class="card-face card-back back-${card.rarity}">
             <div class="card-back-pattern"></div>
@@ -383,6 +382,7 @@
             <div class="card-back-shine"></div>
           </div>
           <div class="card-face card-front rarity-${card.rarity}">
+            ${newBadgeHTML}
             <span class="card-rarity-badge badge-${card.rarity}">${rarityText}</span>
             <div class="card-photo-area">
               <div class="card-photo">${photoContent}</div>

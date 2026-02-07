@@ -157,7 +157,7 @@ const CONFIG = {
       superrare: 'SSR',
       ultrarare: 'UR',
       epic: 'EPIC',
-      legendary: 'LEGENDARY'
+      legendary: 'LR'
     },
     // 星星數量
     STARS: {
@@ -201,11 +201,12 @@ const CONFIG = {
     { id: 'omg', name: 'OMG COLLECTION', order: 14 },
     { id: 'getup', name: 'GET UP COLLECTION', order: 15 },
     
-    { id: 'itzyI', name: 'itzy COLLECTION', order: 20 },
+    { id: 'itzyI', name: 'itzy I COLLECTION', order: 20 },
+    { id: 'itzyII', name: 'itzy II COLLECTION', order: 21 },
   ],
 
   // ========================================
-  // 卡包資料    91, 92, 93, 94, 95, 96, 97, 98, 99, 100
+  // 卡包資料    
   // ========================================
   PACKS: [
     {
@@ -259,6 +260,19 @@ const CONFIG = {
       emoji: '',
       bgm:'sounds/bgm/OMG.mp3',  // 卡包專屬 BGM
       cards: [71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90]
+    },
+    {
+      id: 'itzyII',
+      name: 'ITZY-II',
+      description: '失去理智',
+      brandTitle: 'ITZY',
+      brandSub: '*+Curated+*',
+      packLabel: '',
+      cardCount: 10,
+      image: 'images/packs/itzy-2.jpg',
+      emoji: '',
+      bgm: 'sounds/bgm/TUNNELVISION.mp3',  // 卡包專屬 BGM
+      cards: [91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115]
     },
   ],
 
@@ -382,6 +396,36 @@ const CONFIG = {
     { id: 78, nameChinese: '范玉欣', nameEnglish: 'Hanni', nameKorean: '하니', image: 'images/cards/newjeans/hanni03.jpg', rarity: 'ultrarare', series: 'getup' },
     { id: 86, nameChinese: '姜諧潾', nameEnglish: 'Haerin', nameKorean: '강해린', image: 'images/cards/newjeans/haerin03.jpg', rarity: 'superrare', series: 'getup' },
     { id: 90, nameChinese: '李惠仁', nameEnglish: 'Hyein', nameKorean: '이혜인', image: 'images/cards/newjeans/hyein03.jpg', rarity: 'common', series: 'getup' },
+
+    // ===== ITZY 2 系列 =====
+    { id: 91, nameChinese: 'KISS 黃禮志', nameEnglish: 'Yeji', nameKorean: '황예지', image: 'images/cards/itzy2/YEJI.gif', rarity: 'legendary', series: 'itzyII' },
+    { id: 92, nameChinese: '黃禮志', nameEnglish: 'Yeji', nameKorean: '황예지', image: 'images/cards/itzy2/yeji01.jpg', rarity: 'epic', series: 'itzyII' },
+    { id: 93, nameChinese: '黃禮志', nameEnglish: 'Yeji', nameKorean: '황예지', image: 'images/cards/itzy2/yeji02.jpg', rarity: 'ultrarare', series: 'itzyII' },
+    { id: 94, nameChinese: '黃禮志', nameEnglish: 'Yeji', nameKorean: '황예지', image: 'images/cards/itzy2/yeji03.jpg', rarity: 'rare', series: 'itzyII' },
+    { id: 95, nameChinese: '黃禮志', nameEnglish: 'Yeji', nameKorean: '황예지', image: 'images/cards/itzy2/yeji04.jpg', rarity: 'normal', series: 'itzyII' },
+    { id: 96, nameChinese: 'ITM 崔智壽', nameEnglish: 'Lia', nameKorean: '최지수', image: 'images/cards/itzy2/LIA.gif', rarity: 'legendary', series: 'itzyII' },
+    { id: 97, nameChinese: '崔智壽', nameEnglish: 'Lia', nameKorean: '최지수', image: 'images/cards/itzy2/lia01.jpg', rarity: 'ultrarare', series: 'itzyII' },
+    { id: 98, nameChinese: '崔智壽', nameEnglish: 'Lia', nameKorean: '최지수', image: 'images/cards/itzy2/lia02.jpg', rarity: 'superrare', series: 'itzyII' },
+    { id: 99, nameChinese: '崔智壽', nameEnglish: 'Lia', nameKorean: '최지수', image: 'images/cards/itzy2/lia03.jpg', rarity: 'common', series: 'itzyII' },
+    { id: 100, nameChinese: '崔智壽', nameEnglish: 'Lia', nameKorean: '최지수', image: 'images/cards/itz2y/lia04.jpg', rarity: 'normal', series: 'itzyII' },
+    { id: 101, nameChinese: 'SMILE 申留眞', nameEnglish: 'Ryujin', nameKorean: '신류진', image: 'images/cards/itzy2/RYUJIN.gif', rarity: 'legendary', series: 'itzyII' },
+    { id: 102, nameChinese: '申留眞', nameEnglish: 'Ryujin', nameKorean: '신류진', image: 'images/cards/itzy2/ryujin01.jpg', rarity: 'ultrarare', series: 'itzyII' },
+    { id: 103, nameChinese: '申留眞', nameEnglish: 'Ryujin', nameKorean: '신류진', image: 'images/cards/itzy2/ryujin02.jpg', rarity: 'superrare', series: 'itzyII' },
+    { id: 104, nameChinese: '申留眞', nameEnglish: 'Ryujin', nameKorean: '신류진', image: 'images/cards/itzy2/ryujin03.jpg', rarity: 'rare', series: 'itzyII' },
+    { id: 105, nameChinese: '申留眞', nameEnglish: 'Ryujin', nameKorean: '신류진', image: 'images/cards/itzy2/ryujin04.jpg', rarity: 'common', series: 'itzyII' },
+    { id: 106, nameChinese: 'TUNNELVISION 李彩領', nameEnglish: 'Chaeryeong', nameKorean: '이채령', image: 'images/cards/itzy2/CHAERYEONG.gif', rarity: 'legendary', series: 'itzyII' },
+    { id: 107, nameChinese: '李彩領', nameEnglish: 'Chaeryeong', nameKorean: '이채령', image: 'images/cards/itzy2/chaeryeong01.jpg', rarity: 'ultrarare', series: 'itzyII' },
+    { id: 108, nameChinese: '李彩領', nameEnglish: 'Chaeryeong', nameKorean: '이채령', image: 'images/cards/itzy2/chaeryeong02.jpg', rarity: 'ultrarare', series: 'itzyII' },
+    { id: 109, nameChinese: '李彩領', nameEnglish: 'Chaeryeong', nameKorean: '이채령', image: 'images/cards/itzy2/chaeryeong03.jpg', rarity: 'rare', series: 'itzyII' },
+    { id: 110, nameChinese: '李彩領', nameEnglish: 'Chaeryeong', nameKorean: '이채령', image: 'images/cards/itzy2/chaeryeong04.jpg', rarity: 'common', series: 'itzyII' },
+    { id: 111, nameChinese: 'WIGGLE 申有娜', nameEnglish: 'Yuna', nameKorean: '신유나', image: 'images/cards/itzy2/YUNA.gif', rarity: 'legendary', series: 'itzyII' },
+    { id: 112, nameChinese: '申有娜', nameEnglish: 'Yuna', nameKorean: '신유나', image: 'images/cards/itzy2/yuna01.jpg', rarity: 'ultrarare', series: 'itzyII' },
+    { id: 113, nameChinese: '申有娜', nameEnglish: 'Yuna', nameKorean: '신유나', image: 'images/cards/itzy2/yuna02.jpg', rarity: 'superrare', series: 'itzyII' },
+    { id: 114, nameChinese: '申有娜', nameEnglish: 'Yuna', nameKorean: '신유나', image: 'images/cards/itzy2/yuna03.jpg', rarity: 'common', series: 'itzyII' },
+    { id: 115, nameChinese: '申有娜', nameEnglish: 'Yuna', nameKorean: '신유나', image: 'images/cards/itzy2/yuna04.jpg', rarity: 'normal', series: 'itzyII' },
+
+
+
 
   ]
 
