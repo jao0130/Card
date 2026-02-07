@@ -1,0 +1,156 @@
+小卡收集系統
+
+## 資料夾結構
+
+```
+Card/
+├── index.html              # 主頁面
+├── README.md               # 說明文件
+├── css/
+│   └── styles.css          # 樣式檔
+├── js/
+│   ├── config.js           # 【編輯這個】資料設定
+│   └── app.js              # 應用程式邏輯
+├── images/
+│   ├── packs/              # 卡包預覽圖
+│   └── cards/              # 卡片照片
+├── sounds/                 # 音效檔案
+└── star/                   # 星星圖片
+    └── filled/wide.png
+```
+
+## 快速開始
+
+1. 用瀏覽器開啟 `index.html`
+2. 在大廳選擇卡包
+3. 點擊卡包撕開
+4. 點擊卡片翻面查看
+
+---
+
+## 如何添加內容
+
+### 編輯 `js/config.js`
+
+所有資料設定都在這個檔案中。
+
+### 添加卡包
+
+在 `CONFIG.PACKS` 陣列中添加：
+
+```javascript
+{
+  id: 'new_pack',                    // 唯一 ID（英文小寫）
+  name: '卡包名稱',
+  description: '卡包描述...',
+  brandTitle: 'LE SSERAFIM',
+  brandSub: 'ALBUM NAME',
+  packLabel: 'PHOTOCARD PACK',
+  cardCount: 5,                      // 每包張數
+  image: 'images/packs/new.jpg',     // 預覽圖（可選）
+  emoji: '🎵',                       // 無圖時顯示
+  cards: [1, 2, 3, 4, 5]             // 包含的卡片 ID
+}
+```
+
+### 添加卡片
+
+在 `CONFIG.CARDS` 陣列中添加：
+
+```javascript
+{
+  id: 6,                             // 唯一數字 ID
+  nameChinese: '中文名',
+  nameEnglish: 'English Name',
+  nameKorean: '한국어',
+  image: 'images/cards/member.jpg',  // 照片（可選）
+  emoji: '🌟',                       // 無照片時顯示
+  rarity: 'epic'                     // rare | epic | legendary
+}
+```
+
+### 調整稀有度機率
+
+修改 `CONFIG.RARITY.WEIGHTS`：
+
+```javascript
+WEIGHTS: {
+  rare: 40,       // 40%
+  epic: 35,       // 35%
+  legendary: 25   // 25%
+}
+```
+
+---
+
+## 圖片規格
+
+| 類型 | 位置 | 建議尺寸 |
+|------|------|---------|
+| 卡包預覽圖 | `images/packs/` | 560×400px |
+| 卡片照片 | `images/cards/` | 400×500px |
+
+---
+
+## 音效設定
+
+### 音效開關與音量
+
+在 `js/config.js` 的 `SOUNDS` 區塊設定：
+
+```javascript
+SOUNDS: {
+  enabled: true,    // true 啟用 / false 關閉
+  volume: 0.5,      // 音量 0.0 ~ 1.0
+  files: { ... }
+}
+```
+
+### 音效檔案
+
+將音效檔案放入 `sounds/` 資料夾，支援 MP3/WAV/OGG 格式：
+
+| 音效 | 檔案名稱 | 說明 |
+|------|----------|------|
+| 撕開卡包 | `pack-tear.mp3` | 撕開動作時播放 |
+| 打開卡包 | `pack-open.mp3` | 撕開完成後播放 |
+| 翻卡片 | `card-flip.mp3` | 單張翻面 |
+| 一次翻開 | `card-flip-all.mp3` | 點擊「一次翻開」按鈕 |
+| 放大卡片 | `card-enlarge.mp3` | 點擊已翻開的卡片放大 |
+| 首抽 1~7 星 | `new-card-1star.mp3` ~ `new-card-7star.mp3` | 首次獲得對應星數卡片 |
+| 傳說卡 | `legendary.mp3` | 首次獲得傳說卡特殊音效 |
+| 按鈕點擊 | `button-click.mp3` | 一般按鈕點擊 |
+| 關閉覆蓋層 | `overlay-close.mp3` | 點擊「收藏並關閉」 |
+| 導航切換 | `nav-switch.mp3` | 切換大廳/圖鑑頁面 |
+
+### 背景音樂
+
+在 `js/config.js` 的 `BGM` 區塊設定：
+
+```javascript
+BGM: {
+  enabled: true,    // true 啟用 / false 關閉
+  volume: 0.3,      // 音量 0.0 ~ 1.0
+  files: { ... }
+}
+```
+
+| 音樂 | 檔案名稱 | 說明 |
+|------|----------|------|
+| 大廳 | `bgm-lobby.mp3` | 大廳頁面背景音樂 |
+| 開卡包 | `bgm-pack-opening.mp3` | 開卡包時的背景音樂 |
+| 圖鑑 | `bgm-collection.mp3` | 圖鑑頁面背景音樂 |
+| 傳說卡 | `bgm-legendary.mp3` | 傳說卡出現時的特殊音樂 |
+
+---
+
+## 效能優化說明
+
+此系統已針對大量卡片優化：
+
+- **事件委派**：減少事件監聽器數量
+- **DocumentFragment**：批次 DOM 操作
+- **Lazy Loading**：圖片延遲載入
+- **Map 結構**：快速資料查找
+- **CSS Containment**：隔離重繪範圍
+- **will-change**：優化動畫效能

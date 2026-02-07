@@ -1,0 +1,746 @@
+/* ============================================
+   MOBILE.CSS - iPhone 專用樣式覆蓋
+   目標: iPhone SE (375px) ~ iPhone 15 Pro Max (430px)
+   ============================================ */
+
+/* ============================================
+   iOS 基礎適配
+   ============================================ */
+html {
+  /* 防止 iOS 橡皮筋回彈 */
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  /* 使用 dvh 處理 Safari 動態工具列 */
+  min-height: 100dvh;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: manipulation;
+  /* 安全區域底部填充 */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ============================================
+   APP CONTAINER - 全螢幕適配
+   ============================================ */
+.app-container {
+  min-height: 100dvh;
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* ============================================
+   START OVERLAY - 啟動畫面
+   ============================================ */
+#startOverlay {
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left) !important;
+}
+
+#startOverlay h2 {
+  font-size: 1.4rem !important;
+  letter-spacing: 4px !important;
+}
+
+#startOverlay button {
+  padding: 16px 48px !important;
+  font-size: 1rem !important;
+  min-height: 48px;
+  border-radius: 50px !important;
+}
+
+#startOverlay p {
+  font-size: 0.75rem !important;
+}
+
+/* ============================================
+   NAVIGATION - 頂部導航
+   ============================================ */
+.nav-container {
+  padding: 10px 16px;
+  padding-top: calc(10px + env(safe-area-inset-top));
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-tabs {
+  gap: 4px;
+}
+
+.nav-tab {
+  padding: 10px 28px;
+  font-size: 0.85rem;
+  min-height: 44px;
+}
+
+/* ============================================
+   PAGE CONTAINER
+   ============================================ */
+.page {
+  padding: 20px 16px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+}
+
+/* ============================================
+   LOBBY PAGE - 大廳
+   ============================================ */
+.lobby-header {
+  margin-bottom: 12px;
+}
+
+.lobby-title {
+  font-size: 1.6rem;
+}
+
+.lobby-subtitle {
+  font-size: 0.85rem;
+}
+
+.pack-grid {
+  grid-template-columns: 1fr;
+  max-width: 100%;
+  gap: 20px;
+  padding: 0;
+}
+
+/* Pack Card - 卡包項目 */
+.pack-card {
+  border-radius: 16px;
+}
+
+.pack-card:hover {
+  transform: none;
+}
+
+.pack-card:active {
+  transform: scale(0.98);
+}
+
+.pack-card-preview {
+  height: 180px;
+}
+
+.pack-card-info {
+  padding: 16px;
+}
+
+.pack-card-name {
+  font-size: 1.1rem;
+}
+
+.pack-card-description {
+  font-size: 0.8rem;
+}
+
+.pack-card-btn {
+  padding: 10px 24px;
+  font-size: 0.85rem;
+  min-height: 44px;
+}
+
+/* ============================================
+   PACK OPENING PAGE - 開包頁
+   ============================================ */
+.pack-page {
+  gap: 24px;
+  padding-top: 60px;
+}
+
+.pack-page-header {
+  text-align: center;
+}
+
+.pack-page-title {
+  font-size: 1.2rem;
+}
+
+.pack-page-subtitle {
+  font-size: 0.8rem;
+}
+
+/* 返回按鈕 */
+.back-btn {
+  top: 12px;
+  left: 12px;
+  padding: 10px 18px;
+  font-size: 0.8rem;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* 卡包 - 整體縮放保持內部比例一致 */
+.card-pack {
+  width: 260px;
+  height: 380px;
+  transform: scale(0.77);
+  transform-origin: center center;
+  margin: -44px 0;
+}
+
+.card-pack:hover {
+  transform: scale(0.77);
+}
+
+.card-pack:active {
+  transform: scale(0.77) rotateY(-8deg) rotateX(4deg) scale(0.97);
+}
+
+/* 修正原版 768px 斷點把 pack-preview 改成固定尺寸的問題 */
+.pack-preview {
+  width: auto;
+  height: auto;
+  inset: 28px 0 20px 0;
+}
+
+/* OPEN 按鈕 */
+.open-pack-btn {
+  padding: 14px 44px;
+  font-size: 0.95rem;
+  min-height: 48px;
+}
+
+/* 機率按鈕 */
+.probability-indicator-wrapper {
+  margin-top: 16px;
+}
+
+.probability-indicator-btn {
+  min-height: 44px;
+  padding: 10px 20px;
+}
+
+.pack-probability-info {
+  min-width: 280px;
+  max-width: 340px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+}
+
+.probability-indicator-wrapper:hover .pack-probability-info,
+.probability-indicator-wrapper:active .pack-probability-info {
+  transform: translateX(-50%) scale(1);
+}
+
+/* ============================================
+   CARDS OVERLAY - 抽卡結果
+   ============================================ */
+.cards-overlay {
+  padding: 16px 12px;
+  padding-top: calc(16px + env(safe-area-inset-top));
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+}
+
+.cards-overlay.active {
+  gap: 20px;
+  justify-content: flex-start;
+  padding-top: calc(24px + env(safe-area-inset-top));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 卡片容器 - 垂直排列 */
+.cards-container {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  max-width: 100%;
+}
+
+/* 卡片尺寸 - iPhone 適配 */
+.card {
+  width: 140px;
+}
+
+.card:hover .card-inner {
+  transform: none;
+}
+
+.card.flipped:hover .card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Overlay 按鈕 */
+.overlay-buttons {
+  gap: 12px;
+  width: 100%;
+  padding: 0 8px;
+  flex-direction: row;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.flip-all-btn,
+.close-overlay-btn {
+  padding: 14px 24px;
+  font-size: 0.85rem;
+  min-height: 48px;
+  flex: 1;
+  max-width: 180px;
+}
+
+/* ============================================
+   TRADING CARD - 卡片微調
+   ============================================ */
+.card-back-center {
+  width: 80px;
+  height: 110px;
+}
+
+.card-back-logo {
+  font-size: 1.2rem;
+}
+
+.card-back-text {
+  font-size: 0.45rem;
+}
+
+.member-name-zh {
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.member-name-en {
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+}
+
+.member-name-kr {
+  font-size: 0.5rem;
+}
+
+.card-member-info {
+  padding: 24px 8px 8px;
+}
+
+.card-stars {
+  gap: 2px;
+  margin-bottom: 3px;
+}
+
+.card-star {
+  width: 10px;
+  height: 10px;
+}
+
+/* Rarity Badge */
+.card-rarity-badge {
+  font-size: 1.2rem;
+  padding: 2px 6px;
+  letter-spacing: -1px;
+  transform: scaleX(1.5);
+}
+
+/* NEW Badge - 左上角緞帶 */
+.new-card-badge {
+  width: 48px;
+  height: 48px;
+}
+
+.new-badge-text {
+  top: 10px;
+  left: -14px;
+  width: 70px;
+  padding: 2px 0;
+  font-size: 0.45rem;
+  letter-spacing: 1px;
+}
+
+/* ============================================
+   CARD DETAIL MODAL - 放大檢視
+   ============================================ */
+.card-detail-overlay.active {
+  padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
+}
+
+.card-detail {
+  width: min(85vw, 320px);
+}
+
+.card-detail .card-rarity-badge {
+  font-size: 2rem;
+}
+
+.card-detail .member-name-zh {
+  font-size: 1.2rem;
+}
+
+.card-detail .member-name-en {
+  font-size: 0.85rem;
+}
+
+.card-detail .member-name-kr {
+  font-size: 0.7rem;
+}
+
+.card-detail-close {
+  top: -48px;
+  right: 0;
+  width: 44px;
+  height: 44px;
+  font-size: 1.3rem;
+}
+
+.card-detail-hint {
+  bottom: -36px;
+  font-size: 0.7rem;
+}
+
+/* ============================================
+   COLLECTION PAGE - 圖鑑
+   ============================================ */
+.collection-page {
+  gap: 20px;
+  padding: 20px 12px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+}
+
+.page-title {
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+}
+
+.stats-container {
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+.stat-card {
+  min-width: 0;
+  flex: 1;
+  padding: 12px 8px;
+}
+
+.stat-card:hover {
+  transform: none;
+}
+
+.stat-value {
+  font-size: 1.4rem;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+}
+
+/* 圖鑑格線 */
+.collection-grid {
+  gap: 20px;
+  padding: 0;
+}
+
+.collection-series-title {
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+}
+
+.collection-series-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.collection-item {
+  border-radius: 12px;
+}
+
+.collection-item:hover {
+  transform: none;
+}
+
+.collection-item:active {
+  transform: scale(0.97);
+}
+
+.collection-item-photo {
+  height: 100px;
+  font-size: 2rem;
+}
+
+.collection-item.locked .collection-item-photo::after {
+  font-size: 1.4rem;
+}
+
+.collection-item-info {
+  padding: 8px 6px;
+}
+
+.collection-item-name {
+  font-size: 0.75rem;
+}
+
+.collection-item-count {
+  font-size: 0.6rem;
+  margin-bottom: 4px;
+}
+
+.collection-item-rarity {
+  padding: 2px 6px;
+  font-size: 0.5rem;
+}
+
+/* ============================================
+   LEGENDARY ANIMATION - 傳說卡動畫
+   ============================================ */
+.legendary-animation-overlay.active {
+  padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom) 16px;
+}
+
+.legendary-animation-container {
+  gap: 20px;
+  max-width: 100%;
+}
+
+.legendary-animation-content {
+  width: 260px;
+  height: 340px;
+}
+
+.legendary-card-showcase {
+  width: 160px;
+  height: 230px;
+}
+
+.legendary-congrats {
+  font-size: 1.8rem;
+  letter-spacing: 4px;
+}
+
+.legendary-card-name {
+  font-size: 1rem;
+}
+
+.legendary-continue-btn {
+  padding: 14px 40px;
+  font-size: 0.95rem;
+  min-height: 48px;
+}
+
+/* 光效縮放 */
+.legendary-rays {
+  inset: -60px;
+}
+
+.legendary-particles {
+  inset: -30px;
+}
+
+/* ============================================
+   VOLUME CONTROL - 音量面板
+   ============================================ */
+.volume-control-panel {
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  right: 16px;
+}
+
+.volume-toggle-btn {
+  width: 44px;
+  height: 44px;
+  font-size: 1.1rem;
+}
+
+.volume-toggle-btn:hover {
+  transform: none;
+}
+
+.volume-sliders {
+  bottom: 56px;
+  right: 0;
+  min-width: 200px;
+  padding: 12px;
+}
+
+.volume-slider-group {
+  gap: 2px;
+}
+
+.volume-label {
+  font-size: 0.8rem;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  width: 22px;
+  height: 22px;
+}
+
+/* ============================================
+   效果微調 - 減少手機端性能開銷
+   ============================================ */
+/* 移除 hover 效果（觸控裝置無 hover） */
+@media (hover: none) {
+  .pack-card:hover {
+    transform: none;
+    border-color: var(--surface-2);
+    box-shadow: none;
+  }
+
+  .card:hover .card-inner {
+    transform: none;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  .card.flipped:hover .card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .stat-card:hover {
+    transform: none;
+    background: var(--surface-1);
+  }
+
+  .collection-item:hover {
+    transform: none;
+    border-color: var(--surface-2);
+    box-shadow: none;
+  }
+
+  .open-pack-btn:hover {
+    transform: none;
+  }
+
+  .flip-all-btn:hover {
+    transform: none;
+  }
+
+  .close-overlay-btn:hover {
+    transform: none;
+  }
+}
+
+/* ============================================
+   iPhone SE (375px) 專用
+   ============================================ */
+@media (max-width: 375px) {
+  .card-pack {
+    transform: scale(0.68);
+    margin: -60px 0;
+  }
+
+  .card-pack:hover {
+    transform: scale(0.68);
+  }
+
+  .card-pack:active {
+    transform: scale(0.68) rotateY(-8deg) rotateX(4deg) scale(0.97);
+  }
+
+  .card {
+    width: 120px;
+  }
+
+  .cards-container {
+    gap: 12px;
+  }
+
+  .collection-series-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .collection-item-photo {
+    height: 80px;
+  }
+
+  .lobby-title {
+    font-size: 1.4rem;
+  }
+
+  .legendary-animation-content {
+    width: 220px;
+    height: 290px;
+  }
+
+  .legendary-card-showcase {
+    width: 140px;
+    height: 200px;
+  }
+
+  .legendary-congrats {
+    font-size: 1.5rem;
+  }
+
+  .card-detail {
+    width: min(90vw, 280px);
+  }
+}
+
+/* ============================================
+   iPhone Pro Max / 大螢幕 (430px+)
+   ============================================ */
+@media (min-width: 414px) {
+  .card-pack {
+    transform: scale(0.84);
+    margin: -30px 0;
+  }
+
+  .card-pack:hover {
+    transform: scale(0.84);
+  }
+
+  .card-pack:active {
+    transform: scale(0.84) rotateY(-8deg) rotateX(4deg) scale(0.97);
+  }
+
+  .card {
+    width: 150px;
+  }
+
+  .collection-series-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .collection-item-photo {
+    height: 120px;
+  }
+}
+
+/* ============================================
+   橫向模式鎖定提示（可選）
+   ============================================ */
+@media (orientation: landscape) and (max-height: 500px) {
+  .card-pack {
+    transform: scale(0.6);
+    margin: -76px 0;
+  }
+
+  .card-pack:hover {
+    transform: scale(0.6);
+  }
+
+  .card-pack:active {
+    transform: scale(0.6) rotateY(-8deg) rotateX(4deg) scale(0.97);
+  }
+
+  .card {
+    width: 120px;
+  }
+
+  .legendary-animation-content {
+    width: 200px;
+    height: 260px;
+  }
+
+  .legendary-card-showcase {
+    width: 120px;
+    height: 170px;
+  }
+
+  .legendary-congrats {
+    font-size: 1.3rem;
+  }
+
+  .cards-overlay.active {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .overlay-buttons {
+    flex-direction: row;
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "KPOP 小卡收集系統",
+  "short_name": "KPOP Cards",
+  "description": "KPOP 小卡收集與開包體驗",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0F0F1A",
+  "theme_color": "#0F0F1A",
+  "icons": [
+    {
+      "src": "images/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}
