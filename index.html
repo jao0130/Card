@@ -6,8 +6,9 @@
   <title>KPOP 小卡收集系統</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Sans+KR:wght@400;500;700&family=Oswald:wght@500;600;700&family=Cinzel:wght@700;900&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700&family=Noto+Sans+TC:wght@400;700&family=Cinzel:wght@700;900&family=UnifrakturMaguntia&family=Kaushan+Script&family=Almendra+Display&family=Pirata+One&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/effects.css">
 </head>
 <body>
   <div id="startOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:flex; justify-content:center; align-items:center; z-index:9999; cursor:pointer; flex-direction:column; color:white;">
@@ -28,14 +29,14 @@
     <div class="page lobby-page active" id="lobbyPage">
       <div class="lobby-header">
         <h1 class="lobby-title">卡包選擇區</h1>
-        <p class="lobby-subtitle">選擇你想要開啟的卡包</p>
+        <p class="lobby-subtitle">選擇卡包</p>
       </div>
       <div class="pack-grid" id="packGrid"></div>
     </div>
 
     <!-- Pack Opening Page -->
     <div class="page pack-page" id="packPage">
-      <button class="back-btn" id="backToLobbyBtn">← 返回大廳</button>
+      <button class="back-btn" id="backToLobbyBtn">← 返回</button>
       <div class="pack-page-header">
         <h2 class="pack-page-title" id="packPageTitle"></h2>
         <p class="pack-page-subtitle" id="packPageSubtitle"></p>
@@ -69,8 +70,14 @@
           </div>
         </div>
       </div>
-      <button class="open-pack-btn" id="openPackBtn">撕開卡包</button>
-      <div class="pack-probability-info" id="packProbabilityInfo"></div>
+      <button class="open-pack-btn" id="openPackBtn">OPEN</button>
+      <div class="probability-indicator-wrapper">
+        <button class="probability-indicator-btn" id="probabilityIndicatorBtn" title="查看抽卡機率">
+          <span class="probability-icon">⭗</span>
+          <span class="probability-label">機率</span>
+        </button>
+        <div class="pack-probability-info" id="packProbabilityInfo"></div>
+      </div>
     </div>
 
     <!-- Collection Page -->
@@ -116,6 +123,26 @@
       <div class="legendary-animation-container" id="legendaryAnimationContainer">
         <!-- 傳說卡中獎動畫內容區域 -->
         <div class="legendary-animation-content">
+          <!-- 爆發光效 -->
+          <div class="light-burst"></div>
+
+          <!-- 點光源效果 -->
+          <div class="point-light">
+            <div class="point-light-outer"></div>
+            <div class="point-light-core"></div>
+          </div>
+
+          <!-- 邊緣光線溢出效果 -->
+          <div class="edge-light-container">
+            <div class="edge-light-top"></div>
+            <div class="edge-light-bottom"></div>
+            <div class="edge-light-left"></div>
+            <div class="edge-light-right"></div>
+          </div>
+
+          <!-- 星點閃爍層 -->
+          <div class="sparkle-layer" id="sparkleLayer"></div>
+
           <div class="legendary-rays"></div>
           <div class="legendary-particles" id="legendaryParticles"></div>
           <div class="legendary-card-showcase" id="legendaryCardShowcase"></div>
@@ -143,7 +170,7 @@
         </div>
         <div class="volume-slider-group">
           <label class="volume-label">
-            <span>🔔 音效</span>
+            <span>💿 音效</span>
             <span class="volume-value" id="sfxVolumeValue">80%</span>
           </label>
           <input type="range" class="volume-slider" id="sfxVolumeSlider" min="0" max="100" value="80">
@@ -154,6 +181,7 @@
 
   <!-- Scripts -->
   <script src="js/config.js"></script>
+  <script src="js/effects.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

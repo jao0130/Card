@@ -1,1234 +1,1591 @@
 /* ============================================
-   CSS VARIABLES
+   CSS CUSTOM PROPERTY REGISTRATION
    ============================================ */
-   :root {
-    --primary-gradient: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #A855F7 100%);
-    --primary-dark: #4F46E5;
-    --primary-light: #A78BFA;
-  
-    --bg-dark: #0F0F1A;
-    --bg-card: #1A1A2E;
-    --bg-elevated: #252542;
-  
-    --surface-1: rgba(255, 255, 255, 0.05);
-    --surface-2: rgba(255, 255, 255, 0.08);
-    --surface-3: rgba(255, 255, 255, 0.12);
-  
-    --text-primary: #FFFFFF;
-    --text-secondary: rgba(255, 255, 255, 0.7);
-    --text-tertiary: rgba(255, 255, 255, 0.5);
-  
-    --accent-pink: #EC4899;
-    --accent-cyan: #06B6D4;
-    --accent-gold: #F59E0B;
-  
-    --rarity-normal: linear-gradient(135deg, #9CA3AF 0%, #D1D5DB 100%);
-    --rarity-common: linear-gradient(135deg, #6B7280 0%, #9CA3AF 100%);
-    --rarity-rare: linear-gradient(135deg, #64748B 0%, #94A3B8 100%);
-    --rarity-superrare: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
-    --rarity-ultrarare: linear-gradient(135deg, #EC4899 0%, #F472B6 100%);
-    --rarity-epic: linear-gradient(135deg, #7C3AED 0%, #A855F7 100%);
-    --rarity-legendary: linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #F59E0B 100%);
-  
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
-    --shadow-glow: 0 0 40px rgba(139, 92, 246, 0.3);
-  
-    --spacing-xs: 4px;
-    --spacing-sm: 8px;
-    --spacing-md: 16px;
-    --spacing-lg: 24px;
-    --spacing-xl: 32px;
-    --spacing-2xl: 48px;
-  
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-    --radius-xl: 24px;
-    --radius-full: 9999px;
-  }
-  
-  /* ============================================
-     RESET & BASE
-     ============================================ */
-  *, *::before, *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  html {
-    font-size: 16px;
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  body {
-    font-family: 'Inter', 'Noto Sans TC', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
-    min-height: 100vh;
-    min-height: 100dvh;
-    background: var(--bg-dark);
-    color: var(--text-primary);
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-  }
-  
-  img {
-    display: block;
-    max-width: 100%;
-  }
-  
-  /* ============================================
-     APP CONTAINER
-     ============================================ */
-  .app-container {
-    min-height: 100vh;
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background:
-      radial-gradient(ellipse at 20% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 100%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
-      var(--bg-dark);
-  }
-  
-  /* ============================================
-     NAVIGATION
-     ============================================ */
-  .nav-container {
-    padding: var(--spacing-md) var(--spacing-lg);
-    display: flex;
-    justify-content: center;
-    background: rgba(15, 15, 26, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--surface-2);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  
-  .nav-tabs {
-    display: flex;
-    gap: var(--spacing-sm);
-    padding: 4px;
-    background: var(--surface-1);
-    border-radius: var(--radius-full);
-  }
-  
-  .nav-tab {
-    padding: 12px 28px;
-    border: none;
-    border-radius: var(--radius-full);
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: transparent;
-    color: var(--text-secondary);
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .nav-tab::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--primary-gradient);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  .nav-tab span {
-    position: relative;
-    z-index: 1;
-  }
-  
-  .nav-tab:hover { color: var(--text-primary); }
-  .nav-tab.active { color: var(--text-primary); }
-  .nav-tab.active::before { opacity: 1; }
-  
-  /* ============================================
-     PAGE CONTAINER
-     ============================================ */
-  .page {
-    display: none;
-    flex: 1;
-    padding: var(--spacing-xl) var(--spacing-lg);
-  }
-  
-  .page.active {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .page-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: var(--spacing-lg);
-    text-align: center;
-  }
-  
-  /* ============================================
-     LOBBY PAGE
-     ============================================ */
-  .lobby-page {
-    gap: var(--spacing-xl);
-    max-width: 1200px;
-    width: 100%;
-  }
-  
-  .lobby-header {
-    text-align: center;
-    margin-bottom: var(--spacing-md);
-  }
-  
-  .lobby-title {
-    font-size: 2rem;
-    font-weight: 800;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: var(--spacing-sm);
-  }
-  
-  .lobby-subtitle {
-    color: var(--text-tertiary);
-    font-size: 0.95rem;
-  }
-  
-  .pack-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: var(--spacing-xl);
-    width: 100%;
-    padding: var(--spacing-md);
-  }
-  
-  /* Pack Card */
-  .pack-card {
-    background: var(--bg-card);
-    border-radius: var(--radius-xl);
-    overflow: hidden;
-    border: 1px solid var(--surface-2);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-    contain: layout style paint;
-  }
-  
-  .pack-card:hover {
-    transform: translateY(-8px);
-    border-color: var(--primary-light);
-    box-shadow: var(--shadow-glow);
-  }
-  
-  .pack-card-preview {
-    height: 200px;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #fce4ec 0%, #e8eaf6 100%);
-  }
-  
-  .pack-card-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .pack-card-preview-placeholder {
-    font-size: 4rem;
-  }
-  
-  .pack-card-preview::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
-    background-size: 200% 200%;
-    animation: previewShine 4s ease-in-out infinite;
-    will-change: background-position;
-  }
-  
-  @keyframes previewShine {
-    0%, 100% { background-position: -100% -100%; }
-    50% { background-position: 200% 200%; }
-  }
-  
-  .pack-card-info {
-    padding: var(--spacing-lg);
-  }
-  
-  .pack-card-name {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: var(--spacing-sm);
-  }
-  
-  .pack-card-description {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    line-height: 1.5;
-    margin-bottom: var(--spacing-md);
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .pack-card-meta {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
-  }
-  
-  .pack-card-count {
-    font-size: 0.8rem;
-    color: var(--text-tertiary);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  
-  .pack-card-btn {
-    padding: 8px 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: white;
-    background: var(--primary-gradient);
-    border: none;
-    border-radius: var(--radius-full);
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  
-  .pack-card-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
-  }
-  
-  /* ============================================
-     PACK OPENING PAGE
-     ============================================ */
-  .pack-page {
-    gap: var(--spacing-xl);
-    justify-content: center;
-  }
-  
-  .pack-page-header { text-align: center; }
-  
-  .pack-page-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: var(--spacing-xs);
-  }
-  
-  .pack-page-subtitle {
-    font-size: 0.85rem;
-    color: var(--text-tertiary);
-  }
-  
-  .pack-scene {
-    perspective: 1200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .back-btn {
-    position: absolute;
-    top: var(--spacing-lg);
-    left: var(--spacing-lg);
-    padding: 10px 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    background: var(--surface-1);
-    border: 1px solid var(--surface-2);
-    border-radius: var(--radius-full);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 50;
-  }
-  
-  .back-btn:hover {
-    background: var(--surface-2);
-    color: var(--text-primary);
-  }
-  
-  /* ============================================
-     CARD PACK - REALISTIC MATERIAL
-     ============================================ */
-  .card-pack {
-    width: 260px;
-    height: 380px;
-    position: relative;
-    cursor: pointer;
-    transform-style: preserve-3d;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform;
-  }
-  
-  /* 左側邊 - 鋁箔紙圓弧邊緣，金屬銀色 */
-  .card-pack::before {
-    content: '';
-    position: absolute;
-    left: -20px;
-    top: 30px;  /* 從上方封口處開始 */
-    bottom: 22px;  /* 到下方封口處結束 */
-    width: 20px;
-    /* 鋁箔紙金屬銀色漸層 */
-    background: 
-      radial-gradient(ellipse at 30% 50%, 
-        #f8f8f8 0%,
-        #e5e5e5 20%,
-        #c8c8c8 40%,
-        #a8a8a8 60%,
-        #888888 80%,
-        #707070 100%
-      );
-    transform-origin: right center;
-    transform: rotateY(-92deg);
-    border-radius: 10px 0 0 10px;  /* 圓弧效果 */
-    box-shadow: 
-      /* 金屬反光 */
-      inset 3px 0 8px rgba(255, 255, 255, 0.6),
-      inset -2px 0 6px rgba(0, 0, 0, 0.4),
-      /* 垂直高光條紋 */
-      inset 5px 0 2px rgba(255, 255, 255, 0.3),
-      inset 8px 0 3px rgba(0, 0, 0, 0.2),
-      /* 外部陰影 */
-      -2px 0 8px rgba(0, 0, 0, 0.3);
-    z-index: -1;
-  }
-  
-  /* 右側邊 - 鋁箔紙圓弧邊緣，金屬銀色 */
-  .card-pack::after {
-    content: '';
-    position: absolute;
-    right: -20px;
-    top: 30px;  /* 從上方封口處開始 */
-    bottom: 22px;  /* 到下方封口處結束 */
-    width: 20px;
-    /* 鋁箔紙金屬銀色漸層（受光面更亮） */
-    background: 
-      radial-gradient(ellipse at 70% 50%, 
-        #ffffff 0%,
-        #f5f5f5 15%,
-        #e0e0e0 30%,
-        #c0c0c0 50%,
-        #a0a0a0 70%,
-        #888888 90%,
-        #707070 100%
-      );
-    transform-origin: left center;
-    transform: rotateY(92deg);
-    border-radius: 0 10px 10px 0;  /* 圓弧效果 */
-    box-shadow: 
-      /* 金屬強烈反光 */
-      inset -4px 0 10px rgba(255, 255, 255, 0.8),
-      inset 2px 0 8px rgba(0, 0, 0, 0.3),
-      /* 垂直高光條紋 */
-      inset -6px 0 3px rgba(255, 255, 255, 0.5),
-      inset -9px 0 4px rgba(0, 0, 0, 0.2),
-      /* 外部陰影 */
-      3px 0 12px rgba(0, 0, 0, 0.4);
-    z-index: -1;
-  }
-  
-  .card-pack:hover {
-    transform: rotateY(-18deg) rotateX(8deg) translateY(-10px);
-  }
-  
-  .card-pack:active {
-    transform: rotateY(-12deg) rotateX(5deg) scale(0.98);
-  }
-  
-  .pack-foil-wrapper {
-    position: absolute;
-    inset: 0;
-    border-radius: 4px;
-    overflow: hidden;
-    background: linear-gradient(180deg, #E8E8E8 0%, #F5F5F5 2%, #FAFAFA 5%, #F0F0F0 50%, #E5E5E5 95%, #D0D0D0 100%);
-    box-shadow:
-      /* 內部頂部高光 */
-      inset 0 2px 2px rgba(255,255,255,1),
-      inset 0 -2px 2px rgba(0,0,0,0.15),
-      
-      /* 左側圓弧折痕陰影 - 模擬鋁箔紙轉折 */
-      inset 15px 0 25px -5px rgba(0,0,0,0.3),
-      inset 12px 0 15px -3px rgba(0,0,0,0.2),
-      inset 10px 0 8px rgba(0,0,0,0.15),
-      
-      /* 右側圓弧折痕陰影 */
-      inset -15px 0 25px -5px rgba(0,0,0,0.25),
-      inset -12px 0 15px -3px rgba(0,0,0,0.15),
-      inset -10px 0 8px rgba(0,0,0,0.1),
-      
-      /* 上下封口處的壓扁陰影 */
-      inset 0 6px 12px rgba(0,0,0,0.12),
-      inset 0 -6px 12px rgba(0,0,0,0.12),
-      
-      /* 外部陰影 */
-      0 2px 4px rgba(0,0,0,0.1),
-      0 8px 16px rgba(0,0,0,0.15),
-      0 16px 32px rgba(0,0,0,0.1),
-      0 32px 64px rgba(0,0,0,0.15);
-  }
-  
-  
-  
-  .pack-holographic-layer {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(125deg,
-      transparent 0%, rgba(255,0,128,0.03) 10%, rgba(0,255,255,0.05) 20%,
-      rgba(255,255,0,0.03) 30%, transparent 40%, rgba(128,0,255,0.04) 50%,
-      rgba(0,255,128,0.03) 60%, transparent 70%, rgba(255,128,0,0.04) 80%,
-      rgba(0,128,255,0.03) 90%, transparent 100%
-    );
-    background-size: 300% 300%;
-    animation: holoShift 8s ease-in-out infinite;
-    mix-blend-mode: overlay;
-    pointer-events: none;
-    will-change: background-position;
-    z-index: 7;
-  }
-  
-  @keyframes holoShift {
-    0%, 100% { background-position: 0% 50%; }
-    25% { background-position: 100% 0%; }
-    50% { background-position: 100% 100%; }
-    75% { background-position: 0% 100%; }
-  }
-  
-  .pack-shine-primary {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(105deg,
-      transparent 0%, transparent 35%, rgba(255,255,255,0.4) 45%,
-      rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.4) 55%, transparent 65%, transparent 100%
-    );
-    background-size: 250% 100%;
-    animation: shineMove 5s ease-in-out infinite;
-    pointer-events: none;
-    will-change: background-position;
-    z-index: 8;
-  }
-  
-  @keyframes shineMove {
-    0% { background-position: 200% 0; }
-    100% { background-position: -100% 0; }
-  }
-  
-  .pack-edge-highlight {
-    position: absolute;
-    inset: 0;
-    border-radius: 4px;
-    background: 
-      /* 頂部封口高光 */
-      linear-gradient(180deg, rgba(255,255,255,0.95) 0%, transparent 5%),
-      /* 底部封口陰影 */
-      linear-gradient(0deg, rgba(0,0,0,0.5) 0%, transparent 4%),
-      
-      /* 左側圓弧邊緣 - 內凹高光 */
-      linear-gradient(90deg, 
-        rgba(255,255,255,0.3) 0%, 
-        rgba(0,0,0,0.3) 1.5%,
-        rgba(0,0,0,0.4) 3%, 
-        rgba(0,0,0,0.2) 5%, 
-        transparent 8%
-      ),
-      
-      /* 右側圓弧邊緣 - 內凹高光 */
-      linear-gradient(270deg, 
-        rgba(255,255,255,0.4) 0%, 
-        rgba(0,0,0,0.25) 1.5%,
-        rgba(0,0,0,0.3) 3%, 
-        rgba(0,0,0,0.15) 5%, 
-        transparent 8%
-      );
-    pointer-events: none;
-    z-index: 9;
-  }
-  
-  /* 添加包裝袋的中央凹陷效果 */
-  .pack-foil-wrapper::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      /* 中央強烈凹陷陰影 */
-      radial-gradient(ellipse 75% 55% at 50% 50%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.1) 30%, transparent 60%),
-      /* 印刷網點紋理 */
-      radial-gradient(circle, rgba(0,0,0,0.08) 1px, transparent 1px),
-      radial-gradient(circle, rgba(0,0,0,0.05) 1px, transparent 1px);
-    background-size: 100% 100%, 4px 4px, 6px 6px;
-    background-position: center, 0 0, 2px 2px;
-    pointer-events: none;
-    z-index: 2;
-  }
-  
-  .pack-tear-top {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 28px;
-    /* 扁平封口的金屬銀色漸層 */
-    background: 
-      linear-gradient(180deg, 
-        #c8c8c8 0%, 
-        #d8d8d8 20%,
-        #e8e8e8 40%, 
-        #f0f0f0 60%,
-        #e8e8e8 80%,
-        #d0d0d0 100%
-      );
-    border-bottom: 2px dashed rgba(0,0,0,0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    /* 扁平壓痕效果 */
-    box-shadow: 
-      /* 上方壓扁陰影 */
-      inset 0 3px 8px rgba(0,0,0,0.25),
-      /* 下方壓扁陰影 */
-      inset 0 -3px 8px rgba(0,0,0,0.2),
-      /* 左右折痕陰影 */
-      inset 3px 0 6px rgba(0,0,0,0.15),
-      inset -3px 0 6px rgba(0,0,0,0.15),
-      /* 外部陰影 */
-      0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  .pack-tear-top::before {
-    content: '▼ TEAR HERE ▼';
-    font-size: 0.55rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: rgba(0,0,0,0.4);
-  }
-  
-  .tear-notch {
-    position: absolute;
-    top: 0;
-    width: 12px;
-    height: 8px;
-    background: var(--bg-dark);
-  }
-  
-  .tear-notch.left { left: 20px; border-radius: 0 0 6px 6px; }
-  .tear-notch.right { right: 20px; border-radius: 0 0 6px 6px; }
-  
-  .pack-seal-bottom {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 20px;
-    /* 扁平封口的金屬銀色漸層 */
-    background: 
-      linear-gradient(0deg, 
-        #b0b0b0 0%, 
-        #c5c5c5 30%,
-        #d8d8d8 60%, 
-        #e0e0e0 100%
-      );
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    /* 扁平壓痕效果 */
-    box-shadow: 
-      /* 下方壓扁陰影 */
-      inset 0 -3px 8px rgba(0,0,0,0.3),
-      /* 上方壓扁陰影 */
-      inset 0 3px 8px rgba(0,0,0,0.2),
-      /* 左右折痕陰影 */
-      inset 3px 0 6px rgba(0,0,0,0.15),
-      inset -3px 0 6px rgba(0,0,0,0.15);
-  }
-  
-  .pack-seal-bottom::before {
-    content: '';
-    width: 80%;
-    height: 3px;
-    background: repeating-linear-gradient(90deg, #A0A0A0 0px, #A0A0A0 4px, transparent 4px, transparent 8px);
-  }
-  
-  .pack-content-area {
-    position: absolute;
-    top: 28px;
-    left: 0;
-    right: 0;
-    bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: var(--spacing-md) var(--spacing-sm);
-    z-index: 10;
-    pointer-events: none;
-  }
-  
-  .pack-brand {
-    text-align: center;
-  }
-  
-  .pack-brand-title {
-    font-family: 'Bebas Neue', 'Oswald', 'Arial Black', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 400;
-    letter-spacing: 6px;
-    text-transform: uppercase;
-    color: #1a1a1a;
-    text-shadow:
-      0 1px 0 rgba(255,255,255,0.9),
-      0 2px 0 rgba(255,255,255,0.5),
-      0 -1px 0 rgba(0,0,0,0.15),
-      2px 2px 4px rgba(0,0,0,0.1);
-    /* 模擬印刷凸起效果 */
-    filter: drop-shadow(0 0.5px 0 rgba(255,255,255,0.8));
-  }
-  
-  .pack-brand-sub {
-    font-family: 'Oswald', 'Arial Narrow', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 500;
-    letter-spacing: 6px;
-    text-transform: uppercase;
-    color: rgba(0,0,0,0.65);
-    text-shadow:
-      0 1px 0 rgba(255,255,255,0.7);
-    margin-top: 6px;
-  }
-  
-  .pack-preview {
-    position: absolute;
-    inset: 28px 0 20px 0;
-    overflow: hidden;
-    background: linear-gradient(135deg, #fce4ec 0%, #e8d5ff 50%, #fce4ec 100%);
-    z-index: 4;
-  }
-  
-  /* 圖片上的印刷網點效果 */
-  .pack-preview::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(circle, rgba(0,0,0,0.12) 0.8px, transparent 0.8px),
-      radial-gradient(circle, rgba(255,255,255,0.08) 0.5px, transparent 0.5px);
-    background-size: 3px 3px, 5px 5px;
-    background-position: 0 0, 1.5px 1.5px;
-    pointer-events: none;
-    z-index: 2;
-    mix-blend-mode: multiply;
-  }
-  
-  /* 印刷光澤效果 */
-  .pack-preview::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      160deg,
-      transparent 0%,
-      transparent 40%,
-      rgba(255,255,255,0.15) 45%,
-      rgba(255,255,255,0.25) 50%,
-      rgba(255,255,255,0.15) 55%,
-      transparent 60%,
-      transparent 100%
-    );
-    pointer-events: none;
-    z-index: 3;
-  }
-  
-  .pack-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* 模擬印刷品質 */
-    filter: contrast(1.05) saturate(0.95);
-  }
-  
-  .pack-preview-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 4rem;
-  }
-  
-  .pack-info {
-    text-align: center;
-  }
-  
-  .pack-info-title {
-    font-family: 'Oswald', 'Arial Narrow', sans-serif;
-    font-size: 0.6rem;
-    font-weight: 500;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: rgba(0,0,0,0.7);
-    text-shadow: 0 1px 0 rgba(255,255,255,0.7);
-    margin-bottom: 6px;
-  }
-  
-  .pack-info-count {
-    font-family: 'Bebas Neue', 'Oswald', sans-serif;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.85rem;
-    font-weight: 400;
-    letter-spacing: 3px;
-    color: rgba(0,0,0,0.75);
-    text-shadow:
-      0 1px 0 rgba(255,255,255,0.8);
-  }
-  
-  /* Pack Tearing Animation */
-  .pack-tearing {
-    animation: packTear 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-  
-  @keyframes packTear {
-    0% { 
-      transform: scale(1) rotateY(0); 
-      opacity: 1; 
-      filter: brightness(1) drop-shadow(0 10px 10px rgba(0,0,0,0.3)); 
-    }
-    30% { 
-      transform: scale(1.05) rotateY(8deg) translateY(-20px); 
-      filter: brightness(1.2) drop-shadow(0 40px 30px rgba(0,0,0,0.4)); /* 影子位移加大，模擬飛起 */
-    }
-    50% { 
-      transform: scale(1.1) rotateY(-15deg) translateY(-40px); 
-      opacity: 0.9; 
-      filter: brightness(1.3) drop-shadow(0 60px 50px rgba(139, 92, 246, 0.3)); /* 加入紫色發光影子 */
-    }
-    100% { 
-      transform: scale(0) rotateY(360deg) translateY(-100px); 
-      opacity: 0; 
-      filter: drop-shadow(0 0 0 rgba(0,0,0,0));
-    }
-  }
-  
-  /* Open Button */
-  .open-pack-btn {
-    padding: 16px 48px;
-    font-size: 1rem;
-    font-weight: 700;
-    color: white;
-    background: var(--primary-gradient);
-    border: none;
-    border-radius: var(--radius-full);
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
-    box-shadow: 0 4px 16px rgba(99,102,241,0.4), 0 8px 32px rgba(139,92,246,0.2);
-  }
-  
-  .open-pack-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  .open-pack-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(99,102,241,0.5), 0 16px 48px rgba(139,92,246,0.3);
-  }
-  
-  .open-pack-btn:hover::before { opacity: 1; }
-  .open-pack-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-  /* Probability Info */
-  .pack-probability-info {
-    margin-top: var(--spacing-lg);
-    padding: var(--spacing-md);
-    background: var(--surface-1);
-    border-radius: var(--radius-md);
-    max-width: 360px;
-    width: 100%;
-  }
-
-  .probability-title {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--text-tertiary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: var(--spacing-sm);
-    text-align: center;
-  }
-
-  .probability-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-xs);
-  }
-
-  .probability-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 10px;
-    background: var(--surface-2);
-    border-radius: var(--radius-sm);
-    font-size: 0.75rem;
-  }
-
-  .probability-item .rarity-name {
-    font-weight: 600;
-  }
-
-  .probability-item .rarity-chance {
-    color: var(--text-secondary);
-    font-family: 'SF Mono', 'Fira Code', monospace;
-  }
-
-  .probability-item.rarity-normal .rarity-name { color: #9CA3AF; }
-  .probability-item.rarity-common .rarity-name { color: #6B7280; }
-  .probability-item.rarity-rare .rarity-name { color: #3B82F6; }
-  .probability-item.rarity-superrare .rarity-name { color: #8B5CF6; }
-  .probability-item.rarity-ultrarare .rarity-name { color: #EC4899; }
-  .probability-item.rarity-epic .rarity-name { color: #A855F7; }
-  .probability-item.rarity-legendary .rarity-name { color: #F59E0B; }
-
-  .legendary-section {
-    margin-top: var(--spacing-sm);
-    padding-top: var(--spacing-sm);
-    border-top: 1px solid var(--surface-3);
-  }
-
-  .legendary-title {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: #F59E0B;
-    margin-bottom: var(--spacing-xs);
-    text-align: center;
-  }
-
-  .legendary-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .legendary-card-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 4px 10px;
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
-    border-radius: var(--radius-sm);
-    font-size: 0.7rem;
-  }
-
-  .legendary-card-item .card-name {
-    color: var(--text-secondary);
-  }
-
-  .legendary-card-item .card-chance {
-    color: #F59E0B;
-    font-family: 'SF Mono', 'Fira Code', monospace;
-    font-weight: 600;
-  }
-
-  /* ============================================
-     CARDS OVERLAY
-     ============================================ */
-  .cards-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 15, 26, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    z-index: 1000;
-    overflow-y: auto;
-    padding: var(--spacing-xl) var(--spacing-lg);
-  }
-  
-  .cards-overlay.active {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-xl);
-  }
-  
-  .cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--spacing-lg);
-    max-width: 1200px;
-  }
-  
-  /* ============================================
-     TRADING CARD
-     ============================================ */
-  .card {
-    width: 200px;
-    height: 280px;
-    perspective: 1000px;
-    cursor: pointer;
-    opacity: 0;
-    contain: layout style;
-  }
-  
-  .card:hover {
-    z-index: 10;
-  }
-  
-  .card.revealed {
-    animation: cardReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  }
-  
-  @keyframes cardReveal {
-    0% { opacity: 0; transform: translateY(120px) translateZ(-150px) scale(0.4) rotateX(-60deg); }
-    50% { transform: translateY(-20px) translateZ(30px) scale(1.05) rotateX(8deg); }
-    100% { opacity: 1; transform: translateY(0) translateZ(0) scale(1) rotateX(0); }
-  }
-  
-  .card-inner {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease; /* 增加 box-shadow 過渡 */
-    will-change: transform, box-shadow;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* 預設較沈穩的影子 */
-    border-radius: var(--radius-md);
-  }
-  .card:hover .card-inner { 
-    transform: translateY(-12px) rotateX(5deg); /* 向上浮起並微傾斜 */
-    box-shadow: 
-      0 35px 50px rgba(0, 0, 0, 0.5), 
-      0 15px 30px rgba(0, 0, 0, 0.3),
-      0 0 25px rgba(139, 92, 246, 0.3); /* 影子拉長且變淡，並帶有紫色光暈 */
-  }
-  .card.flipped .card-inner { transform: rotateY(180deg); }
-  
-  .card-face {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    /* 增強卡片厚度效果 - 10 層疊加 */
-    box-shadow:
-      /* 邊緣高光 */
-      inset 0 1px 0 rgba(255,255,255,0.5),
-      inset 0 -1px 0 rgba(0,0,0,0.15),
-      /* 厚度層 - 10 層紙張 */
-      0 1px 0 0 #d5d5d5,
-      0 2px 0 0 #cdcdcd,
-      0 3px 0 0 #c5c5c5,
-      0 4px 0 0 #bdbdbd,
-      0 5px 0 0 #b5b5b5,
-      0 6px 0 0 #adadad,
-      0 7px 0 0 #a5a5a5,
-      0 8px 0 0 #9d9d9d,
-      0 9px 0 0 #959595,
-      0 10px 0 0 #8d8d8d,
-      /* 側邊陰影 */
-      1px 10px 0 0 rgba(0,0,0,0.05),
-      /* 底部陰影 */
-      0 11px 5px rgba(0,0,0,0.2),
-      0 15px 12px rgba(0,0,0,0.15),
-      0 20px 25px rgba(0,0,0,0.1);
-  }
-  
-  /* Card Back - 紙張材質 */
-  .card-back {
-    /* 紙張基底色 */
-    background:
-      /* 紙張纖維紋理 */
-      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"),
-      linear-gradient(135deg, #f5f0e6 0%, #ede4d4 50%, #f0e8da 100%);
-    background-blend-mode: soft-light, normal;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* 紙張纖維與磨損效果 */
-  .card-back::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      /* 細微纖維 */
-      repeating-linear-gradient(
-        90deg,
-        transparent 0px,
-        rgba(139, 115, 85, 0.03) 1px,
-        transparent 2px,
-        transparent 4px
-      ),
-      repeating-linear-gradient(
-        0deg,
-        transparent 0px,
-        rgba(139, 115, 85, 0.02) 1px,
-        transparent 2px,
-        transparent 6px
-      ),
-      /* 紙張斑點 */
-      radial-gradient(circle at 20% 30%, rgba(139, 115, 85, 0.05) 1px, transparent 1px),
-      radial-gradient(circle at 80% 70%, rgba(139, 115, 85, 0.04) 1px, transparent 1px),
-      radial-gradient(circle at 50% 50%, rgba(139, 115, 85, 0.03) 2px, transparent 2px);
-    background-size: 4px 4px, 6px 6px, 40px 40px, 60px 60px, 80px 80px;
-    pointer-events: none;
-  }
-  
-  .card-back-pattern {
-    position: absolute;
-    inset: 8px;
-    border: 3px double rgba(139, 90, 43, 0.3);
-    border-radius: 4px;
-    background:
-      /* 裝飾圖案 */
-      repeating-linear-gradient(
-        45deg,
-        transparent 0px,
-        transparent 8px,
-        rgba(139, 90, 43, 0.05) 8px,
-        rgba(139, 90, 43, 0.05) 9px
-      ),
-      repeating-linear-gradient(
-        -45deg,
-        transparent 0px,
-        transparent 8px,
-        rgba(139, 90, 43, 0.05) 8px,
-        rgba(139, 90, 43, 0.05) 9px
-      );
-  }
-  
-  .card-back-center {
-    width: 120px;
-    height: 160px;
-    border: 2px solid rgba(139, 90, 43, 0.25);
-    border-radius: 4px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    position: relative;
-    background: rgba(255, 250, 240, 0.5);
-    box-shadow: inset 0 0 20px rgba(139, 90, 43, 0.1);
-  }
-  
-  .card-back-logo {
-    font-size: 1.5rem;
-    opacity: 0.6;
-    filter: sepia(0.3);
-  }
-  
-  .card-back-text {
-    font-family: 'Cinzel', serif;
-    font-size: 0.55rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: rgba(139, 90, 43, 0.5);
-  }
-  
-  .card-back-shine {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(125deg, transparent 40%, rgba(255,255,255,0.15) 45%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.15) 55%, transparent 60%);
-    background-size: 200% 200%;
-    animation: cardShine 4s ease-in-out infinite;
-    will-change: background-position;
-  }
-  
-  @keyframes cardShine {
-    0%, 100% { background-position: 200% 200%; }
-    50% { background-position: -100% -100%; }
-  }
+@property --light-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
 
 /* ============================================
-   LEGENDARY AURA - 傳說卡光環效果
+   CSS VARIABLES
    ============================================ */
-.legendary-aura {
+:root {
+  --primary-gradient: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #A855F7 100%);
+  --primary-dark: #4F46E5;
+  --primary-light: #A78BFA;
+
+  --bg-dark: #0F0F1A;
+  --bg-card: #1A1A2E;
+  --bg-elevated: #252542;
+
+  --surface-1: rgba(255, 255, 255, 0.05);
+  --surface-2: rgba(255, 255, 255, 0.08);
+  --surface-3: rgba(255, 255, 255, 0.12);
+
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-tertiary: rgba(255, 255, 255, 0.5);
+
+  --accent-pink: #EC4899;
+  --accent-cyan: #06B6D4;
+  --accent-gold: #F59E0B;
+
+  --rarity-normal: linear-gradient(135deg, #9CA3AF 0%, #D1D5DB 100%);
+  --rarity-common: linear-gradient(135deg, #6B7280 0%, #9CA3AF 100%);
+  --rarity-rare: linear-gradient(135deg, #64748B 0%, #94A3B8 100%);
+  --rarity-superrare: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+  --rarity-ultrarare: linear-gradient(135deg, #EC4899 0%, #F472B6 100%);
+  --rarity-epic: linear-gradient(135deg, #7C3AED 0%, #A855F7 100%);
+  --rarity-legendary: linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #F59E0B 100%);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 40px rgba(139, 92, 246, 0.3);
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Card aspect ratio - 統一所有卡片比例 */
+  --card-ratio: 5 / 7;
+}
+
+/* ============================================
+     RESET & BASE
+     ============================================ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Inter', 'Noto Sans TC', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ============================================
+     APP CONTAINER
+     ============================================ */
+.app-container {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+    var(--bg-dark);
+}
+
+/* ============================================
+     NAVIGATION
+     ============================================ */
+.nav-container {
+  padding: var(--spacing-md) var(--spacing-lg);
+  display: flex;
+  justify-content: center;
+  background: rgba(15, 15, 26, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--surface-2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-tabs {
+  display: flex;
+  gap: var(--spacing-sm);
+  padding: 4px;
+  background: var(--surface-1);
+  border-radius: var(--radius-full);
+}
+
+.nav-tab {
+  padding: 12px 28px;
+  border: none;
+  border-radius: var(--radius-full);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  color: var(--text-secondary);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-tab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--primary-gradient);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nav-tab span {
+  position: relative;
+  z-index: 1;
+}
+
+.nav-tab:hover {
+  color: var(--text-primary);
+}
+
+.nav-tab.active {
+  color: var(--text-primary);
+}
+
+.nav-tab.active::before {
+  opacity: 1;
+}
+
+/* ============================================
+     PAGE CONTAINER
+     ============================================ */
+.page {
+  display: none;
+  flex: 1;
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.page.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+/* ============================================
+     LOBBY PAGE
+     ============================================ */
+.lobby-page {
+  gap: var(--spacing-xl);
+  max-width: 1200px;
+  width: 100%;
+}
+
+.lobby-header {
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.lobby-title {
+  font-size: 2rem;
+  font-weight: 800;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--spacing-sm);
+}
+
+.lobby-subtitle {
+  color: var(--text-tertiary);
+  font-size: 0.95rem;
+}
+
+.pack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-xl);
+  width: 100%;
+  padding: var(--spacing-md);
+}
+
+/* Pack Card */
+.pack-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--surface-2);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  contain: layout style paint;
+}
+
+.pack-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow-glow);
+}
+
+.pack-card-preview {
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fce4ec 0%, #e8eaf6 100%);
+}
+
+.pack-card-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pack-card-preview-placeholder {
+  font-size: 4rem;
+}
+
+.pack-card-preview::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.3) 50%, transparent 60%);
+  background-size: 200% 200%;
+  animation: previewShine 4s ease-in-out infinite;
+  will-change: background-position;
+}
+
+@keyframes previewShine {
+
+  0%,
+  100% {
+    background-position: -100% -100%;
+  }
+
+  50% {
+    background-position: 200% 200%;
+  }
+}
+
+.pack-card-info {
+  padding: var(--spacing-lg);
+}
+
+.pack-card-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+}
+
+.pack-card-description {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: var(--spacing-md);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pack-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.pack-card-count {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pack-card-btn {
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: white;
+  background: var(--primary-gradient);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.pack-card-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+}
+
+/* ============================================
+     PACK OPENING PAGE
+     ============================================ */
+.pack-page {
+  gap: var(--spacing-xl);
+  justify-content: center;
+}
+
+.pack-page-header {
+  text-align: center;
+}
+
+.pack-page-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-xs);
+}
+
+.pack-page-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+}
+
+.pack-scene {
+  perspective: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-btn {
+  position: absolute;
+  top: var(--spacing-lg);
+  left: var(--spacing-lg);
+  padding: 10px 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--surface-1);
+  border: 1px solid var(--surface-2);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 50;
+}
+
+.back-btn:hover {
+  background: var(--surface-2);
+  color: var(--text-primary);
+}
+
+/* ============================================
+     CARD PACK - REALISTIC MATERIAL
+     ============================================ */
+.card-pack {
+  width: 260px;
+  height: 380px;
+  position: relative;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+/* 左側邊 - 鋁箔紙圓弧邊緣，金屬銀色 */
+.card-pack::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 30px;
+  /* 從上方封口處開始 */
+  bottom: 22px;
+  /* 到下方封口處結束 */
+  width: 20px;
+  /* 鋁箔紙金屬銀色漸層 */
+  background:
+    radial-gradient(ellipse at 30% 50%,
+      #f8f8f8 0%,
+      #e5e5e5 20%,
+      #c8c8c8 40%,
+      #a8a8a8 60%,
+      #888888 80%,
+      #707070 100%);
+  transform-origin: right center;
+  transform: rotateY(-92deg);
+  border-radius: 10px 0 0 10px;
+  /* 圓弧效果 */
+  box-shadow:
+    /* 金屬反光 */
+    inset 3px 0 8px rgba(255, 255, 255, 0.6),
+    inset -2px 0 6px rgba(0, 0, 0, 0.4),
+    /* 垂直高光條紋 */
+    inset 5px 0 2px rgba(255, 255, 255, 0.3),
+    inset 8px 0 3px rgba(0, 0, 0, 0.2),
+    /* 外部陰影 */
+    -2px 0 8px rgba(0, 0, 0, 0.3);
+  z-index: -1;
+}
+
+/* 右側邊 - 鋁箔紙圓弧邊緣，金屬銀色 */
+.card-pack::after {
+  content: '';
+  position: absolute;
+  right: -20px;
+  top: 30px;
+  /* 從上方封口處開始 */
+  bottom: 22px;
+  /* 到下方封口處結束 */
+  width: 20px;
+  /* 鋁箔紙金屬銀色漸層（受光面更亮） */
+  background:
+    radial-gradient(ellipse at 70% 50%,
+      #ffffff 0%,
+      #f5f5f5 15%,
+      #e0e0e0 30%,
+      #c0c0c0 50%,
+      #a0a0a0 70%,
+      #888888 90%,
+      #707070 100%);
+  transform-origin: left center;
+  transform: rotateY(92deg);
+  border-radius: 0 10px 10px 0;
+  /* 圓弧效果 */
+  box-shadow:
+    /* 金屬強烈反光 */
+    inset -4px 0 10px rgba(255, 255, 255, 0.8),
+    inset 2px 0 8px rgba(0, 0, 0, 0.3),
+    /* 垂直高光條紋 */
+    inset -6px 0 3px rgba(255, 255, 255, 0.5),
+    inset -9px 0 4px rgba(0, 0, 0, 0.2),
+    /* 外部陰影 */
+    3px 0 12px rgba(0, 0, 0, 0.4);
+  z-index: -1;
+}
+
+.card-pack:hover {
+  transform: rotateY(-18deg) rotateX(8deg) translateY(-10px);
+}
+
+.card-pack:active {
+  transform: rotateY(-12deg) rotateX(5deg) scale(0.98);
+}
+
+.pack-foil-wrapper {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #E8E8E8 0%, #F5F5F5 2%, #FAFAFA 5%, #F0F0F0 50%, #E5E5E5 95%, #D0D0D0 100%);
+  box-shadow:
+    /* 內部頂部高光 */
+    inset 0 2px 2px rgba(255, 255, 255, 1),
+    inset 0 -2px 2px rgba(0, 0, 0, 0.15),
+
+    /* 左側圓弧折痕陰影 - 模擬鋁箔紙轉折 */
+    inset 15px 0 25px -5px rgba(0, 0, 0, 0.3),
+    inset 12px 0 15px -3px rgba(0, 0, 0, 0.2),
+    inset 10px 0 8px rgba(0, 0, 0, 0.15),
+
+    /* 右側圓弧折痕陰影 */
+    inset -15px 0 25px -5px rgba(0, 0, 0, 0.25),
+    inset -12px 0 15px -3px rgba(0, 0, 0, 0.15),
+    inset -10px 0 8px rgba(0, 0, 0, 0.1),
+
+    /* 上下封口處的壓扁陰影 */
+    inset 0 6px 12px rgba(0, 0, 0, 0.12),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.12),
+
+    /* 外部陰影 */
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    0 8px 16px rgba(0, 0, 0, 0.15),
+    0 16px 32px rgba(0, 0, 0, 0.1),
+    0 32px 64px rgba(0, 0, 0, 0.15);
+}
+
+
+
+.pack-holographic-layer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(125deg,
+      transparent 0%, rgba(255, 0, 128, 0.03) 10%, rgba(0, 255, 255, 0.05) 20%,
+      rgba(255, 255, 0, 0.03) 30%, transparent 40%, rgba(128, 0, 255, 0.04) 50%,
+      rgba(0, 255, 128, 0.03) 60%, transparent 70%, rgba(255, 128, 0, 0.04) 80%,
+      rgba(0, 128, 255, 0.03) 90%, transparent 100%);
+  background-size: 300% 300%;
+  animation: holoShift 8s ease-in-out infinite;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  will-change: background-position;
+  z-index: 7;
+}
+
+@keyframes holoShift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  25% {
+    background-position: 100% 0%;
+  }
+
+  50% {
+    background-position: 100% 100%;
+  }
+
+  75% {
+    background-position: 0% 100%;
+  }
+}
+
+.pack-shine-primary {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg,
+      transparent 0%, transparent 35%, rgba(255, 255, 255, 0.4) 45%,
+      rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0.4) 55%, transparent 65%, transparent 100%);
+  background-size: 250% 100%;
+  animation: shineMove 5s ease-in-out infinite;
+  pointer-events: none;
+  will-change: background-position;
+  z-index: 8;
+}
+
+@keyframes shineMove {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.pack-edge-highlight {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  background:
+    /* 頂部封口高光 */
+    linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, transparent 5%),
+    /* 底部封口陰影 */
+    linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, transparent 4%),
+
+    /* 左側圓弧邊緣 - 內凹高光 */
+    linear-gradient(90deg,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(0, 0, 0, 0.3) 1.5%,
+      rgba(0, 0, 0, 0.4) 3%,
+      rgba(0, 0, 0, 0.2) 5%,
+      transparent 8%),
+
+    /* 右側圓弧邊緣 - 內凹高光 */
+    linear-gradient(270deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(0, 0, 0, 0.25) 1.5%,
+      rgba(0, 0, 0, 0.3) 3%,
+      rgba(0, 0, 0, 0.15) 5%,
+      transparent 8%);
+  pointer-events: none;
+  z-index: 9;
+}
+
+/* 添加包裝袋的中央凹陷效果 */
+.pack-foil-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    /* 中央強烈凹陷陰影 */
+    radial-gradient(ellipse 75% 55% at 50% 50%, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.1) 30%, transparent 60%),
+    /* 印刷網點紋理 */
+    radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px),
+    radial-gradient(circle, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 100% 100%, 4px 4px, 6px 6px;
+  background-position: center, 0 0, 2px 2px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.pack-tear-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 28px;
+  /* 扁平封口的金屬銀色漸層 */
+  background:
+    linear-gradient(180deg,
+      #c8c8c8 0%,
+      #d8d8d8 20%,
+      #e8e8e8 40%,
+      #f0f0f0 60%,
+      #e8e8e8 80%,
+      #d0d0d0 100%);
+  border-bottom: 2px dashed rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  /* 扁平壓痕效果 */
+  box-shadow:
+    /* 上方壓扁陰影 */
+    inset 0 3px 8px rgba(0, 0, 0, 0.25),
+    /* 下方壓扁陰影 */
+    inset 0 -3px 8px rgba(0, 0, 0, 0.2),
+    /* 左右折痕陰影 */
+    inset 3px 0 6px rgba(0, 0, 0, 0.15),
+    inset -3px 0 6px rgba(0, 0, 0, 0.15),
+    /* 外部陰影 */
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pack-tear-top::before {
+  content: '▼ TEAR HERE ▼';
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.tear-notch {
+  position: absolute;
+  top: 0;
+  width: 12px;
+  height: 8px;
+  background: var(--bg-dark);
+}
+
+.tear-notch.left {
+  left: 20px;
+  border-radius: 0 0 6px 6px;
+}
+
+.tear-notch.right {
+  right: 20px;
+  border-radius: 0 0 6px 6px;
+}
+
+.pack-seal-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  /* 扁平封口的金屬銀色漸層 */
+  background:
+    linear-gradient(0deg,
+      #b0b0b0 0%,
+      #c5c5c5 30%,
+      #d8d8d8 60%,
+      #e0e0e0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  /* 扁平壓痕效果 */
+  box-shadow:
+    /* 下方壓扁陰影 */
+    inset 0 -3px 8px rgba(0, 0, 0, 0.3),
+    /* 上方壓扁陰影 */
+    inset 0 3px 8px rgba(0, 0, 0, 0.2),
+    /* 左右折痕陰影 */
+    inset 3px 0 6px rgba(0, 0, 0, 0.15),
+    inset -3px 0 6px rgba(0, 0, 0, 0.15);
+}
+
+.pack-seal-bottom::before {
+  content: '';
+  width: 80%;
+  height: 3px;
+  background: repeating-linear-gradient(90deg, #A0A0A0 0px, #A0A0A0 4px, transparent 4px, transparent 8px);
+}
+
+.pack-content-area {
+  position: absolute;
+  top: 28px;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md) var(--spacing-sm);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.pack-brand {
+  text-align: center;
+}
+
+.pack-brand-title {
+  font-family: 'Bebas Neue', 'Oswald', 'Arial Black', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 400;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9),
+    0 2px 0 rgba(255, 255, 255, 0.5),
+    0 -1px 0 rgba(0, 0, 0, 0.15),
+    2px 2px 4px rgba(0, 0, 0, 0.1);
+  /* 模擬印刷凸起效果 */
+  filter: drop-shadow(0 0.5px 0 rgba(255, 255, 255, 0.8));
+}
+
+.pack-brand-sub {
+  font-family: 'Oswald', 'Arial Narrow', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.65);
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.7);
+  margin-top: 6px;
+}
+
+.pack-preview {
+  position: absolute;
+  inset: 28px 0 20px 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fce4ec 0%, #e8d5ff 50%, #fce4ec 100%);
+  z-index: 4;
+}
+
+/* 圖片上的印刷網點效果 */
+.pack-preview::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(0, 0, 0, 0.12) 0.8px, transparent 0.8px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.08) 0.5px, transparent 0.5px);
+  background-size: 3px 3px, 5px 5px;
+  background-position: 0 0, 1.5px 1.5px;
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: multiply;
+}
+
+/* 印刷光澤效果 */
+.pack-preview::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg,
+      transparent 0%,
+      transparent 40%,
+      rgba(255, 255, 255, 0.15) 45%,
+      rgba(255, 255, 255, 0.25) 50%,
+      rgba(255, 255, 255, 0.15) 55%,
+      transparent 60%,
+      transparent 100%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.pack-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 模擬印刷品質 */
+  filter: contrast(1.05) saturate(0.95);
+}
+
+.pack-preview-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+}
+
+.pack-info {
+  text-align: center;
+}
+
+.pack-info-title {
+  font-family: 'Oswald', 'Arial Narrow', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.7);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+  margin-bottom: 6px;
+}
+
+.pack-info-count {
+  font-family: 'Bebas Neue', 'Oswald', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 3px;
+  color: rgba(0, 0, 0, 0.75);
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Pack Tearing Animation */
+.pack-tearing {
+  animation: packTear 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes packTear {
+  0% {
+    transform: scale(1) rotateY(0);
+    opacity: 1;
+    filter: brightness(1) drop-shadow(0 10px 10px rgba(0, 0, 0, 0.3));
+  }
+
+  30% {
+    transform: scale(1.05) rotateY(8deg) translateY(-20px);
+    filter: brightness(1.2) drop-shadow(0 40px 30px rgba(0, 0, 0, 0.4));
+    /* 影子位移加大，模擬飛起 */
+  }
+
+  50% {
+    transform: scale(1.1) rotateY(-15deg) translateY(-40px);
+    opacity: 0.9;
+    filter: brightness(1.3) drop-shadow(0 60px 50px rgba(139, 92, 246, 0.3));
+    /* 加入紫色發光影子 */
+  }
+
+  100% {
+    transform: scale(0) rotateY(360deg) translateY(-100px);
+    opacity: 0;
+    filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+  }
+}
+
+/* Open Button */
+.open-pack-btn {
+  padding: 16px 48px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  background: var(--primary-gradient);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4), 0 8px 32px rgba(139, 92, 246, 0.2);
+}
+
+.open-pack-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.open-pack-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5), 0 16px 48px rgba(139, 92, 246, 0.3);
+}
+
+.open-pack-btn:hover::before {
+  opacity: 1;
+}
+
+.open-pack-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Probability Indicator Button & Tooltip */
+.probability-indicator-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-top: var(--spacing-lg);
+}
+
+.probability-indicator-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 10px 20px;
+  background: var(--surface-2);
+  border: 1px solid var(--surface-3);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.probability-indicator-btn:hover {
+  background: var(--surface-3);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.probability-icon {
+  font-size: 1rem;
+}
+
+.pack-probability-info {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+  padding: var(--spacing-md);
+  background: var(--bg-elevated);
+  border: 1px solid var(--surface-3);
+  border-radius: var(--radius-md);
+  min-width: 320px;
+  max-width: 380px;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+}
+
+.pack-probability-info::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-top-color: var(--bg-elevated);
+}
+
+.probability-indicator-wrapper:hover .pack-probability-info {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) scale(1);
+}
+
+.probability-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-sm);
+  text-align: center;
+}
+
+.probability-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-xs);
+}
+
+.probability-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+}
+
+.probability-item .rarity-name {
+  font-weight: 600;
+}
+
+.probability-item .rarity-chance {
+  color: var(--text-secondary);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.probability-item.rarity-normal .rarity-name {
+  color: #9CA3AF;
+}
+
+.probability-item.rarity-common .rarity-name {
+  color: #6B7280;
+}
+
+.probability-item.rarity-rare .rarity-name {
+  color: #3B82F6;
+}
+
+.probability-item.rarity-superrare .rarity-name {
+  color: #8B5CF6;
+}
+
+.probability-item.rarity-ultrarare .rarity-name {
+  color: #EC4899;
+}
+
+.probability-item.rarity-epic .rarity-name {
+  color: #A855F7;
+}
+
+.probability-item.rarity-legendary .rarity-name {
+  color: #F59E0B;
+}
+
+.legendary-section {
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--surface-3);
+}
+
+.legendary-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #F59E0B;
+  margin-bottom: var(--spacing-xs);
+  text-align: center;
+}
+
+.legendary-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.legendary-card-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 10px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
+  border-radius: var(--radius-sm);
+  font-size: 0.7rem;
+}
+
+.legendary-card-item .card-name {
+  color: var(--text-secondary);
+}
+
+.legendary-card-item .card-chance {
+  color: #F59E0B;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-weight: 600;
+}
+
+/* ============================================
+     CARDS OVERLAY
+     ============================================ */
+.cards-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 15, 26, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 1000;
+  overflow-y: auto;
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.cards-overlay.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xl);
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  max-width: 1200px;
+}
+
+/* ============================================
+     TRADING CARD
+     ============================================ */
+.card {
+  width: 200px;
+  aspect-ratio: var(--card-ratio);
+  perspective: 1000px;
+  cursor: pointer;
+  opacity: 0;
+  contain: layout style;
   position: relative;
 }
 
+.card:hover {
+  z-index: 10;
+}
+
+.card.revealed {
+  animation: cardReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes cardReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(120px) translateZ(-150px) scale(0.4) rotateX(-60deg);
+  }
+
+  50% {
+    transform: translateY(-20px) translateZ(30px) scale(1.05) rotateX(8deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) translateZ(0) scale(1) rotateX(0);
+  }
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+  /* 增加 box-shadow 過渡 */
+  will-change: transform, box-shadow;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+  /* 預設較沈穩的影子 */
+  border-radius: var(--radius-md);
+}
+
+.card:hover .card-inner {
+  transform: translateY(-12px) rotateX(5deg);
+  /* 向上浮起並微傾斜 */
+  box-shadow:
+    0 35px 50px rgba(0, 0, 0, 0.5),
+    0 15px 30px rgba(0, 0, 0, 0.3),
+    0 0 25px rgba(139, 92, 246, 0.3);
+  /* 影子拉長且變淡，並帶有紫色光暈 */
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  /* 增強卡片厚度效果 - 10 層疊加 */
+  box-shadow:
+    /* 邊緣高光 */
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    /* 厚度層 - 10 層紙張 */
+    0 1px 0 0 #d5d5d5,
+    0 2px 0 0 #cdcdcd,
+    0 3px 0 0 #c5c5c5,
+    0 4px 0 0 #bdbdbd,
+    0 5px 0 0 #b5b5b5,
+    0 6px 0 0 #adadad,
+    0 7px 0 0 #a5a5a5,
+    0 8px 0 0 #9d9d9d,
+    0 9px 0 0 #959595,
+    0 10px 0 0 #8d8d8d,
+    /* 側邊陰影 */
+    1px 10px 0 0 rgba(0, 0, 0, 0.05),
+    /* 底部陰影 */
+    0 11px 5px rgba(0, 0, 0, 0.2),
+    0 15px 12px rgba(0, 0, 0, 0.15),
+    0 20px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Back - 紙張材質 */
+.card-back {
+  /* 紙張基底色 */
+  background:
+    /* 紙張纖維紋理 */
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"),
+    linear-gradient(135deg, #f5f0e6 0%, #ede4d4 50%, #f0e8da 100%);
+  background-blend-mode: soft-light, normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 紙張纖維與磨損效果 */
+.card-back::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    /* 細微纖維 */
+    repeating-linear-gradient(90deg,
+      transparent 0px,
+      rgba(139, 115, 85, 0.03) 1px,
+      transparent 2px,
+      transparent 4px),
+    repeating-linear-gradient(0deg,
+      transparent 0px,
+      rgba(139, 115, 85, 0.02) 1px,
+      transparent 2px,
+      transparent 6px),
+    /* 紙張斑點 */
+    radial-gradient(circle at 20% 30%, rgba(139, 115, 85, 0.05) 1px, transparent 1px),
+    radial-gradient(circle at 80% 70%, rgba(139, 115, 85, 0.04) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, rgba(139, 115, 85, 0.03) 2px, transparent 2px);
+  background-size: 4px 4px, 6px 6px, 40px 40px, 60px 60px, 80px 80px;
+  pointer-events: none;
+}
+
+.card-back-pattern {
+  position: absolute;
+  inset: 8px;
+  border: 3px double rgba(139, 90, 43, 0.3);
+  border-radius: 4px;
+  background:
+    /* 裝飾圖案 */
+    repeating-linear-gradient(45deg,
+      transparent 0px,
+      transparent 8px,
+      rgba(139, 90, 43, 0.05) 8px,
+      rgba(139, 90, 43, 0.05) 9px),
+    repeating-linear-gradient(-45deg,
+      transparent 0px,
+      transparent 8px,
+      rgba(139, 90, 43, 0.05) 8px,
+      rgba(139, 90, 43, 0.05) 9px);
+}
+
+.card-back-center {
+  width: 120px;
+  height: 160px;
+  border: 2px solid rgba(139, 90, 43, 0.25);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  position: relative;
+  background: rgba(255, 250, 240, 0.5);
+  box-shadow: inset 0 0 20px rgba(139, 90, 43, 0.1);
+}
+
+.card-back-logo {
+  font-size: 1.5rem;
+  opacity: 0.6;
+  filter: sepia(0.3);
+}
+
+.card-back-text {
+  font-family: 'Cinzel', serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: rgba(139, 90, 43, 0.5);
+}
+
+.card-back-shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(125deg, transparent 40%, rgba(255, 255, 255, 0.15) 45%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0.15) 55%, transparent 60%);
+  background-size: 200% 200%;
+  animation: cardShine 4s ease-in-out infinite;
+  will-change: background-position;
+}
+
+@keyframes cardShine {
+
+  0%,
+  100% {
+    background-position: 200% 200%;
+  }
+
+  50% {
+    background-position: -100% -100%;
+  }
+}
+
+/* ============================================
+   LEGENDARY AURA - 傳說卡光環效果
+   使用 box-shadow 實現光暈，避免遮蓋卡片
+   ============================================ */
+.legendary-aura {
+  position: relative;
+  z-index: 1;
+  /* 高光溢出 - 邊緣柔和光暈 */
+  box-shadow:
+    0 0 2px 1px rgba(255, 250, 240, 0.6),
+    0 0 8px 2px rgba(255, 220, 100, 0.4),
+    0 0 20px 8px rgba(255, 190, 50, 0.25),
+    0 0 40px 15px rgba(255, 170, 0, 0.12),
+    0 0 70px 30px rgba(255, 150, 0, 0.06);
+  animation: legendaryGlowPulse 4s ease-in-out infinite;
+}
+
+@keyframes legendaryGlowPulse {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 2px 1px rgba(255, 250, 240, 0.6),
+      0 0 8px 2px rgba(255, 220, 100, 0.4),
+      0 0 20px 8px rgba(255, 190, 50, 0.25),
+      0 0 40px 15px rgba(255, 170, 0, 0.12),
+      0 0 70px 30px rgba(255, 150, 0, 0.06);
+  }
+
+  33% {
+    box-shadow:
+      0 0 3px 1px rgba(255, 250, 240, 0.7),
+      0 0 10px 3px rgba(255, 220, 100, 0.45),
+      0 0 25px 10px rgba(255, 190, 50, 0.3),
+      0 0 50px 20px rgba(255, 170, 0, 0.15),
+      0 0 80px 35px rgba(255, 150, 0, 0.08);
+  }
+
+  66% {
+    box-shadow:
+      0 0 2px 1px rgba(255, 250, 240, 0.55),
+      0 0 7px 2px rgba(255, 220, 100, 0.35),
+      0 0 18px 7px rgba(255, 190, 50, 0.22),
+      0 0 38px 14px rgba(255, 170, 0, 0.1),
+      0 0 65px 28px rgba(255, 150, 0, 0.05);
+  }
+}
+
+/* 細小閃光點 - 緊貼邊緣 */
 .legendary-aura::before {
   content: '';
   position: absolute;
-  inset: -15px;
-  border-radius: calc(var(--radius-md) + 15px);
-  background: conic-gradient(
-    from 0deg,
-    #FFD700, #FFA500, #FF8C00, #FFD700, #FBBF24, #F59E0B, #FFD700
-  );
-  background-size: 200% 200%;
-  animation: legendaryAuraRotate 3s linear infinite, legendaryAuraPulse 2s ease-in-out infinite;
-  filter: blur(12px);
-  opacity: 0.8;
-  z-index: -1;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border-radius: calc(var(--radius-md) + 1px);
+  background: conic-gradient(from var(--light-angle, 0deg) at 50% 50%,
+      transparent 0deg,
+      transparent 357deg,
+      rgba(255, 255, 255, 1) 358.5deg,
+      rgba(255, 255, 255, 1) 360deg);
+  /* 極細邊緣遮罩 */
+  -webkit-mask-image:
+    linear-gradient(#000, #000),
+    linear-gradient(#000, #000);
+  -webkit-mask-size: 100% 100%, calc(100% - 4px) calc(100% - 4px);
+  -webkit-mask-position: 0 0, 2px 2px;
+  -webkit-mask-composite: xor;
+  mask-image:
+    linear-gradient(#000, #000),
+    linear-gradient(#000, #000);
+  mask-size: 100% 100%, calc(100% - 4px) calc(100% - 4px);
+  mask-position: 0 0, 2px 2px;
+  mask-composite: exclude;
+  z-index: 2;
+  pointer-events: none;
+  animation:
+    legendaryLightMove 8s linear infinite,
+    legendarySparkleRandom 2s ease-in-out infinite;
 }
 
+/* 光暈跟隨 - 點光源的柔和擴散 */
 .legendary-aura::after {
   content: '';
   position: absolute;
-  inset: -8px;
-  border-radius: calc(var(--radius-md) + 8px);
-  background: linear-gradient(135deg, rgba(255,215,0,0.6), rgba(255,165,0,0.4), rgba(255,215,0,0.6));
-  animation: legendaryAuraGlow 1.5s ease-in-out infinite alternate;
+  top: -7%;
+  left: -7%;
+  right: -7%;
+  bottom: -7%;
+  border-radius: calc(var(--radius-md) + 7%);
+  background: conic-gradient(from var(--light-angle, 0deg) at 50% 50%,
+      transparent 0deg,
+      transparent 345deg,
+      rgba(255, 230, 150, 0.08) 350deg,
+      rgba(255, 210, 80, 0.25) 355deg,
+      rgba(255, 240, 180, 0.5) 358deg,
+      rgba(255, 250, 220, 0.5) 360deg);
+  /* 遮罩：中心挖空 */
+  -webkit-mask-image: radial-gradient(ellipse 48% 55% at center,
+      transparent 0%,
+      transparent 90%,
+      black 100%);
+  mask-image: radial-gradient(ellipse 48% 55% at center,
+      transparent 0%,
+      transparent 90%,
+      black 100%);
+  filter: blur(10px);
   z-index: -1;
+  pointer-events: none;
+  animation:
+    legendaryLightMove 8s linear infinite,
+    legendaryGlowFollow 2s ease-in-out infinite;
 }
 
-@keyframes legendaryAuraPulse {
-  0%, 100% { opacity: 0.6; filter: blur(12px); }
-  50% { opacity: 1; filter: blur(18px); }
+@keyframes legendaryLightMove {
+  from {
+    --light-angle: 0deg;
+  }
+
+  to {
+    --light-angle: 360deg;
+  }
 }
 
-@keyframes legendaryAuraGlow {
-  0% { opacity: 0.4; transform: scale(1); }
-  100% { opacity: 0.8; transform: scale(1.02); }
+/* 不規則閃爍 */
+@keyframes legendarySparkleRandom {
+  0% {
+    opacity: 1;
+  }
+
+  8% {
+    opacity: 0.3;
+  }
+
+  15% {
+    opacity: 0.9;
+  }
+
+  23% {
+    opacity: 0.4;
+  }
+
+  31% {
+    opacity: 1;
+  }
+
+  38% {
+    opacity: 0.6;
+  }
+
+  42% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 0.85;
+  }
+
+  58% {
+    opacity: 0.35;
+  }
+
+  65% {
+    opacity: 1;
+  }
+
+  72% {
+    opacity: 0.5;
+  }
+
+  78% {
+    opacity: 0.8;
+  }
+
+  85% {
+    opacity: 0.25;
+  }
+
+  92% {
+    opacity: 0.95;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
-/* 傳說卡翻面時的特殊動畫 */
+/* 光暈脈動 */
+@keyframes legendaryGlowFollow {
+
+  0%,
+  100% {
+    opacity: 0.7;
+    filter: blur(10px);
+  }
+
+  25% {
+    opacity: 0.9;
+    filter: blur(8px);
+  }
+
+  50% {
+    opacity: 0.6;
+    filter: blur(12px);
+  }
+
+  75% {
+    opacity: 0.85;
+    filter: blur(9px);
+  }
+}
+
+/* 傳說卡翻面時 - 增強效果 */
+.card.flipped .legendary-aura {
+  box-shadow:
+    0 0 3px 1px rgba(255, 250, 240, 0.8),
+    0 0 12px 4px rgba(255, 220, 100, 0.55),
+    0 0 30px 12px rgba(255, 190, 50, 0.35),
+    0 0 55px 22px rgba(255, 170, 0, 0.18),
+    0 0 90px 40px rgba(255, 150, 0, 0.08);
+  animation: legendaryGlowPulse 2.5s ease-in-out infinite, legendaryFlipBurst 0.6s ease-out;
+}
+
 .card.flipped .legendary-aura::before {
-  animation: legendaryAuraRotate 2s linear infinite, legendaryAuraBurst 0.8s ease-out;
+  animation:
+    legendaryLightMove 5s linear infinite,
+    legendarySparkleRandom 1.2s ease-in-out infinite;
 }
 
 .card.flipped .legendary-aura::after {
-  animation: legendaryAuraGlow 1s ease-in-out infinite alternate, legendaryAuraExpand 0.6s ease-out;
+  top: -10%;
+  left: -10%;
+  right: -10%;
+  bottom: -10%;
+  filter: blur(8px);
+  animation:
+    legendaryLightMove 5s linear infinite,
+    legendaryGlowFollow 1.5s ease-in-out infinite;
 }
 
-@keyframes legendaryAuraBurst {
-  0% { filter: blur(8px); opacity: 0.3; transform: scale(0.8) rotate(0deg); }
-  50% { filter: blur(20px); opacity: 1; transform: scale(1.3) rotate(180deg); }
-  100% { filter: blur(12px); opacity: 0.8; transform: scale(1) rotate(360deg); }
-}
+@keyframes legendaryFlipBurst {
+  0% {
+    box-shadow:
+      0 0 10px 5px rgba(255, 215, 0, 0.3),
+      0 0 20px 10px rgba(255, 165, 0, 0.2);
+  }
 
-@keyframes legendaryAuraExpand {
-  0% { opacity: 0; transform: scale(0.5); }
-  50% { opacity: 1; transform: scale(1.2); }
-  100% { opacity: 0.8; transform: scale(1); }
+  50% {
+    box-shadow:
+      0 0 40px 20px rgba(255, 215, 0, 0.8),
+      0 0 80px 40px rgba(255, 165, 0, 0.5),
+      0 0 120px 60px rgba(255, 140, 0, 0.3);
+  }
+
+  100% {
+    box-shadow:
+      0 0 20px 8px rgba(255, 215, 0, 0.6),
+      0 0 40px 15px rgba(255, 165, 0, 0.4),
+      0 0 60px 20px rgba(255, 140, 0, 0.2);
+  }
 }
 
 /* ============================================
@@ -1283,15 +1640,22 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
   background-size: 200% 200%;
   animation: pearlShimmer 3s ease-in-out infinite;
   pointer-events: none;
 }
 
 @keyframes pearlShimmer {
-  0%, 100% { background-position: -100% -100%; }
-  50% { background-position: 200% 200%; }
+
+  0%,
+  100% {
+    background-position: -100% -100%;
+  }
+
+  50% {
+    background-position: 200% 200%;
+  }
 }
 
 .card-back.back-superrare .card-back-pattern {
@@ -1318,33 +1682,36 @@
   position: absolute;
   inset: 0;
   background:
-    repeating-linear-gradient(
-      60deg,
+    repeating-linear-gradient(60deg,
       transparent 0px,
       transparent 2px,
-      rgba(255,255,255,0.1) 2px,
-      rgba(255,255,255,0.1) 4px
-    ),
-    linear-gradient(120deg, transparent 20%, rgba(255,192,203,0.4) 40%, rgba(255,255,255,0.5) 50%, rgba(255,192,203,0.4) 60%, transparent 80%);
+      rgba(255, 255, 255, 0.1) 2px,
+      rgba(255, 255, 255, 0.1) 4px),
+    linear-gradient(120deg, transparent 20%, rgba(255, 192, 203, 0.4) 40%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 192, 203, 0.4) 60%, transparent 80%);
   background-size: 100% 100%, 300% 300%;
   animation: ultraShimmer 4s ease-in-out infinite;
   pointer-events: none;
 }
 
 @keyframes ultraShimmer {
-  0%, 100% { background-position: 0 0, -100% 0; }
-  50% { background-position: 0 0, 200% 0; }
+
+  0%,
+  100% {
+    background-position: 0 0, -100% 0;
+  }
+
+  50% {
+    background-position: 0 0, 200% 0;
+  }
 }
 
 .card-back.back-ultrarare .card-back-pattern {
   border-color: rgba(236, 72, 153, 0.4);
-  background: repeating-linear-gradient(
-    45deg,
-    transparent 0px,
-    transparent 6px,
-    rgba(236, 72, 153, 0.08) 6px,
-    rgba(236, 72, 153, 0.08) 7px
-  );
+  background: repeating-linear-gradient(45deg,
+      transparent 0px,
+      transparent 6px,
+      rgba(236, 72, 153, 0.08) 6px,
+      rgba(236, 72, 153, 0.08) 7px);
 }
 
 .card-back.back-ultrarare .card-back-center {
@@ -1359,12 +1726,10 @@
 /* Epic - 金屬拉絲質感 */
 .card-back.back-epic {
   background:
-    repeating-linear-gradient(
-      90deg,
+    repeating-linear-gradient(90deg,
       rgba(168, 85, 247, 0.03) 0px,
       transparent 1px,
-      transparent 3px
-    ),
+      transparent 3px),
     linear-gradient(135deg, #e8d8f8 0%, #c8a8e8 30%, #d8c0f0 50%, #b898d8 70%, #d0b8e8 100%);
 }
 
@@ -1373,27 +1738,32 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(135deg, transparent 0%, rgba(168, 85, 247, 0.2) 25%, rgba(255,255,255,0.4) 50%, rgba(168, 85, 247, 0.2) 75%, transparent 100%);
+    linear-gradient(135deg, transparent 0%, rgba(168, 85, 247, 0.2) 25%, rgba(255, 255, 255, 0.4) 50%, rgba(168, 85, 247, 0.2) 75%, transparent 100%);
   background-size: 400% 400%;
   animation: epicShimmer 3s ease-in-out infinite;
   pointer-events: none;
 }
 
 @keyframes epicShimmer {
-  0%, 100% { background-position: 0% 0%; }
-  50% { background-position: 100% 100%; }
+
+  0%,
+  100% {
+    background-position: 0% 0%;
+  }
+
+  50% {
+    background-position: 100% 100%;
+  }
 }
 
 .card-back.back-epic .card-back-pattern {
   border-color: rgba(168, 85, 247, 0.5);
   background:
-    repeating-linear-gradient(
-      60deg,
+    repeating-linear-gradient(60deg,
       transparent 0px,
       transparent 4px,
       rgba(168, 85, 247, 0.1) 4px,
-      rgba(168, 85, 247, 0.1) 5px
-    );
+      rgba(168, 85, 247, 0.1) 5px);
 }
 
 .card-back.back-epic .card-back-center {
@@ -1414,18 +1784,14 @@
 /* Legendary - 金屬浮雕質感 */
 .card-back.back-legendary {
   background:
-    repeating-linear-gradient(
-      90deg,
+    repeating-linear-gradient(90deg,
       rgba(245, 158, 11, 0.05) 0px,
       transparent 1px,
-      transparent 2px
-    ),
-    repeating-linear-gradient(
-      0deg,
+      transparent 2px),
+    repeating-linear-gradient(0deg,
       rgba(245, 158, 11, 0.03) 0px,
       transparent 1px,
-      transparent 2px
-    ),
+      transparent 2px),
     linear-gradient(135deg, #fff8e0 0%, #ffd700 20%, #ffec80 40%, #ffd700 60%, #ffb800 80%, #ffe066 100%);
 }
 
@@ -1434,36 +1800,39 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.6) 0%, transparent 40%),
-    radial-gradient(ellipse at 70% 80%, rgba(255,255,255,0.4) 0%, transparent 40%),
-    linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.5) 30%, rgba(255,215,0,0.3) 50%, rgba(255,255,255,0.5) 70%, transparent 100%);
+    radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 40%),
+    radial-gradient(ellipse at 70% 80%, rgba(255, 255, 255, 0.4) 0%, transparent 40%),
+    linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.5) 30%, rgba(255, 215, 0, 0.3) 50%, rgba(255, 255, 255, 0.5) 70%, transparent 100%);
   background-size: 100% 100%, 100% 100%, 300% 300%;
   animation: legendaryShimmer 4s ease-in-out infinite;
   pointer-events: none;
 }
 
 @keyframes legendaryShimmer {
-  0%, 100% { background-position: 0 0, 0 0, -50% 0; }
-  50% { background-position: 0 0, 0 0, 150% 0; }
+
+  0%,
+  100% {
+    background-position: 0 0, 0 0, -50% 0;
+  }
+
+  50% {
+    background-position: 0 0, 0 0, 150% 0;
+  }
 }
 
 .card-back.back-legendary .card-back-pattern {
   border: 3px double rgba(180, 130, 0, 0.6);
   background:
-    repeating-linear-gradient(
-      45deg,
+    repeating-linear-gradient(45deg,
       transparent 0px,
       transparent 5px,
       rgba(180, 130, 0, 0.15) 5px,
-      rgba(180, 130, 0, 0.15) 6px
-    ),
-    repeating-linear-gradient(
-      -45deg,
+      rgba(180, 130, 0, 0.15) 6px),
+    repeating-linear-gradient(-45deg,
       transparent 0px,
       transparent 5px,
       rgba(180, 130, 0, 0.1) 5px,
-      rgba(180, 130, 0, 0.1) 6px
-    );
+      rgba(180, 130, 0, 0.1) 6px);
 }
 
 .card-back.back-legendary .card-back-center {
@@ -1486,848 +1855,1063 @@
 }
 
 .card-back.back-legendary .card-back-shine {
-  background: linear-gradient(125deg, transparent 30%, rgba(255,255,255,0.4) 45%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.4) 55%, transparent 70%);
+  background: linear-gradient(125deg, transparent 30%, rgba(255, 255, 255, 0.4) 45%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0.4) 55%, transparent 70%);
   animation: cardShine 2s ease-in-out infinite;
 }
 
-  /* ============================================
+/* ============================================
      STARS - 星星評級
      ============================================ */
-  .card-stars {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 3px;
-    margin-bottom: 4px;
+.card-stars {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: 4px;
+}
+
+.card-star {
+  width: 14px;
+  height: 14px;
+  background-image: url('../star/filled/wide.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.9)) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));
+  animation: starTwinkle var(--twinkle-duration, 2s) ease-in-out infinite;
+  animation-delay: var(--twinkle-delay, 0s);
+}
+
+.card-star:nth-child(1) {
+  --twinkle-delay: 0s;
+  --twinkle-duration: 1.8s;
+}
+
+.card-star:nth-child(2) {
+  --twinkle-delay: 0.3s;
+  --twinkle-duration: 2.2s;
+}
+
+.card-star:nth-child(3) {
+  --twinkle-delay: 0.1s;
+  --twinkle-duration: 1.5s;
+}
+
+.card-star:nth-child(4) {
+  --twinkle-delay: 0.5s;
+  --twinkle-duration: 2.5s;
+}
+
+.card-star:nth-child(5) {
+  --twinkle-delay: 0.2s;
+  --twinkle-duration: 1.7s;
+}
+
+.card-star:nth-child(6) {
+  --twinkle-delay: 0.4s;
+  --twinkle-duration: 2.0s;
+}
+
+.card-star:nth-child(7) {
+  --twinkle-delay: 0.15s;
+  --twinkle-duration: 2.3s;
+}
+
+@keyframes starTwinkle {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
-  
-  .card-star {
-    width: 14px;
-    height: 14px;
-    background-image: url('../star/filled/wide.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.9)) drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));
-    animation: starTwinkle var(--twinkle-duration, 2s) ease-in-out infinite;
-    animation-delay: var(--twinkle-delay, 0s);
+
+  25% {
+    opacity: 0.6;
+    transform: scale(0.85);
   }
-  
-  .card-star:nth-child(1) { --twinkle-delay: 0s; --twinkle-duration: 1.8s; }
-  .card-star:nth-child(2) { --twinkle-delay: 0.3s; --twinkle-duration: 2.2s; }
-  .card-star:nth-child(3) { --twinkle-delay: 0.1s; --twinkle-duration: 1.5s; }
-  .card-star:nth-child(4) { --twinkle-delay: 0.5s; --twinkle-duration: 2.5s; }
-  .card-star:nth-child(5) { --twinkle-delay: 0.2s; --twinkle-duration: 1.7s; }
-  .card-star:nth-child(6) { --twinkle-delay: 0.4s; --twinkle-duration: 2.0s; }
-  .card-star:nth-child(7) { --twinkle-delay: 0.15s; --twinkle-duration: 2.3s; }
-  
-  @keyframes starTwinkle {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    25% { opacity: 0.6; transform: scale(0.85); }
-    50% { opacity: 1; transform: scale(1.1); }
-    75% { opacity: 0.7; transform: scale(0.9); }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
   }
-  
-  /* ============================================
+
+  75% {
+    opacity: 0.7;
+    transform: scale(0.9);
+  }
+}
+
+/* ============================================
      RARITY TEXT - 稀有度文字 (立體效果)
      ============================================ */
-  /* Card Front */
-  .card-front {
-    transform: rotateY(180deg);
-    background: #1a1a1a;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  /* 整張卡片的光澤層 */
-  .card-front::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      120deg,
+/* Card Front */
+.card-front {
+  transform: rotateY(180deg);
+  background: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 整張卡片的光澤層 */
+.card-front::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg,
       transparent 0%,
       rgba(255, 255, 255, 0.1) 40%,
       rgba(255, 255, 255, 0.3) 50%,
       rgba(255, 255, 255, 0.1) 60%,
-      transparent 100%
-    );
-    background-size: 200% 200%;
-    animation: cardShine 8s ease-in-out infinite;
-    pointer-events: none;
-    z-index: 100;
-    mix-blend-mode: screen;
+      transparent 100%);
+  background-size: 200% 200%;
+  animation: cardShine 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 100;
+  mix-blend-mode: screen;
+}
+
+@keyframes cardShine {
+
+  0%,
+  100% {
+    background-position: -100% 0%;
+    opacity: 0.4;
   }
-  
-  @keyframes cardShine {
-    0%, 100% { 
-      background-position: -100% 0%;
-      opacity: 0.4;
-    }
-    50% { 
-      background-position: 200% 0%;
-      opacity: 0.8;
-    }
-  }
-  
-  /* Rarity Borders */
-  .card-front.rarity-superrare::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: -1px;
-    right: -1px;
-    border-radius: calc(var(--radius-md) + 2px);
-    background: linear-gradient(135deg, #3B82F6, #60A5FA, #3B82F6, #93C5FD, #3B82F6);
-    background-size: 300% 300%;
-    animation: superrareBorder 4s ease infinite;
-    z-index: -1;
-  }
-  
-  .card-front.rarity-ultrarare::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: -1px;
-    right: -1px;
-    border-radius: calc(var(--radius-md) + 2px);
-    background: linear-gradient(135deg, #EC4899, #F472B6, #EC4899, #FBCFE8, #EC4899);
-    background-size: 300% 300%;
-    animation: ultrarareBorder 3.5s ease infinite;
-    z-index: -1;
-  }
-  
-  .card-front.rarity-epic::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: -1px;
-    right: -1px;
-    border-radius: calc(var(--radius-md) + 2px);
-    background: linear-gradient(135deg, #7C3AED, #A855F7, #7C3AED, #C084FC, #7C3AED);
-    background-size: 300% 300%;
-    animation: epicBorder 4s ease infinite;
-    z-index: -1;
-  }
-  
-  .card-front.rarity-legendary::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: -1px;
-    right: -1px;
-    border-radius: calc(var(--radius-md) + 2px);
-    background: linear-gradient(135deg, #F59E0B, #FBBF24, #F59E0B, #FCD34D, #F59E0B);
-    background-size: 300% 300%;
-    animation: legendaryBorder 3s ease infinite;
-    z-index: -1;
-  }
-  
-  @keyframes superrareBorder {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-  
-  @keyframes ultrarareBorder {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-  
-  @keyframes epicBorder {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-  
-  @keyframes legendaryBorder {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-  
-  /* 傳說卡額外的閃光效果 */
-  .card-front.rarity-legendary .card-photo-holo {
-    background: 
-      linear-gradient(135deg, 
-        transparent 0%, 
-        rgba(251, 191, 36, 0.4) 15%,
-        rgba(255, 255, 255, 0.6) 25%, 
-        rgba(251, 191, 36, 0.5) 35%,
-        transparent 50%, 
-        rgba(251, 191, 36, 0.4) 65%,
-        rgba(255, 255, 255, 0.6) 75%, 
-        transparent 100%
-      );
+
+  50% {
+    background-position: 200% 0%;
     opacity: 0.8;
-    animation: photoHolo 4s ease infinite;
   }
-  
-  .card-front.rarity-legendary:hover .card-photo-holo {
-    opacity: 1;
-    animation: photoHolo 0.8s linear infinite;
+}
+
+/* Rarity Borders */
+.card-front.rarity-superrare::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: -1px;
+  right: -1px;
+  border-radius: calc(var(--radius-md) + 2px);
+  background: linear-gradient(135deg, #3B82F6, #60A5FA, #3B82F6, #93C5FD, #3B82F6);
+  background-size: 300% 300%;
+  animation: superrareBorder 4s ease infinite;
+  z-index: -1;
+}
+
+.card-front.rarity-ultrarare::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: -1px;
+  right: -1px;
+  border-radius: calc(var(--radius-md) + 2px);
+  background: linear-gradient(135deg, #EC4899, #F472B6, #EC4899, #FBCFE8, #EC4899);
+  background-size: 300% 300%;
+  animation: ultrarareBorder 3.5s ease infinite;
+  z-index: -1;
+}
+
+.card-front.rarity-epic::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: -1px;
+  right: -1px;
+  border-radius: calc(var(--radius-md) + 2px);
+  background: linear-gradient(135deg, #7C3AED, #A855F7, #7C3AED, #C084FC, #7C3AED);
+  background-size: 300% 300%;
+  animation: epicBorder 4s ease infinite;
+  z-index: -1;
+}
+
+.card-front.rarity-legendary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: -1px;
+  right: -1px;
+  border-radius: calc(var(--radius-md) + 2px);
+  background: linear-gradient(135deg, #F59E0B, #FBBF24, #F59E0B, #FCD34D, #F59E0B);
+  background-size: 300% 300%;
+  animation: legendaryBorder 3s ease infinite;
+  z-index: -1;
+}
+
+@keyframes superrareBorder {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
   }
-  
-  /* Rarity Badge */
-  .card-rarity-badge {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    padding: 4px 10px;
-    font-size: 1.5rem;
-    font-weight: 900;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    z-index: 10;
-    font-family: 'Cinzel', 'Playfair Display', serif;
-    background: transparent;
-    -webkit-text-stroke: 0.3px #000;
-    text-shadow: 0 0.5px 2px rgba(0, 0, 0, 0.8);
+
+  50% {
+    background-position: 100% 50%;
   }
-  .card-rarity-text {
-    display: none;
+}
+
+@keyframes ultrarareBorder {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
   }
-  .badge-common {
-    color: #9CA3AF;
+
+  50% {
+    background-position: 100% 50%;
   }
-  .badge-rare {
-    color: #94b8a0;;
+}
+
+@keyframes epicBorder {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
   }
-  .badge-superrare {
-    color: #3489f1;
+
+  50% {
+    background-position: 100% 50%;
   }
-  .badge-ultrarare {
-    color: #8f0000;
-    animation: ultrararePulse 2.5s ease-in-out infinite;
+}
+
+@keyframes legendaryBorder {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
   }
-  .badge-epic {
-    color: #A855F7;
-    animation: epicPulse 2s ease-in-out infinite;
+
+  50% {
+    background-position: 100% 50%;
   }
-  .badge-legendary {
-    color: #FBBF24;
-    animation: badgePulse 2s ease-in-out infinite;
+}
+
+/* 傳說卡額外的閃光效果 */
+.card-front.rarity-legendary .card-photo-holo {
+  background:
+    linear-gradient(135deg,
+      transparent 0%,
+      rgba(251, 191, 36, 0.4) 15%,
+      rgba(255, 255, 255, 0.6) 25%,
+      rgba(251, 191, 36, 0.5) 35%,
+      transparent 50%,
+      rgba(251, 191, 36, 0.4) 65%,
+      rgba(255, 255, 255, 0.6) 75%,
+      transparent 100%);
+  opacity: 0.8;
+  animation: photoHolo 4s ease infinite;
+}
+
+.card-front.rarity-legendary:hover .card-photo-holo {
+  opacity: 1;
+  animation: photoHolo 0.8s linear infinite;
+}
+
+/* Rarity Badge */
+.card-rarity-badge {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  padding: 4px 10px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -2px;
+  display: inline-block;
+  transform: scaleX(1.8);
+  transform-origin: center;
+  text-transform: uppercase;
+  z-index: 10;
+  font-family: 'Pirata One', 'Playfair Display', serif;
+  background: transparent;
+  -webkit-text-stroke: 0.3px #000;
+  text-shadow:
+    1px 0px 0px #ffffff63,
+    -1px 0px 0px #ffffff63,
+    0px 1px 0px #ffffff63,
+    0px -1px 0px #ffffff63,
+    2px 2px 5px rgba(0, 0, 0, 0.5);
+  ;
+}
+
+.card-rarity-text {
+  display: none;
+}
+
+.badge-common {
+  color: #9CA3AF;
+}
+
+.badge-rare {
+  color: #94b8a0;
+  ;
+}
+
+.badge-superrare {
+  color: #3489f1;
+}
+
+.badge-ultrarare {
+  color: #8f0000;
+  animation: ultrararePulse 2.5s ease-in-out infinite;
+}
+
+.badge-epic {
+  color: #A855F7;
+  animation: epicPulse 2s ease-in-out infinite;
+}
+
+.badge-legendary {
+  color: #FBBF24;
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes ultrararePulse {
+
+  0%,
+  100% {
+    box-shadow: 0 1px 5px rgba(236, 72, 153, 0.5);
   }
-  @keyframes ultrararePulse {
-    0%, 100% { box-shadow: 0 1px 5px rgba(236,72,153,0.5); }
-    50% { box-shadow: 0 2px 12px rgba(236,72,153,0.7); }
+
+  50% {
+    box-shadow: 0 2px 12px rgba(236, 72, 153, 0.7);
   }
-  @keyframes epicPulse {
-    0%, 100% { box-shadow: 0 1px 5px rgba(209, 72, 236, 0.5); }
-    50% { box-shadow: 0 2px 12px rgba(236, 72, 228, 0.7); }
+}
+
+@keyframes epicPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 1px 5px rgba(209, 72, 236, 0.5);
   }
-  @keyframes badgePulse {
-    0%, 100% { box-shadow: 0 2px 12px rgba(245,158,11,0.5); }
-    50% { box-shadow: 0 4px 20px rgba(245,158,11,0.8); }
+
+  50% {
+    box-shadow: 0 2px 12px rgba(236, 72, 228, 0.7);
   }
-  
-  /* Card Photo - 填滿整張卡片 */
-  .card-photo-area {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 50%, #e8eaf6 100%);
-    box-shadow: 
-      inset 0 0 50px rgba(255, 255, 255, 0.1),
-      inset 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+@keyframes badgePulse {
+
+  0%,
+  100% {
+    box-shadow: 0 2px 12px rgba(245, 158, 11, 0.5);
   }
-  
-  /* 為照片區域添加額外的光澤邊框 */
-  .card-photo-area::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    pointer-events: none;
+
+  50% {
+    box-shadow: 0 4px 20px rgba(245, 158, 11, 0.8);
   }
-  
-  .card-photo {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 4rem;
+}
+
+/* Card Photo - 填滿整張卡片 */
+.card-photo-area {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 50%, #e8eaf6 100%);
+  box-shadow:
+    inset 0 0 50px rgba(255, 255, 255, 0.1),
+    inset 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+/* 為照片區域添加額外的光澤邊框 */
+.card-photo-area::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+}
+
+.card-photo {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+}
+
+.card-photo img,
+.card-photo video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.card-photo-holo {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.4) 15%,
+      rgba(138, 195, 255, 0.3) 25%,
+      rgba(255, 255, 255, 0.5) 35%,
+      transparent 50%,
+      rgba(255, 195, 255, 0.3) 65%,
+      rgba(255, 255, 255, 0.4) 75%,
+      transparent 100%);
+  background-size: 400% 400%;
+  animation: photoHolo 6s ease infinite;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  will-change: background-position, opacity;
+  opacity: 0.6;
+  /* 增強平時的光澤感 */
+  transition: opacity 0.3s ease;
+  filter: blur(0.5px);
+  /* 輕微模糊讓光澤更柔和 */
+}
+
+.card:hover .card-photo-holo {
+  opacity: 1;
+  /* 懸停時全強度反光 */
+  animation: photoHolo 1.2s linear infinite;
+  /* 閃爍加快 */
+  filter: blur(0px);
+  /* 懸停時更清晰 */
+}
+
+@keyframes photoHolo {
+  0% {
+    background-position: 0% 0%;
   }
-  
-  .card-photo img,
-  .card-photo video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center center;
+
+  25% {
+    background-position: 100% 0%;
   }
-  
-  .card-photo-holo {
-    position: absolute;
-    inset: 0;
-    background: 
-      linear-gradient(135deg, 
-        transparent 0%, 
-        rgba(255, 255, 255, 0.4) 15%,
-        rgba(138, 195, 255, 0.3) 25%, 
-        rgba(255, 255, 255, 0.5) 35%,
-        transparent 50%, 
-        rgba(255, 195, 255, 0.3) 65%,
-        rgba(255, 255, 255, 0.4) 75%, 
-        transparent 100%
-      );
-    background-size: 400% 400%;
-    animation: photoHolo 6s ease infinite;
-    mix-blend-mode: overlay;
-    pointer-events: none;
-    will-change: background-position, opacity;
-    opacity: 0.6; /* 增強平時的光澤感 */
-    transition: opacity 0.3s ease;
-    filter: blur(0.5px); /* 輕微模糊讓光澤更柔和 */
+
+  50% {
+    background-position: 100% 100%;
   }
-  .card:hover .card-photo-holo {
-    opacity: 1; /* 懸停時全強度反光 */
-    animation: photoHolo 1.2s linear infinite; /* 閃爍加快 */
-    filter: blur(0px); /* 懸停時更清晰 */
+
+  75% {
+    background-position: 0% 100%;
   }
-  
-  @keyframes photoHolo {
-    0% { background-position: 0% 0%; }
-    25% { background-position: 100% 0%; }
-    50% { background-position: 100% 100%; }
-    75% { background-position: 0% 100%; }
-    100% { background-position: 0% 0%; }
+
+  100% {
+    background-position: 0% 0%;
   }
-  
-  /* Card Info - 浮在圖片上的文字區 */
-  .card-member-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 40px 12px 12px;
-    text-align: center;
-    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 60%, transparent 100%);
-    z-index: 5;
-  }
-  
-  .member-name-zh {
-    font-family: 'Noto Sans TC', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    color: #ffffff;
-    letter-spacing: 2px;
-    margin-bottom: 2px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-  }
-  
-  .member-name-en {
-    font-family: 'Bebas Neue', 'Oswald', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 400;
-    color: rgba(255,255,255,0.85);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 2px;
-  }
-  
-  .member-name-kr {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 500;
-    color: rgba(255,255,255,0.7);
-    letter-spacing: 1px;
-  }
-  
-  .card:hover .card-inner { transform: translateY(-5px); }
-  .card.flipped:hover .card-inner { transform: rotateY(180deg) translateY(-5px); }
-  
-  /* ============================================
+}
+
+/* Card Info - 浮在圖片上的文字區 */
+.card-member-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 40px 12px 12px;
+  text-align: center;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.6) 60%, transparent 100%);
+  z-index: 5;
+}
+
+.member-name-zh {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 2px;
+  margin-bottom: 2px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.member-name-en {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 2px;
+}
+
+.member-name-kr {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 1px;
+}
+
+.card:hover .card-inner {
+  transform: translateY(-5px);
+}
+
+.card.flipped:hover .card-inner {
+  transform: rotateY(180deg) translateY(-5px);
+}
+
+/* ============================================
      CARD DETAIL MODAL - 卡片放大檢視
      ============================================ */
-  .card-detail-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
+.card-detail-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.card-detail-overlay.active {
+  display: flex;
+  animation: overlayFadeIn 0.4s ease forwards;
+}
+
+@keyframes overlayFadeIn {
+  from {
     background: rgba(0, 0, 0, 0);
-    z-index: 2000;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
   }
-  
-  .card-detail-overlay.active {
-    display: flex;
-    animation: overlayFadeIn 0.4s ease forwards;
+
+  to {
+    background: rgba(0, 0, 0, 0.8);
   }
-  
-  @keyframes overlayFadeIn {
-    from { background: rgba(0, 0, 0, 0); }
-    to { background: rgba(0, 0, 0, 0.8); }
+}
+
+.card-detail-overlay.closing {
+  animation: overlayFadeOut 0.3s ease forwards;
+}
+
+@keyframes overlayFadeOut {
+  from {
+    background: rgba(0, 0, 0, 0.8);
   }
-  
-  .card-detail-overlay.closing {
-    animation: overlayFadeOut 0.3s ease forwards;
+
+  to {
+    background: rgba(0, 0, 0, 0);
   }
-  
-  @keyframes overlayFadeOut {
-    from { background: rgba(0, 0, 0, 0.8); }
-    to { background: rgba(0, 0, 0, 0); }
+}
+
+.card-detail-container {
+  position: relative;
+}
+
+/* 路徑動畫 - 卡片從原位置飛入 */
+.card-detail-container.animating {
+  animation: cardFlyIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes cardFlyIn {
+  0% {
+    opacity: 0;
+    transform: translate(var(--start-x, 0), var(--start-y, 100px)) scale(var(--start-scale, 0.3));
   }
-  
-  .card-detail-container {
-    position: relative;
+
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
   }
-  
-  /* 路徑動畫 - 卡片從原位置飛入 */
-  .card-detail-container.animating {
-    animation: cardFlyIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.card-detail-container.closing {
+  animation: cardFlyOut 0.3s ease forwards;
+}
+
+@keyframes cardFlyOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
   }
-  
-  @keyframes cardFlyIn {
-    0% {
-      opacity: 0;
-      transform: translate(var(--start-x, 0), var(--start-y, 100px)) scale(var(--start-scale, 0.3));
-    }
-    100% {
-      opacity: 1;
-      transform: translate(0, 0) scale(1);
-    }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.8) translateY(50px);
   }
-  
-  .card-detail-container.closing {
-    animation: cardFlyOut 0.3s ease forwards;
+}
+
+.card-detail {
+  width: 340px;
+  aspect-ratio: var(--card-ratio);
+  background: #222;
+  border-radius: var(--radius-md);
+  position: relative;
+  /* 動態陰影：結合深色投影與紫色環境光 */
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9),
+    0 0 30px rgba(139, 92, 246, 0.4) !important;
+  overflow: visible;
+  /* 確保陰影不會被切掉 */
+}
+
+.card-detail .card-rarity-badge {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
+  font-size: 2.5rem;
+  font-weight: 900;
+  top: 4%;
+  right: 5%;
+  padding: 0;
+
+  /* 核心：使用黑色描邊確保在任何背景都清楚 */
+  -webkit-text-stroke: 1.2px #000;
+  letter-spacing: 2px;
+}
+
+/* --- 2. 顏色映射：根據稀有度類別套用文字顏色與光暈 --- */
+
+/* Common - 灰色 */
+.card-detail .badge-common {
+  color: #94a3b8;
+  filter: drop-shadow(0 0 5px rgba(148, 163, 184, 0.8));
+}
+
+/* Uncommon - 綠色 */
+.card-detail .badge-uncommon {
+  color: #22c55e;
+  filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.8));
+}
+
+/* Rare - 藍色 */
+.card-detail .badge-rare {
+  color: #3b82f6;
+  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.8));
+}
+
+/* Epic - 紫色 */
+.card-detail .badge-epic {
+  color: #a855f7;
+  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.9));
+}
+
+/* Legendary - 金色/橘色 */
+.card-detail .badge-legendary {
+  color: #f59e0b;
+  filter: drop-shadow(0 0 12px rgba(245, 158, 11, 1));
+  animation: badgeGlow 2s infinite alternate;
+  /* 加上呼吸發光 */
+}
+
+/* Mythic - 紅色 */
+.card-detail .badge-mythic {
+  color: #ef4444;
+  filter: drop-shadow(0 0 15px rgba(239, 68, 68, 1));
+  animation: badgeGlow 1.5s infinite alternate;
+}
+
+/* --- 3. 呼吸發光動畫 --- */
+@keyframes badgeGlow {
+  from {
+    filter: drop-shadow(0 0 5px currentColor);
+    transform: scale(1);
   }
-  
-  @keyframes cardFlyOut {
-    0% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(0.8) translateY(50px);
-    }
+
+  to {
+    filter: drop-shadow(0 0 15px currentColor);
+    transform: scale(1.05);
   }
-  
-  .card-detail {
-    width: 340px; /* 稍微加大寬度 */
-    aspect-ratio: 2/3;
-    background: #222;
-    border-radius: var(--radius-md);
-    position: relative;
-    /* 動態陰影：結合深色投影與紫色環境光 */
-    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9), 
-                0 0 30px rgba(139, 92, 246, 0.4) !important;
-    overflow: visible; /* 確保陰影不會被切掉 */
+}
+
+.card-detail .card-stars {
+  bottom: 4%;
+  gap: 8px;
+}
+
+.card-detail .card-name {
+  font-size: 2.4rem;
+  bottom: 10%;
+  text-shadow: 2px 4px 12px rgba(0, 0, 0, 1);
+}
+
+/* 5. 額外的動態發光特效 (偽元素) */
+.card-detail::before {
+  content: '';
+  position: absolute;
+  inset: -3%;
+  background: radial-gradient(circle at center, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
+  z-index: -1;
+  animation: detailGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes detailGlow {
+  from {
+    opacity: 0.5;
+    transform: scale(1);
   }
-  .card-detail .card-rarity-badge {
-    background: transparent ;
-    border: none ;
-    box-shadow: none ;
-    backdrop-filter: none ;
-    -webkit-backdrop-filter: none ;
-    
-    font-size: 2.5rem ;
-    font-weight: 900 ;
-    top: 20px ;
-    right: 25px ;
-    padding: 0 ;
-    
-    /* 核心：使用黑色描邊確保在任何背景都清楚 */
-    -webkit-text-stroke: 1.2px #000 ; 
-    letter-spacing: 2px;
-  }
-  
-  /* --- 2. 顏色映射：根據稀有度類別套用文字顏色與光暈 --- */
-  
-  /* Common - 灰色 */
-  .card-detail .badge-common {
-    color: #94a3b8 ;
-    filter: drop-shadow(0 0 5px rgba(148, 163, 184, 0.8)) ;
-  }
-  
-  /* Uncommon - 綠色 */
-  .card-detail .badge-uncommon {
-    color: #22c55e ;
-    filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.8)) ;
-  }
-  
-  /* Rare - 藍色 */
-  .card-detail .badge-rare {
-    color: #3b82f6 ;
-    filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.8)) ;
-  }
-  
-  /* Epic - 紫色 */
-  .card-detail .badge-epic {
-    color: #a855f7 ;
-    filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.9)) ;
-  }
-  
-  /* Legendary - 金色/橘色 */
-  .card-detail .badge-legendary {
-    color: #f59e0b ;
-    filter: drop-shadow(0 0 12px rgba(245, 158, 11, 1)) ;
-    animation: badgeGlow 2s infinite alternate; /* 加上呼吸發光 */
-  }
-  
-  /* Mythic - 紅色 */
-  .card-detail .badge-mythic {
-    color: #ef4444 ;
-    filter: drop-shadow(0 0 15px rgba(239, 68, 68, 1)) ;
-    animation: badgeGlow 1.5s infinite alternate;
-  }
-  
-  /* --- 3. 呼吸發光動畫 --- */
-  @keyframes badgeGlow {
-    from { filter: drop-shadow(0 0 5px currentColor); transform: scale(1); }
-    to { filter: drop-shadow(0 0 15px currentColor); transform: scale(1.05); }
-  }
-  .card-detail .card-stars {
-    bottom: 20px ;
-    gap: 8px ;
-  }
-  .card-detail .card-name {
-    font-size: 2.4rem ;    /* 名字加粗變大 */
-    bottom: 50px ;
-    text-shadow: 2px 4px 12px rgba(0, 0, 0, 1) ;
-  }
-  
-  /* 5. 額外的動態發光特效 (偽元素) */
-  .card-detail::before {
-    content: '';
-    position: absolute;
-    inset: -10px;
-    background: radial-gradient(circle at center, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
-    z-index: -1;
-    animation: detailGlow 3s ease-in-out infinite alternate;
-  }
-  
-  @keyframes detailGlow {
-    from { opacity: 0.5; transform: scale(1); }
-    to { opacity: 1; transform: scale(1.1); }
-  }
-  .card-detail .card-inner {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  .card-detail.flipped .card-inner {
-    transform: rotateY(180deg);
-  }
-  
-  .card-detail .card-face {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.4),
-      inset 0 -1px 0 rgba(0,0,0,0.1),
-      0 1px 0 0 #d0d0d0,
-      0 2px 0 0 #c8c8c8,
-      0 3px 0 0 #c0c0c0,
-      0 4px 0 0 #b8b8b8,
-      0 5px 0 0 #b0b0b0,
-      0 6px 0 0 #a8a8a8,
-      0 7px 0 0 #a0a0a0,
-      0 10px 10px rgba(0,0,0,0.2),
-      0 20px 30px rgba(0,0,0,0.25),
-      0 30px 50px rgba(0,0,0,0.2);
-  }
-  
-  .card-detail .member-name-zh {
-    font-size: 1.4rem;
-  }
-  
-  .card-detail .member-name-en {
-    font-size: 1rem;
-  }
-  
-  .card-detail .member-name-kr {
-    font-size: 0.85rem;
-  }
-  
-  .card-detail-close {
-    position: absolute;
-    top: -50px;
-    right: -10px;
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: rgba(255,255,255,0.15);
-    color: white;
-    font-size: 1.5rem;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .card-detail-close:hover {
-    background: rgba(255,255,255,0.25);
+
+  to {
+    opacity: 1;
     transform: scale(1.1);
   }
-  
-  .card-detail-hint {
-    position: absolute;
-    bottom: -45px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: rgba(255,255,255,0.6);
-    font-size: 0.8rem;
-    white-space: nowrap;
-  }
-  
-  /* Overlay Buttons */
-  .overlay-buttons {
-    display: flex;
-    gap: var(--spacing-md);
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .flip-all-btn,
-  .close-overlay-btn {
-    padding: 14px 40px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: white;
-    background: var(--surface-2);
-    border: 1px solid var(--surface-3);
-    border-radius: var(--radius-full);
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .flip-all-btn {
-    background: var(--primary-gradient);
-    border: none;
-  }
-  
-  .flip-all-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-glow);
-  }
-  
-  .flip-all-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-  }
-  
-  .close-overlay-btn:hover {
-    background: var(--surface-3);
-    transform: translateY(-2px);
-  }
-  
-  /* ============================================
+}
+
+.card-detail .card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-detail.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-detail .card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 1px 0 0 #d0d0d0,
+    0 2px 0 0 #c8c8c8,
+    0 3px 0 0 #c0c0c0,
+    0 4px 0 0 #b8b8b8,
+    0 5px 0 0 #b0b0b0,
+    0 6px 0 0 #a8a8a8,
+    0 7px 0 0 #a0a0a0,
+    0 10px 10px rgba(0, 0, 0, 0.2),
+    0 20px 30px rgba(0, 0, 0, 0.25),
+    0 30px 50px rgba(0, 0, 0, 0.2);
+}
+
+.card-detail .member-name-zh {
+  font-size: 1.4rem;
+}
+
+.card-detail .member-name-en {
+  font-size: 1rem;
+}
+
+.card-detail .member-name-kr {
+  font-size: 0.85rem;
+}
+
+.card-detail-close {
+  position: absolute;
+  top: -12%;
+  right: -3%;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-detail-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.1);
+}
+
+.card-detail-hint {
+  position: absolute;
+  bottom: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+/* Overlay Buttons */
+.overlay-buttons {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.flip-all-btn,
+.close-overlay-btn {
+  padding: 14px 40px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: white;
+  background: var(--surface-2);
+  border: 1px solid var(--surface-3);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.flip-all-btn {
+  background: var(--primary-gradient);
+  border: none;
+}
+
+.flip-all-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+.flip-all-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.close-overlay-btn:hover {
+  background: var(--surface-3);
+  transform: translateY(-2px);
+}
+
+/* ============================================
      COLLECTION PAGE
      ============================================ */
-  .collection-page {
-    max-width: 1000px;
-    width: 100%;
-    gap: var(--spacing-xl);
-  }
-  
-  .stats-container {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-lg);
-    flex-wrap: wrap;
-    width: 100%;
-  }
-  
-  .stat-card {
-    flex: 1;
-    min-width: 140px;
-    max-width: 200px;
-    padding: var(--spacing-lg);
-    background: var(--surface-1);
-    border: 1px solid var(--surface-2);
-    border-radius: var(--radius-lg);
-    text-align: center;
-    transition: all 0.3s ease;
-  }
-  
-  .stat-card:hover {
-    background: var(--surface-2);
-    transform: translateY(-3px);
-  }
-  
-  .stat-value {
-    font-size: 2rem;
-    font-weight: 800;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .stat-label {
-    font-size: 0.8rem;
-    color: var(--text-tertiary);
-    margin-top: 4px;
-    font-weight: 500;
-  }
-  
-  .collection-grid {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-xl);
-    width: 100%;
-    padding: var(--spacing-md);
-  }
-  
-  /* 系列分組 */
-  .collection-series,
-  .collection-series-section {
-    width: 100%;
-    margin-bottom: var(--spacing-xl);
-  }
-  
-  .collection-series-header {
-    margin-bottom: var(--spacing-md);
-  }
-  
-  .collection-series-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.3rem;
-    letter-spacing: 4px;
-    color: var(--text-secondary);
-    margin-bottom: var(--spacing-sm);
-    padding-bottom: var(--spacing-sm);
-    border-bottom: 1px solid var(--surface-2);
-    text-align: center;
-  }
-  
-  .collection-series-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--spacing-lg);
-  }
-  
-  .collection-item {
-    background: var(--bg-card);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    border: 1px solid var(--surface-2);
-    transition: transform 0.3s ease, border-color 0.3s, box-shadow 0.3s;
-    contain: layout style paint;
-    cursor: pointer;
-  }
-  
-  .collection-item:hover {
-    transform: translateY(-5px);
-    border-color: var(--primary-light);
-    box-shadow: var(--shadow-glow);
-  }
-  
-  .collection-item.locked {
-    opacity: 0.5;
-    filter: grayscale(80%);
-  }
-  
-  .collection-item.locked:hover {
-    transform: none;
-    border-color: var(--surface-2);
-    box-shadow: none;
-  }
-  
-  .collection-item-photo {
-    height: 140px;
-    background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 50%, #e8eaf6 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    position: relative;
-  }
-  
-  .collection-item-photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .collection-item.locked .collection-item-photo::after {
-    content: '🔒';
-    position: absolute;
-    font-size: 1.8rem;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-  }
-  
-  .collection-item-info {
-    padding: var(--spacing-md);
-    text-align: center;
-  }
-  
-  .collection-item-name {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-  }
-  
-  .collection-item-count {
-    font-size: 0.75rem;
-    color: var(--text-tertiary);
-    margin-bottom: 8px;
-  }
-  
-  .collection-item-rarity {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: var(--radius-full);
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    color: white;
-  }
-  
-  /* ============================================
+.collection-page {
+  max-width: 1000px;
+  width: 100%;
+  gap: var(--spacing-xl);
+}
+
+.stats-container {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.stat-card {
+  flex: 1;
+  min-width: 140px;
+  max-width: 200px;
+  padding: var(--spacing-lg);
+  background: var(--surface-1);
+  border: 1px solid var(--surface-2);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  background: var(--surface-2);
+  transform: translateY(-3px);
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.collection-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xl);
+  width: 100%;
+  padding: var(--spacing-md);
+}
+
+/* 系列分組 */
+.collection-series,
+.collection-series-section {
+  width: 100%;
+  margin-bottom: var(--spacing-xl);
+}
+
+.collection-series-header {
+  margin-bottom: var(--spacing-md);
+}
+
+.collection-series-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 4px;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--surface-2);
+  text-align: center;
+}
+
+.collection-series-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-lg);
+}
+
+.collection-item {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--surface-2);
+  transition: transform 0.3s ease, border-color 0.3s, box-shadow 0.3s;
+  contain: layout style paint;
+  cursor: pointer;
+}
+
+.collection-item:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow-glow);
+}
+
+.collection-item.locked {
+  opacity: 0.5;
+  filter: grayscale(80%);
+}
+
+.collection-item.locked:hover {
+  transform: none;
+  border-color: var(--surface-2);
+  box-shadow: none;
+}
+
+.collection-item-photo {
+  height: 140px;
+  background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 50%, #e8eaf6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  position: relative;
+}
+
+.collection-item-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.collection-item.locked .collection-item-photo::after {
+  content: '🔒';
+  position: absolute;
+  font-size: 1.8rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.collection-item-info {
+  padding: var(--spacing-md);
+  text-align: center;
+}
+
+.collection-item-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.collection-item-count {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  margin-bottom: 8px;
+}
+
+.collection-item-rarity {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: white;
+}
+
+/* ============================================
      RESPONSIVE
      ============================================ */
-  @media (max-width: 768px) {
-    .pack-grid {
-      grid-template-columns: 1fr;
-      max-width: 400px;
-      margin: 0 auto;
-    }
-  
-    .card-pack { width: 220px; height: 320px; }
-    .pack-preview { width: 170px; height: 120px; }
-    .card { width: 160px; height: 224px; }
-    .cards-container { gap: var(--spacing-md); }
-    .member-name-zh { font-size: 1rem; }
-    .stats-container { gap: var(--spacing-md); }
-    .stat-card { min-width: 100px; padding: var(--spacing-md); }
-    .stat-value { font-size: 1.5rem; }
-    .collection-grid {
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: var(--spacing-md);
-    }
+@media (max-width: 768px) {
+  .pack-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
   }
-  
-  @media (max-width: 480px) {
-    .nav-tab { padding: 10px 20px; font-size: 0.85rem; }
-    .cards-overlay.active { padding: var(--spacing-lg) var(--spacing-md); }
-    .cards-container { flex-direction: column; align-items: center; }
-    .card { width: 180px; height: 252px; }
-    .back-btn { top: var(--spacing-md); left: var(--spacing-md); padding: 8px 16px; font-size: 0.8rem; }
+
+  .card-pack {
+    width: 220px;
+    height: 320px;
   }
+
+  .pack-preview {
+    width: 170px;
+    height: 120px;
+  }
+
+  .card {
+    width: 160px;
+  }
+
+  .cards-container {
+    gap: var(--spacing-md);
+  }
+
+  .member-name-zh {
+    font-size: 1rem;
+  }
+
+  .stats-container {
+    gap: var(--spacing-md);
+  }
+
+  .stat-card {
+    min-width: 100px;
+    padding: var(--spacing-md);
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .collection-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-tab {
+    padding: 10px 20px;
+    font-size: 0.85rem;
+  }
+
+  .cards-overlay.active {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .cards-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 180px;
+  }
+
+  .back-btn {
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+}
 
 /* ============================================
    VOLUME CONTROL PANEL - 音量控制面板
@@ -2381,27 +2965,38 @@
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .volume-slider-group {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  width: 100%;
   gap: var(--spacing-xs);
 }
 
 .volume-label {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  width: 100%;
   font-size: 0.85rem;
   color: var(--text-secondary);
+  gap: var(--spacing-md);
 }
 
 .volume-value {
   color: var(--text-primary);
   font-weight: 600;
+  min-width: 40px;
+  text-align: right;
 }
 
 .volume-slider {
@@ -2458,8 +3053,13 @@
 }
 
 @keyframes legendaryOverlayFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .legendary-animation-container {
@@ -2483,19 +3083,17 @@
 .legendary-rays {
   position: absolute;
   inset: -100px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    rgba(255, 215, 0, 0.3) 10deg,
-    transparent 20deg,
-    transparent 30deg,
-    rgba(255, 215, 0, 0.2) 40deg,
-    transparent 50deg,
-    transparent 60deg,
-    rgba(255, 215, 0, 0.3) 70deg,
-    transparent 80deg,
-    transparent 90deg
-  );
+  background: conic-gradient(from 0deg,
+      transparent 0deg,
+      rgba(255, 215, 0, 0.3) 10deg,
+      transparent 20deg,
+      transparent 30deg,
+      rgba(255, 215, 0, 0.2) 40deg,
+      transparent 50deg,
+      transparent 60deg,
+      rgba(255, 215, 0, 0.3) 70deg,
+      transparent 80deg,
+      transparent 90deg);
   animation: legendaryRaysRotate 10s linear infinite;
   opacity: 0;
 }
@@ -2505,13 +3103,23 @@
 }
 
 @keyframes legendaryRaysRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes legendaryRaysFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* 粒子效果 */
@@ -2531,8 +3139,17 @@
 }
 
 @keyframes legendaryParticleFloat {
-  0%, 100% { transform: translateY(0) scale(1); opacity: 0.8; }
-  50% { transform: translateY(-30px) scale(1.5); opacity: 1; }
+
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: translateY(-30px) scale(1.5);
+    opacity: 1;
+  }
 }
 
 /* 卡片展示區 */
@@ -2541,6 +3158,8 @@
   z-index: 10;
   transform: scale(0);
   opacity: 0;
+  width: 220px;
+  height: 320px;
 }
 
 .legendary-animation-overlay.active .legendary-card-showcase {
@@ -2548,9 +3167,20 @@
 }
 
 @keyframes legendaryCardReveal {
-  0% { transform: scale(0) rotateY(180deg); opacity: 0; }
-  50% { transform: scale(1.2) rotateY(90deg); opacity: 1; }
-  100% { transform: scale(1) rotateY(0deg); opacity: 1; }
+  0% {
+    transform: scale(0) rotateY(180deg);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1.2) rotateY(90deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1) rotateY(0deg);
+    opacity: 1;
+  }
 }
 
 /* 文字區域 */
@@ -2566,8 +3196,15 @@
 }
 
 @keyframes legendaryTextFadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .legendary-congrats {
@@ -2585,8 +3222,13 @@
 }
 
 @keyframes legendaryTextGlow {
-  from { text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.4), 0 2px 0 #B8860B; }
-  to { text-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.6), 0 2px 0 #B8860B; }
+  from {
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.4), 0 2px 0 #B8860B;
+  }
+
+  to {
+    text-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.6), 0 2px 0 #B8860B;
+  }
 }
 
 .legendary-card-name {
@@ -2613,11 +3255,133 @@
 }
 
 @keyframes legendaryBtnFadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .legendary-continue-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+}
+
+/* ============================================
+   NEW CARD BADGE - 新卡片標記
+   ============================================ */
+.new-card-badge {
+  position: absolute;
+  top: -9%;
+  left: 50%;
+  transform: translateX(-50%) perspective(200px) rotateX(10deg);
+  z-index: 100;
+  pointer-events: none;
+}
+
+.new-badge-text {
+  display: block;
+  padding: 4px 12px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: #fff;
+  background: #ddba1f;
+  border-radius: 5px;
+  box-shadow:
+    0 4px 15px rgba(255, 107, 107, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.15);
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 0 10px rgba(255, 255, 255, 0.3);
+  transform-style: preserve-3d;
+  animation: newBadgePulse 1.2s ease-in-out infinite;
+}
+
+.new-badge-text::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, transparent 100%);
+  border-radius: 6px 6px 0 0;
+}
+
+@keyframes newBadgePulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow:
+      0 4px 15px rgba(255, 107, 107, 0.5),
+      0 2px 4px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  50% {
+    opacity: 0.85;
+    transform: scale(1.08);
+    box-shadow:
+      0 6px 25px rgba(255, 107, 107, 0.7),
+      0 2px 4px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Hide badge until card is flipped */
+.card:not(.flipped) .new-card-badge {
+  display: none;
+}
+
+.card.flipped .new-card-badge {
+  animation: newBadgeAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes newBadgeAppear {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) perspective(200px) rotateX(10deg) translateY(-20px) scale(0.5);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) perspective(200px) rotateX(10deg) translateY(0) scale(1);
+  }
+}
+
+/* ============================================
+   DRAW AGAIN BUTTON - 再抽一次按鈕
+   ============================================ */
+.flip-all-btn.draw-again {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  animation: drawAgainPulse 2s ease-in-out infinite;
+}
+
+.flip-all-btn.draw-again:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+}
+
+@keyframes drawAgainPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
 }

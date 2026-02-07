@@ -193,6 +193,32 @@
   function setSFXVolume(volume) {
     sfxVolume = volume;
     CONFIG.SOUNDS.volume = volume;
+
+    // Update individual sound volumes proportionally
+    if (CONFIG.SOUNDS.volumes) {
+      const baseVolumes = {
+        packOpen: 0.1,
+        packTear: 0.8,
+        cardFlip: 0.5,
+        cardFlipAll: 0.6,
+        cardEnlarge: 0.5,
+        overlayClose: 0.3,
+        buttonClick: 0.4,
+        navSwitch: 0.4,
+        newCard1Star: 0.3,
+        newCard2Star: 0.35,
+        newCard3Star: 0.4,
+        newCard4Star: 0.45,
+        newCard5Star: 0.5,
+        newCard6Star: 0.5,
+        newCard7Star: 0.5,
+        legendary: 0.5
+      };
+
+      for (const [key, baseVol] of Object.entries(baseVolumes)) {
+        CONFIG.SOUNDS.volumes[key] = baseVol * volume;
+      }
+    }
   }
 
   function getBGMVolume() {
@@ -334,7 +360,7 @@
     }
 
     // Trading card template
-    templates.card = (card) => {
+    templates.card = (card, isFirstTime = false) => {
       const rarityText = CONFIG.RARITY.TEXT[card.rarity];
       const rarityColor = CONFIG.RARITY.COLORS[card.rarity] || '#F59E0B';
       const starsHTML = generateStarsHTML(card.rarity);
@@ -344,7 +370,9 @@
       const isLegendary = card.rarity === 'legendary';
       const parentPack = CONFIG.PACKS.find(p => p.cards.includes(card.id));
       const packDisplayId = parentPack ? parentPack.id.toUpperCase() : 'UNKNOWN';
+      const newBadgeHTML = isFirstTime ? `<div class="new-card-badge"><span class="new-badge-text">NEW</span></div>` : '';
       return `
+        ${newBadgeHTML}
         <div class="card-inner ${isLegendary ? 'legendary-aura' : ''}">
           <div class="card-face card-back back-${card.rarity}">
             <div class="card-back-pattern"></div>
@@ -544,7 +572,7 @@
       cardEl.dataset.starCount = CONFIG.RARITY.STARS[card.rarity] || 1;
       cardEl.dataset.rarity = card.rarity;
       cardEl.style.animationDelay = `${0.2 + index * 0.15}s`;
-      cardEl.innerHTML = templates.card(card);
+      cardEl.innerHTML = templates.card(card, isFirstTime);
       fragment.appendChild(cardEl);
 
       const delayTime = 0.2 + index * 0.15;
@@ -561,6 +589,10 @@
 
     DOM.cardsContainer.innerHTML = '';
     DOM.cardsContainer.appendChild(fragment);
+
+    // Reset flip button state
+    DOM.flipAllBtn.textContent = '一次翻開';
+    DOM.flipAllBtn.classList.remove('draw-again');
   }
 
   // ========================================
@@ -786,6 +818,10 @@
       // Render and show
       DOM.cardsOverlay.classList.add('active');
       renderDrawnCards(currentDrawnCards);
+
+      // Reset flip button to initial state
+      DOM.flipAllBtn.textContent = '一次翻開';
+      DOM.flipAllBtn.classList.remove('draw-again');
       DOM.flipAllBtn.disabled = false;
       DOM.openPackBtn.disabled = false;
 
@@ -800,7 +836,11 @@
     DOM.cardsOverlay.classList.remove('active');
     DOM.cardPack.style.visibility = 'visible';
     playSound('overlayClose');
-    playBGM('packOpening'); // 返回開包頁面的BGM
+    playPackBGM(currentPack); // 返回卡包專屬BGM或大廳BGM
+
+    // Reset flip button state
+    DOM.flipAllBtn.textContent = '一次翻開';
+    DOM.flipAllBtn.classList.remove('draw-again');
   }
 
   // ========================================
@@ -816,14 +856,23 @@
     const isFirstTime = cardEl.dataset.isFirstTime === '1';
     const starCount = parseInt(cardEl.dataset.starCount) || 1;
     const rarity = cardEl.dataset.rarity;
+    const cardId = parseInt(cardEl.dataset.cardId);
 
     if (isFirstTime) {
       // 延遲播放，讓翻卡音效先響
       setTimeout(() => {
-        // 傳說卡播放特殊音效和BGM
+        // 傳說卡播放特殊音效和BGM，並顯示傳說卡動畫
         if (rarity === 'legendary') {
           playSound('legendary');
           playBGM('legendary');
+
+          // 顯示傳說卡光效動畫
+          const legendaryCard = cardMap.get(cardId);
+          if (legendaryCard) {
+            setTimeout(() => {
+              showLegendaryAnimation(legendaryCard);
+            }, 500);
+          }
         }
         playNewCardSound(starCount);
       }, 300);
@@ -831,42 +880,96 @@
   }
 
   function flipAllCards() {
+    // Check if button is in "draw again" mode
+    if (DOM.flipAllBtn.classList.contains('draw-again')) {
+      // Re-draw cards directly
+      closeOverlay();
+      setTimeout(() => {
+        openPack();
+      }, 100);
+      return;
+    }
+
     const cards = DOM.cardsContainer.querySelectorAll('.card:not(.flipped)');
-    if (cards.length === 0) return;
+    if (cards.length === 0) {
+      // All cards already flipped, change to draw again mode
+      changeToDrawAgainMode();
+      return;
+    }
 
     playSound('cardFlipAll');
     DOM.flipAllBtn.disabled = true;
 
-    let hasFirstTimeCard = false;
+    // Collect all cards info first
+    const cardsInfo = Array.from(cards).map(card => ({
+      element: card,
+      isFirstTime: card.dataset.isFirstTime === '1',
+      starCount: parseInt(card.dataset.starCount) || 1,
+      rarity: card.dataset.rarity
+    }));
+
+    // Find indices of new cards
+    const newCardIndices = cardsInfo
+      .map((info, idx) => info.isFirstTime ? idx : -1)
+      .filter(idx => idx !== -1);
+
+    let currentIndex = 0;
     let maxStarCount = 0;
     let hasLegendary = false;
 
-    cards.forEach((card, index) => {
-      setTimeout(() => {
-        card.classList.add('flipped');
-
-        const isFirstTime = card.dataset.isFirstTime === '1';
-        const starCount = parseInt(card.dataset.starCount) || 1;
-        const rarity = card.dataset.rarity;
-
-        if (isFirstTime) {
-          hasFirstTimeCard = true;
-          if (starCount > maxStarCount) maxStarCount = starCount;
-          if (rarity === 'legendary') hasLegendary = true;
-        }
-      }, index * 100);
-    });
-
-    // 翻完後播放首次獲得的最高星數音效
-    setTimeout(() => {
-      if (hasFirstTimeCard) {
-        if (hasLegendary) {
-          playSound('legendary');
-          playBGM('legendary');
-        }
-        playNewCardSound(maxStarCount);
+    function flipNextCard() {
+      if (currentIndex >= cardsInfo.length) {
+        // All cards flipped, play final sound if needed
+        setTimeout(() => {
+          changeToDrawAgainMode();
+        }, 300);
+        return;
       }
-    }, cards.length * 100 + 300);
+
+      const cardInfo = cardsInfo[currentIndex];
+      cardInfo.element.classList.add('flipped');
+
+      if (cardInfo.isFirstTime) {
+        // This is a new card - pause and play sound
+        if (cardInfo.starCount > maxStarCount) maxStarCount = cardInfo.starCount;
+        if (cardInfo.rarity === 'legendary') hasLegendary = true;
+
+        // Play sound for this new card
+        setTimeout(() => {
+          if (cardInfo.rarity === 'legendary') {
+            playSound('legendary');
+            playBGM('legendary');
+
+            // 顯示傳說卡光效動畫
+            const cardId = parseInt(cardInfo.element.dataset.cardId);
+            const legendaryCard = cardMap.get(cardId);
+            if (legendaryCard) {
+              setTimeout(() => {
+                showLegendaryAnimation(legendaryCard);
+              }, 500);
+            }
+          }
+          playNewCardSound(cardInfo.starCount);
+        }, 300);
+
+        // Wait longer for new card sound effect to finish
+        currentIndex++;
+        setTimeout(flipNextCard, 1200); // Longer pause for new cards
+      } else {
+        // Normal card - continue quickly
+        currentIndex++;
+        setTimeout(flipNextCard, 100);
+      }
+    }
+
+    // Start flipping
+    flipNextCard();
+  }
+
+  function changeToDrawAgainMode() {
+    DOM.flipAllBtn.textContent = '再抽一次';
+    DOM.flipAllBtn.classList.add('draw-again');
+    DOM.flipAllBtn.disabled = false;
   }
 
   // ========================================
@@ -926,29 +1029,68 @@
       }
     });
 
+    // Volume control panel
     const volumeToggleBtn = document.getElementById('volumeToggleBtn');
+    const volumeSliders = document.getElementById('volumeSliders');
     const volumeIcon = volumeToggleBtn.querySelector('.volume-icon');
-  
-    volumeToggleBtn.addEventListener('click', () => {
-      // 切換靜音狀態 (如果原本是啟用就關掉，反之亦然)
-      CONFIG.SOUNDS.enabled = !CONFIG.SOUNDS.enabled;
-      CONFIG.BGM.enabled = CONFIG.SOUNDS.enabled; // 同步 BGM 狀態
-  
-      if (!CONFIG.SOUNDS.enabled) {
-        // 變成靜音
-        volumeIcon.textContent = '🔈'; 
-        if (currentBGM) currentBGM.pause(); // 暫停目前的音樂
-      } else {
-        // 取消靜音
-        volumeIcon.textContent = '🔊';
-        if (currentBGM) {
-            currentBGM.play().catch(() => {}); // 恢復播放
-        } else {
-            playBGM('lobby'); // 如果沒在播就播大廳音樂
-        }
+    const bgmVolumeSlider = document.getElementById('bgmVolumeSlider');
+    const sfxVolumeSlider = document.getElementById('sfxVolumeSlider');
+    const bgmVolumeValue = document.getElementById('bgmVolumeValue');
+    const sfxVolumeValue = document.getElementById('sfxVolumeValue');
+
+    // Initialize slider values from config
+    bgmVolumeSlider.value = Math.round(bgmVolume * 100);
+    sfxVolumeSlider.value = Math.round(sfxVolume * 100);
+    bgmVolumeValue.textContent = `${bgmVolumeSlider.value}%`;
+    sfxVolumeValue.textContent = `${sfxVolumeSlider.value}%`;
+
+    // Toggle volume panel visibility
+    volumeToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      volumeSliders.classList.toggle('active');
+      playSound('buttonClick');
+    });
+
+    // Close volume panel when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.volume-control-panel')) {
+        volumeSliders.classList.remove('active');
       }
-      
-      playSound('buttonClick'); // 回饋音效（如果剛好開啟的話）
+    });
+
+    // BGM volume slider
+    bgmVolumeSlider.addEventListener('input', (e) => {
+      const value = parseInt(e.target.value);
+      setBGMVolume(value / 100);
+      bgmVolumeValue.textContent = `${value}%`;
+
+      // Update icon based on volume
+      if (value === 0) {
+        volumeIcon.textContent = '🔇';
+      } else if (value < 50) {
+        volumeIcon.textContent = '🔉';
+      } else {
+        volumeIcon.textContent = '🔊';
+      }
+    });
+
+    // SFX volume slider
+    sfxVolumeSlider.addEventListener('input', (e) => {
+      const value = parseInt(e.target.value);
+      setSFXVolume(value / 100);
+      sfxVolumeValue.textContent = `${value}%`;
+    });
+
+    // Update audio enabled states based on volume
+    bgmVolumeSlider.addEventListener('change', () => {
+      CONFIG.BGM.enabled = parseInt(bgmVolumeSlider.value) > 0;
+      if (CONFIG.BGM.enabled && !currentBGM) {
+        playBGM('lobby');
+      }
+    });
+
+    sfxVolumeSlider.addEventListener('change', () => {
+      CONFIG.SOUNDS.enabled = parseInt(sfxVolumeSlider.value) > 0;
     });
 
     // Pack grid - 事件委派
@@ -1026,6 +1168,17 @@
         }
       }
     });
+
+  }
+
+  // ========================================
+  // 傳說卡動畫（使用 CardEffects 模組）
+  // ========================================
+
+  function showLegendaryAnimation(card) {
+    if (window.CardEffects) {
+      window.CardEffects.showLegendaryAnimation(card);
+    }
   }
 
   // ========================================
