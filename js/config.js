@@ -171,13 +171,13 @@ const CONFIG = {
     },
     // 字體顏色（可自訂）
     COLORS: {
-      normal: '#9CA3AF',
-      common: '#6B7280',
-      rare: '#3B82F6',
-      superrare: '#8B5CF6',
-      ultrarare: '#EC4899',
-      epic: '#A855F7',
-      legendary: '#F59E0B'
+      normal: '#8B8B8B',
+      common: '#3A9D6A',
+      rare: '#2AAFAF',
+      superrare: '#E8A020',
+      ultrarare: '#E06050',
+      epic: '#C82020',
+      legendary: '#FFD700'
     }
   },
 
@@ -200,6 +200,7 @@ const CONFIG = {
     { id: 'howsweet', name: 'HOW SWEET COLLECTION', order: 13 },
     { id: 'omg', name: 'OMG COLLECTION', order: 14 },
     { id: 'getup', name: 'GET UP COLLECTION', order: 15 },
+    { id: 'twice', name: 'TWICE COLLECTION', order: 16 },
     
     { id: 'itzyI', name: 'itzy I COLLECTION', order: 20 },
     { id: 'itzyII', name: 'itzy II COLLECTION', order: 21 },
@@ -220,7 +221,10 @@ const CONFIG = {
       image: 'images/packs/lesserafim.jpg',
       emoji: '💜',
       bgm: 'sounds/bgm/FEARLESS.mp3',  // 卡包專屬 BGM
-      cards: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+      cards: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+         11, 12, 13, 14, 15, 16, 17, 18, 19,
+         20, 21, 22, 23, 24, 25, 26, 27, 28, 
+         29, 30]
     },
     {
       id: 'itzyI',
@@ -233,7 +237,9 @@ const CONFIG = {
       image: 'images/packs/itzy-1.jpg',
       emoji: '',
       bgm: 'sounds/bgm/WANNABE.mp3',  // 卡包專屬 BGM
-      cards: [31, 32, 33, 34 ,35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]
+      cards: [31, 32, 33, 34 ,35, 36, 37,
+          38, 39, 40, 41, 42, 43, 44, 45,
+          46, 47, 48, 49, 50]
     },
     {
       id: 'aespa',
@@ -246,7 +252,9 @@ const CONFIG = {
       image: 'images/packs/aespa-1.jpg',
       emoji: '',
       bgm: 'sounds/bgm/NextLevel.mp3',  // 卡包專屬 BGM
-      cards: [51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70]
+      cards: [51, 52, 53, 54, 55, 56, 57,
+          58, 59, 60, 61, 62, 63, 64, 65,
+          66, 67, 68, 69, 70]
     },
     {
       id: 'newjeans',
@@ -259,7 +267,9 @@ const CONFIG = {
       image: 'images/packs/newjeans-1.jpg',
       emoji: '',
       bgm:'sounds/bgm/OMG.mp3',  // 卡包專屬 BGM
-      cards: [71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90]
+      cards: [71, 72, 73, 74, 75, 76, 77,
+          78, 79, 80, 81, 82, 83, 84, 85,
+          86, 87, 88, 89, 90]
     },
     {
       id: 'itzyII',
@@ -272,8 +282,30 @@ const CONFIG = {
       image: 'images/packs/itzy-2.jpg',
       emoji: '',
       bgm: 'sounds/bgm/TUNNELVISION.mp3',  // 卡包專屬 BGM
-      cards: [91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115]
+      cards: [91, 92, 93, 94, 95, 96, 97,
+         98, 99, 100, 101, 102, 103, 104,
+         105, 106, 107, 108, 109, 110, 111,
+         112, 113, 114, 115]
     },
+    {
+      id: 'twice',
+      name: 'TWICE-I',
+      description: 'each 3',
+      brandTitle: 'TWICE',
+      brandSub: '',
+      packLabel: '',
+      cardCount: 8,
+      image: 'images/packs/twice-1.jpg',
+      emoji: '',
+      bgm: 'sounds/bgm/strategy.mp3',  // 卡包專屬 BGM
+      cards: [116, 117, 118, 119, 120,
+        121, 122, 123, 124, 125,
+        126, 127, 128, 129, 130,
+        131, 132, 133, 134, 135,
+        136, 137, 138, 139, 140,
+        141, 142]
+    },
+    
   ],
 
   // ========================================
@@ -424,7 +456,43 @@ const CONFIG = {
     { id: 114, nameChinese: '申有娜', nameEnglish: 'Yuna', nameKorean: '신유나', image: 'images/cards/itzy2/yuna03.jpg', rarity: 'common', series: 'itzyII' },
     { id: 115, nameChinese: '申有娜', nameEnglish: 'Yuna', nameKorean: '신유나', image: 'images/cards/itzy2/yuna04.jpg', rarity: 'normal', series: 'itzyII' },
 
+    // ===== TWICE 系列 =====
 
+    { id: 116, nameChinese: '娜璉', nameEnglish: 'Nayeon', nameKorean: '나연', image: 'images/cards/twice/nayeon-1.jpg', rarity: 'ultrarare', series: 'twice' },
+    { id: 117, nameChinese: '娜璉', nameEnglish: 'Nayeon', nameKorean: '나연', image: 'images/cards/twice/nayeon-2.jpg', rarity: 'epic', series: 'twice' },
+    { id: 118, nameChinese: '娜璉', nameEnglish: 'Nayeon', nameKorean: '나연', image: 'images/cards/twice/nayeon.gif', rarity: 'legendary', series: 'twice' },
+
+    { id: 119, nameChinese: '定延', nameEnglish: 'Jeongyeon', nameKorean: '정연', image: 'images/cards/twice/jeongyeon-1.jpg', rarity: 'normal', series: 'twice' },
+    { id: 120, nameChinese: '定延', nameEnglish: 'Jeongyeon', nameKorean: '정연', image: 'images/cards/twice/jeongyeon-2.jpg', rarity: 'common', series: 'twice' },
+    { id: 121, nameChinese: '定延', nameEnglish: 'Jeongyeon', nameKorean: '정연', image: 'images/cards/twice/jeongyeon-3.jpg', rarity: 'superrare', series: 'twice' },
+
+    { id: 122, nameChinese: 'MOMO', nameEnglish: 'Momo', nameKorean: '모모', image: 'images/cards/twice/momo-1.jpg', rarity: 'superrare', series: 'twice' },
+    { id: 123, nameChinese: 'MOMO', nameEnglish: 'Momo', nameKorean: '모모', image: 'images/cards/twice/momo-2.jpg', rarity: 'ultrarare', series: 'twice' },
+    { id: 124, nameChinese: 'MOMO', nameEnglish: 'Momo', nameKorean: '모모', image: 'images/cards/twice/momo-3.jpg', rarity: 'epic', series: 'twice' },
+
+    { id: 125, nameChinese: '紗夏', nameEnglish: 'Sana', nameKorean: '사나', image: 'images/cards/twice/sana-1.jpg', rarity: 'superrare', series: 'twice' },
+    { id: 126, nameChinese: '紗夏', nameEnglish: 'Sana', nameKorean: '사나', image: 'images/cards/twice/sana-2.jpg', rarity: 'rare', series: 'twice' },
+    { id: 127, nameChinese: '紗夏', nameEnglish: 'Sana', nameKorean: '사나', image: 'images/cards/twice/sana.gif', rarity: 'legendary', series: 'twice' },
+
+    { id: 128, nameChinese: '志效', nameEnglish: 'Jihyo', nameKorean: '지효', image: 'images/cards/twice/jihyo-1.jpg', rarity: 'normal', series: 'twice' },
+    { id: 129, nameChinese: '志效', nameEnglish: 'Jihyo', nameKorean: '지효', image: 'images/cards/twice/jihyo-2.jpg', rarity: 'ultrarare', series: 'twice' },
+    { id: 130, nameChinese: '志效', nameEnglish: 'Jihyo', nameKorean: '지효', image: 'images/cards/twice/jihyo.gif', rarity: 'legendary', series: 'twice' },
+
+    { id: 131, nameChinese: '美娜', nameEnglish: 'Mina', nameKorean: '미나', image: 'images/cards/twice/mina-1.jpg', rarity: 'superrare', series: 'twice' },
+    { id: 132, nameChinese: '美娜', nameEnglish: 'Mina', nameKorean: '미나', image: 'images/cards/twice/mina-2.jpg', rarity: 'ultrarare', series: 'twice' },
+    { id: 133, nameChinese: '美娜', nameEnglish: 'Mina', nameKorean: '미나', image: 'images/cards/twice/mina-3.jpg', rarity: 'epic', series: 'twice' },
+
+    { id: 134, nameChinese: '多賢', nameEnglish: 'Dahyun', nameKorean: '다현', image: 'images/cards/twice/dahyun-1.jpg', rarity: 'ultrarare', series: 'twice' },
+    { id: 135, nameChinese: '多賢', nameEnglish: 'Dahyun', nameKorean: '다현', image: 'images/cards/twice/dahyun-2.jpg', rarity: 'rare', series: 'twice' },
+    { id: 136, nameChinese: '多賢', nameEnglish: 'Dahyun', nameKorean: '다현', image: 'images/cards/twice/dahyun-3.jpg', rarity: 'epic', series: 'twice' },
+
+    { id: 137, nameChinese: '彩瑛', nameEnglish: 'Chaeyoung', nameKorean: '채영', image: 'images/cards/twice/chaeyoung-1.jpg', rarity: 'common', series: 'twice' },
+    { id: 138, nameChinese: '彩瑛', nameEnglish: 'Chaeyoung', nameKorean: '채영', image: 'images/cards/twice/chaeyoung-2.jpg', rarity: 'superrare', series: 'twice' },
+    { id: 139, nameChinese: '彩瑛', nameEnglish: 'Chaeyoung', nameKorean: '채영', image: 'images/cards/twice/chaeyoung-3.jpg', rarity: 'ultrarare', series: 'twice' },
+
+    { id: 140, nameChinese: '子瑜', nameEnglish: 'Tzuyu', nameKorean: '쯔위', image: 'images/cards/twice/tzuyu-1.jpg', rarity: 'superrare', series: 'twice' },
+    { id: 141, nameChinese: '子瑜', nameEnglish: 'Tzuyu', nameKorean: '쯔위', image: 'images/cards/twice/tzuyu-2.jpg', rarity: 'ultrarare', series: 'twice' },
+    { id: 142, nameChinese: '子瑜', nameEnglish: 'Tzuyu', nameKorean: '쯔위', image: 'images/cards/twice/tzuyu.gif', rarity: 'legendary', series: 'twice' },
 
 
   ]
