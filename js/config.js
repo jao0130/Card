@@ -132,7 +132,7 @@ const CONFIG = {
       cardFlipAll: 1.0,        // 一次翻開音效
       newCard7Star: 0.5,       // 7星卡音效最大聲
       legendary: 0.5,          // 傳說卡音效最大聲
-      buttonClick: 0.4,        // 按鈕點擊音效很小聲
+      buttonClick: 0.1,        // 按鈕點擊音效很小聲
       // 其他未列出的音效會使用預設 0.8
     }
   },
@@ -171,13 +171,13 @@ const CONFIG = {
     },
     // 字體顏色（可自訂）
     COLORS: {
-      normal: '#9CA3AF',
-      common: '#6B7280',
-      rare: '#3B82F6',
-      superrare: '#8B5CF6',
-      ultrarare: '#EC4899',
-      epic: '#A855F7',
-      legendary: '#F59E0B'
+      normal: '#8B8B8B',
+      common: '#3A9D6A',
+      rare: '#2AAFAF',
+      superrare: '#E8A020',
+      ultrarare: '#E06050',
+      epic: '#C82020',
+      legendary: '#FFD700'
     }
   },
 
@@ -407,7 +407,7 @@ const CONFIG = {
     { id: 97, nameChinese: '崔智壽', nameEnglish: 'Lia', nameKorean: '최지수', image: 'images/cards/itzy2/lia01.jpg', rarity: 'ultrarare', series: 'itzyII' },
     { id: 98, nameChinese: '崔智壽', nameEnglish: 'Lia', nameKorean: '최지수', image: 'images/cards/itzy2/lia02.jpg', rarity: 'superrare', series: 'itzyII' },
     { id: 99, nameChinese: '崔智壽', nameEnglish: 'Lia', nameKorean: '최지수', image: 'images/cards/itzy2/lia03.jpg', rarity: 'common', series: 'itzyII' },
-    { id: 100, nameChinese: '崔智壽', nameEnglish: 'Lia', nameKorean: '최지수', image: 'images/cards/itz2y/lia04.jpg', rarity: 'normal', series: 'itzyII' },
+    { id: 100, nameChinese: '崔智壽', nameEnglish: 'Lia', nameKorean: '최지수', image: 'images/cards/itzy2/lia04.jpg', rarity: 'normal', series: 'itzyII' },
     { id: 101, nameChinese: 'SMILE 申留眞', nameEnglish: 'Ryujin', nameKorean: '신류진', image: 'images/cards/itzy2/RYUJIN.gif', rarity: 'legendary', series: 'itzyII' },
     { id: 102, nameChinese: '申留眞', nameEnglish: 'Ryujin', nameKorean: '신류진', image: 'images/cards/itzy2/ryujin01.jpg', rarity: 'ultrarare', series: 'itzyII' },
     { id: 103, nameChinese: '申留眞', nameEnglish: 'Ryujin', nameKorean: '신류진', image: 'images/cards/itzy2/ryujin02.jpg', rarity: 'superrare', series: 'itzyII' },

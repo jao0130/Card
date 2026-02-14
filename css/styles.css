@@ -11,38 +11,38 @@
    CSS VARIABLES
    ============================================ */
 :root {
-  --primary-gradient: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #A855F7 100%);
-  --primary-dark: #4F46E5;
-  --primary-light: #A78BFA;
+  --primary-gradient: linear-gradient(135deg, #E8A020 0%, #FFB13D 50%, #FFCF70 100%);
+  --primary-dark: #CC8A10;
+  --primary-light: #FFD080;
 
-  --bg-dark: #0F0F1A;
-  --bg-card: #1A1A2E;
-  --bg-elevated: #252542;
+  --bg-dark: #0D0D0F;
+  --bg-card: #1A1714;
+  --bg-elevated: #252118;
 
-  --surface-1: rgba(255, 255, 255, 0.05);
-  --surface-2: rgba(255, 255, 255, 0.08);
-  --surface-3: rgba(255, 255, 255, 0.12);
+  --surface-1: rgba(255, 245, 230, 0.05);
+  --surface-2: rgba(255, 245, 230, 0.08);
+  --surface-3: rgba(255, 245, 230, 0.12);
 
   --text-primary: #FFFFFF;
   --text-secondary: rgba(255, 255, 255, 0.7);
-  --text-tertiary: rgba(255, 255, 255, 0.5);
+  --text-tertiary: rgba(255, 235, 200, 0.5);
 
-  --accent-pink: #EC4899;
+  --accent-teal: #2DDBB3;
   --accent-cyan: #06B6D4;
-  --accent-gold: #F59E0B;
+  --accent-gold: #FFB13D;
 
-  --rarity-normal: linear-gradient(135deg, #9CA3AF 0%, #D1D5DB 100%);
-  --rarity-common: linear-gradient(135deg, #6B7280 0%, #9CA3AF 100%);
-  --rarity-rare: linear-gradient(135deg, #64748B 0%, #94A3B8 100%);
-  --rarity-superrare: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
-  --rarity-ultrarare: linear-gradient(135deg, #EC4899 0%, #F472B6 100%);
-  --rarity-epic: linear-gradient(135deg, #7C3AED 0%, #A855F7 100%);
-  --rarity-legendary: linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #F59E0B 100%);
+  --rarity-normal: linear-gradient(135deg, #8B8B8B 0%, #B0B0B0 100%);
+  --rarity-common: linear-gradient(135deg, #3A9D6A 0%, #5CC88A 100%);
+  --rarity-rare: linear-gradient(135deg, #2AAFAF 0%, #3DD8D8 100%);
+  --rarity-superrare: linear-gradient(135deg, #E8A020 0%, #FFB13D 100%);
+  --rarity-ultrarare: linear-gradient(135deg, #E06050 0%, #FF8070 100%);
+  --rarity-epic: linear-gradient(135deg, #C82020 0%, #E84040 100%);
+  --rarity-legendary: linear-gradient(135deg, #F5A623 0%, #FFD700 50%, #F5A623 100%);
 
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 40px rgba(139, 92, 246, 0.3);
+  --shadow-glow: 0 0 40px rgba(255, 177, 61, 0.3);
 
   --spacing-xs: 4px;
   --spacing-sm: 8px;
@@ -78,7 +78,7 @@ html {
 }
 
 body {
-  font-family: 'Inter', 'Noto Sans TC', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Exo 2', 'Noto Sans TC', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
   min-height: 100vh;
   min-height: 100dvh;
   background: var(--bg-dark);
@@ -102,8 +102,8 @@ img {
   flex-direction: column;
   align-items: center;
   background:
-    radial-gradient(ellipse at 20% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 0%, rgba(255, 177, 61, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(45, 219, 179, 0.08) 0%, transparent 50%),
     var(--bg-dark);
 }
 
@@ -114,7 +114,7 @@ img {
   padding: var(--spacing-md) var(--spacing-lg);
   display: flex;
   justify-content: center;
-  background: rgba(15, 15, 26, 0.8);
+  background: rgba(13, 13, 15, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--surface-2);
@@ -135,6 +135,7 @@ img {
   padding: 12px 28px;
   border: none;
   border-radius: var(--radius-full);
+  font-family: 'Rajdhani', sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
@@ -187,6 +188,7 @@ img {
 }
 
 .page-title {
+  font-family: 'Rajdhani', sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: var(--spacing-lg);
@@ -208,6 +210,7 @@ img {
 }
 
 .lobby-title {
+  font-family: 'Rajdhani', sans-serif;
   font-size: 2rem;
   font-weight: 800;
   background: var(--primary-gradient);
@@ -254,7 +257,7 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #fce4ec 0%, #e8eaf6 100%);
+  background: linear-gradient(135deg, #FFF5E0 0%, #F5E6C8 100%);
 }
 
 .pack-card-preview img {
@@ -340,7 +343,7 @@ img {
 
 .pack-card-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 4px 16px rgba(255, 177, 61, 0.4);
 }
 
 /* ============================================
@@ -356,6 +359,7 @@ img {
 }
 
 .pack-page-title {
+  font-family: 'Rajdhani', sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
   margin-bottom: var(--spacing-xs);
@@ -770,7 +774,7 @@ img {
   position: absolute;
   inset: 28px 0 20px 0;
   overflow: hidden;
-  background: linear-gradient(135deg, #fce4ec 0%, #e8d5ff 50%, #fce4ec 100%);
+  background: linear-gradient(135deg, #FFF5E0 0%, #FFE8C0 50%, #FFF5E0 100%);
   z-index: 4;
 }
 
@@ -872,7 +876,7 @@ img {
   50% {
     transform: scale(1.1) rotateY(-15deg) translateY(-40px);
     opacity: 0.9;
-    filter: brightness(1.3) drop-shadow(0 60px 50px rgba(139, 92, 246, 0.3));
+    filter: brightness(1.3) drop-shadow(0 60px 50px rgba(255, 177, 61, 0.3));
     /* 加入紫色發光影子 */
   }
 
@@ -886,6 +890,7 @@ img {
 /* Open Button */
 .open-pack-btn {
   padding: 16px 48px;
+  font-family: 'Rajdhani', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: white;
@@ -896,7 +901,7 @@ img {
   position: relative;
   overflow: hidden;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4), 0 8px 32px rgba(139, 92, 246, 0.2);
+  box-shadow: 0 4px 16px rgba(255, 177, 61, 0.4), 0 8px 32px rgba(232, 160, 32, 0.2);
 }
 
 .open-pack-btn::before {
@@ -910,7 +915,7 @@ img {
 
 .open-pack-btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5), 0 16px 48px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 8px 24px rgba(255, 177, 61, 0.5), 0 16px 48px rgba(232, 160, 32, 0.3);
 }
 
 .open-pack-btn:hover::before {
@@ -1025,31 +1030,31 @@ img {
 }
 
 .probability-item.rarity-normal .rarity-name {
-  color: #9CA3AF;
+  color: #8B8B8B;
 }
 
 .probability-item.rarity-common .rarity-name {
-  color: #6B7280;
+  color: #3A9D6A;
 }
 
 .probability-item.rarity-rare .rarity-name {
-  color: #3B82F6;
+  color: #2AAFAF;
 }
 
 .probability-item.rarity-superrare .rarity-name {
-  color: #8B5CF6;
+  color: #E8A020;
 }
 
 .probability-item.rarity-ultrarare .rarity-name {
-  color: #EC4899;
+  color: #E06050;
 }
 
 .probability-item.rarity-epic .rarity-name {
-  color: #A855F7;
+  color: #C82020;
 }
 
 .probability-item.rarity-legendary .rarity-name {
-  color: #F59E0B;
+  color: #FFD700;
 }
 
 .legendary-section {
@@ -1061,7 +1066,7 @@ img {
 .legendary-title {
   font-size: 0.7rem;
   font-weight: 600;
-  color: #F59E0B;
+  color: #FFD700;
   margin-bottom: var(--spacing-xs);
   text-align: center;
 }
@@ -1077,7 +1082,7 @@ img {
   justify-content: space-between;
   align-items: center;
   padding: 4px 10px;
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(245, 166, 35, 0.05) 100%);
   border-radius: var(--radius-sm);
   font-size: 0.7rem;
 }
@@ -1087,7 +1092,7 @@ img {
 }
 
 .legendary-card-item .card-chance {
-  color: #F59E0B;
+  color: #FFD700;
   font-family: 'SF Mono', 'Fira Code', monospace;
   font-weight: 600;
 }
@@ -1099,7 +1104,7 @@ img {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(15, 15, 26, 0.95);
+  background: rgba(13, 13, 15, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   z-index: 1000;
@@ -1175,12 +1180,10 @@ img {
 
 .card:hover .card-inner {
   transform: translateY(-12px) rotateX(5deg);
-  /* 向上浮起並微傾斜 */
   box-shadow:
     0 35px 50px rgba(0, 0, 0, 0.5),
     0 15px 30px rgba(0, 0, 0, 0.3),
-    0 0 25px rgba(139, 92, 246, 0.3);
-  /* 影子拉長且變淡，並帶有紫色光暈 */
+    0 0 25px rgba(255, 177, 61, 0.25);
 }
 
 .card.flipped .card-inner {
@@ -1607,32 +1610,32 @@ img {
   background-blend-mode: soft-light, normal;
 }
 
-/* Rare - 光澤紙質 */
+/* Rare - 光澤紙質 (Teal) */
 .card-back.back-rare {
   background:
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"),
-    linear-gradient(135deg, #c5d5e0 0%, #a8c0d0 50%, #b8ccd8 100%);
+    linear-gradient(135deg, #c5e0d8 0%, #a8d0c5 50%, #b8d8d0 100%);
   background-blend-mode: overlay, normal;
 }
 
 .card-back.back-rare .card-back-pattern {
-  border-color: rgba(70, 130, 180, 0.4);
+  border-color: rgba(42, 175, 175, 0.4);
 }
 
 .card-back.back-rare .card-back-center {
-  border-color: rgba(70, 130, 180, 0.35);
-  background: rgba(200, 220, 240, 0.5);
+  border-color: rgba(42, 175, 175, 0.35);
+  background: rgba(200, 240, 235, 0.5);
 }
 
 .card-back.back-rare .card-back-text {
-  color: rgba(70, 130, 180, 0.6);
+  color: rgba(42, 175, 175, 0.6);
 }
 
-/* Super Rare - 珍珠質感 */
+/* Super Rare - 珍珠質感 (Gold) */
 .card-back.back-superrare {
   background:
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"),
-    linear-gradient(135deg, #e8e0f0 0%, #d0c0e8 50%, #ddd0f0 100%);
+    linear-gradient(135deg, #f0e8d0 0%, #e8d0a8 50%, #f0e0c0 100%);
   background-blend-mode: overlay, normal;
 }
 
@@ -1659,22 +1662,22 @@ img {
 }
 
 .card-back.back-superrare .card-back-pattern {
-  border-color: rgba(139, 92, 246, 0.4);
+  border-color: rgba(232, 160, 32, 0.4);
 }
 
 .card-back.back-superrare .card-back-center {
-  border-color: rgba(139, 92, 246, 0.35);
-  background: rgba(230, 220, 250, 0.6);
+  border-color: rgba(232, 160, 32, 0.35);
+  background: rgba(255, 245, 220, 0.6);
 }
 
 .card-back.back-superrare .card-back-text {
-  color: rgba(139, 92, 246, 0.6);
+  color: rgba(232, 160, 32, 0.6);
 }
 
-/* Ultra Rare - 鏡面質感 */
+/* Ultra Rare - 鏡面質感 (Coral) */
 .card-back.back-ultrarare {
   background:
-    linear-gradient(135deg, #f8e0f0 0%, #e8c0d8 30%, #f0d0e8 50%, #e0b8d0 70%, #f0d8e8 100%);
+    linear-gradient(135deg, #f8e0d8 0%, #e8c0b0 30%, #f0d0c0 50%, #e0b8a8 70%, #f0d8c8 100%);
 }
 
 .card-back.back-ultrarare::after {
@@ -1687,7 +1690,7 @@ img {
       transparent 2px,
       rgba(255, 255, 255, 0.1) 2px,
       rgba(255, 255, 255, 0.1) 4px),
-    linear-gradient(120deg, transparent 20%, rgba(255, 192, 203, 0.4) 40%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 192, 203, 0.4) 60%, transparent 80%);
+    linear-gradient(120deg, transparent 20%, rgba(224, 96, 80, 0.3) 40%, rgba(255, 255, 255, 0.5) 50%, rgba(224, 96, 80, 0.3) 60%, transparent 80%);
   background-size: 100% 100%, 300% 300%;
   animation: ultraShimmer 4s ease-in-out infinite;
   pointer-events: none;
@@ -1706,31 +1709,31 @@ img {
 }
 
 .card-back.back-ultrarare .card-back-pattern {
-  border-color: rgba(236, 72, 153, 0.4);
+  border-color: rgba(224, 96, 80, 0.4);
   background: repeating-linear-gradient(45deg,
       transparent 0px,
       transparent 6px,
-      rgba(236, 72, 153, 0.08) 6px,
-      rgba(236, 72, 153, 0.08) 7px);
+      rgba(224, 96, 80, 0.08) 6px,
+      rgba(224, 96, 80, 0.08) 7px);
 }
 
 .card-back.back-ultrarare .card-back-center {
-  border-color: rgba(236, 72, 153, 0.4);
-  background: rgba(255, 230, 245, 0.7);
+  border-color: rgba(224, 96, 80, 0.4);
+  background: rgba(255, 235, 230, 0.7);
 }
 
 .card-back.back-ultrarare .card-back-text {
-  color: rgba(200, 50, 120, 0.7);
+  color: rgba(200, 70, 50, 0.7);
 }
 
-/* Epic - 金屬拉絲質感 */
+/* Epic - 金屬拉絲質感 (Crimson) */
 .card-back.back-epic {
   background:
     repeating-linear-gradient(90deg,
-      rgba(168, 85, 247, 0.03) 0px,
+      rgba(200, 32, 32, 0.03) 0px,
       transparent 1px,
       transparent 3px),
-    linear-gradient(135deg, #e8d8f8 0%, #c8a8e8 30%, #d8c0f0 50%, #b898d8 70%, #d0b8e8 100%);
+    linear-gradient(135deg, #f8d8d8 0%, #e8a8a8 30%, #f0c0c0 50%, #d89898 70%, #e8b8b8 100%);
 }
 
 .card-back.back-epic::after {
@@ -1738,7 +1741,7 @@ img {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(135deg, transparent 0%, rgba(168, 85, 247, 0.2) 25%, rgba(255, 255, 255, 0.4) 50%, rgba(168, 85, 247, 0.2) 75%, transparent 100%);
+    linear-gradient(135deg, transparent 0%, rgba(200, 32, 32, 0.2) 25%, rgba(255, 255, 255, 0.4) 50%, rgba(200, 32, 32, 0.2) 75%, transparent 100%);
   background-size: 400% 400%;
   animation: epicShimmer 3s ease-in-out infinite;
   pointer-events: none;
@@ -1757,42 +1760,42 @@ img {
 }
 
 .card-back.back-epic .card-back-pattern {
-  border-color: rgba(168, 85, 247, 0.5);
+  border-color: rgba(200, 32, 32, 0.5);
   background:
     repeating-linear-gradient(60deg,
       transparent 0px,
       transparent 4px,
-      rgba(168, 85, 247, 0.1) 4px,
-      rgba(168, 85, 247, 0.1) 5px);
+      rgba(200, 32, 32, 0.1) 4px,
+      rgba(200, 32, 32, 0.1) 5px);
 }
 
 .card-back.back-epic .card-back-center {
-  border: 2px solid rgba(168, 85, 247, 0.5);
-  background: linear-gradient(135deg, rgba(240, 230, 255, 0.8), rgba(220, 200, 250, 0.8));
-  box-shadow: inset 0 0 25px rgba(168, 85, 247, 0.2);
+  border: 2px solid rgba(200, 32, 32, 0.5);
+  background: linear-gradient(135deg, rgba(255, 235, 235, 0.8), rgba(250, 210, 210, 0.8));
+  box-shadow: inset 0 0 25px rgba(200, 32, 32, 0.2);
 }
 
 .card-back.back-epic .card-back-logo {
-  color: rgba(168, 85, 247, 0.8);
+  color: rgba(200, 32, 32, 0.8);
   filter: none;
 }
 
 .card-back.back-epic .card-back-text {
-  color: rgba(120, 50, 180, 0.8);
+  color: rgba(180, 30, 30, 0.8);
 }
 
 /* Legendary - 金屬浮雕質感 */
 .card-back.back-legendary {
   background:
     repeating-linear-gradient(90deg,
-      rgba(245, 158, 11, 0.05) 0px,
+      rgba(245, 166, 35, 0.05) 0px,
       transparent 1px,
       transparent 2px),
     repeating-linear-gradient(0deg,
-      rgba(245, 158, 11, 0.03) 0px,
+      rgba(245, 166, 35, 0.03) 0px,
       transparent 1px,
       transparent 2px),
-    linear-gradient(135deg, #fff8e0 0%, #ffd700 20%, #ffec80 40%, #ffd700 60%, #ffb800 80%, #ffe066 100%);
+    linear-gradient(135deg, #fff8e0 0%, #FFD700 20%, #ffec80 40%, #FFD700 60%, #F5A623 80%, #ffe066 100%);
 }
 
 .card-back.back-legendary::after {
@@ -1996,7 +1999,7 @@ img {
   bottom: -1px;
   right: -1px;
   border-radius: calc(var(--radius-md) + 2px);
-  background: linear-gradient(135deg, #3B82F6, #60A5FA, #3B82F6, #93C5FD, #3B82F6);
+  background: linear-gradient(135deg, #E8A020, #FFB13D, #E8A020, #FFCF70, #E8A020);
   background-size: 300% 300%;
   animation: superrareBorder 4s ease infinite;
   z-index: -1;
@@ -2010,7 +2013,7 @@ img {
   bottom: -1px;
   right: -1px;
   border-radius: calc(var(--radius-md) + 2px);
-  background: linear-gradient(135deg, #EC4899, #F472B6, #EC4899, #FBCFE8, #EC4899);
+  background: linear-gradient(135deg, #E06050, #FF8070, #E06050, #FFB0A0, #E06050);
   background-size: 300% 300%;
   animation: ultrarareBorder 3.5s ease infinite;
   z-index: -1;
@@ -2024,7 +2027,7 @@ img {
   bottom: -1px;
   right: -1px;
   border-radius: calc(var(--radius-md) + 2px);
-  background: linear-gradient(135deg, #7C3AED, #A855F7, #7C3AED, #C084FC, #7C3AED);
+  background: linear-gradient(135deg, #C82020, #E84040, #C82020, #FF6060, #C82020);
   background-size: 300% 300%;
   animation: epicBorder 4s ease infinite;
   z-index: -1;
@@ -2038,7 +2041,7 @@ img {
   bottom: -1px;
   right: -1px;
   border-radius: calc(var(--radius-md) + 2px);
-  background: linear-gradient(135deg, #F59E0B, #FBBF24, #F59E0B, #FCD34D, #F59E0B);
+  background: linear-gradient(135deg, #F5A623, #FFD700, #F5A623, #FFE55C, #F5A623);
   background-size: 300% 300%;
   animation: legendaryBorder 3s ease infinite;
   z-index: -1;
@@ -2144,30 +2147,29 @@ img {
 }
 
 .badge-common {
-  color: #9CA3AF;
+  color: #3A9D6A;
 }
 
 .badge-rare {
-  color: #94b8a0;
-  ;
+  color: #2AAFAF;
 }
 
 .badge-superrare {
-  color: #3489f1;
+  color: #E8A020;
 }
 
 .badge-ultrarare {
-  color: #8f0000;
+  color: #E06050;
   animation: ultrararePulse 2.5s ease-in-out infinite;
 }
 
 .badge-epic {
-  color: #A855F7;
+  color: #C82020;
   animation: epicPulse 2s ease-in-out infinite;
 }
 
 .badge-legendary {
-  color: #FBBF24;
+  color: #FFD700;
   animation: badgePulse 2s ease-in-out infinite;
 }
 
@@ -2175,11 +2177,11 @@ img {
 
   0%,
   100% {
-    box-shadow: 0 1px 5px rgba(236, 72, 153, 0.5);
+    box-shadow: 0 1px 5px rgba(224, 96, 80, 0.5);
   }
 
   50% {
-    box-shadow: 0 2px 12px rgba(236, 72, 153, 0.7);
+    box-shadow: 0 2px 12px rgba(224, 96, 80, 0.7);
   }
 }
 
@@ -2187,11 +2189,11 @@ img {
 
   0%,
   100% {
-    box-shadow: 0 1px 5px rgba(209, 72, 236, 0.5);
+    box-shadow: 0 1px 5px rgba(200, 32, 32, 0.5);
   }
 
   50% {
-    box-shadow: 0 2px 12px rgba(236, 72, 228, 0.7);
+    box-shadow: 0 2px 12px rgba(200, 32, 32, 0.7);
   }
 }
 
@@ -2199,11 +2201,11 @@ img {
 
   0%,
   100% {
-    box-shadow: 0 2px 12px rgba(245, 158, 11, 0.5);
+    box-shadow: 0 2px 12px rgba(255, 215, 0, 0.5);
   }
 
   50% {
-    box-shadow: 0 4px 20px rgba(245, 158, 11, 0.8);
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.8);
   }
 }
 
@@ -2212,7 +2214,7 @@ img {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 50%, #e8eaf6 100%);
+  background: linear-gradient(135deg, #FFF5E0 0%, #FFE8C0 50%, #F5DEB0 100%);
   box-shadow:
     inset 0 0 50px rgba(255, 255, 255, 0.1),
     inset 0 0 20px rgba(255, 255, 255, 0.2);
@@ -2434,9 +2436,8 @@ img {
   background: #222;
   border-radius: var(--radius-md);
   position: relative;
-  /* 動態陰影：結合深色投影與紫色環境光 */
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9),
-    0 0 30px rgba(139, 92, 246, 0.4) !important;
+    0 0 30px rgba(255, 177, 61, 0.4) !important;
   overflow: visible;
   /* 確保陰影不會被切掉 */
 }
@@ -2461,43 +2462,41 @@ img {
 
 /* --- 2. 顏色映射：根據稀有度類別套用文字顏色與光暈 --- */
 
-/* Common - 灰色 */
+/* Common - 綠色 */
 .card-detail .badge-common {
-  color: #94a3b8;
-  filter: drop-shadow(0 0 5px rgba(148, 163, 184, 0.8));
+  color: #3A9D6A;
+  filter: drop-shadow(0 0 5px rgba(58, 157, 106, 0.8));
 }
 
-/* Uncommon - 綠色 */
-.card-detail .badge-uncommon {
-  color: #22c55e;
-  filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.8));
-}
-
-/* Rare - 藍色 */
+/* Rare - 青色 */
 .card-detail .badge-rare {
-  color: #3b82f6;
-  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.8));
+  color: #2AAFAF;
+  filter: drop-shadow(0 0 8px rgba(42, 175, 175, 0.8));
 }
 
-/* Epic - 紫色 */
+/* Super Rare - 金色 */
+.card-detail .badge-superrare {
+  color: #E8A020;
+  filter: drop-shadow(0 0 8px rgba(232, 160, 32, 0.8));
+}
+
+/* Ultra Rare - 珊瑚色 */
+.card-detail .badge-ultrarare {
+  color: #E06050;
+  filter: drop-shadow(0 0 10px rgba(224, 96, 80, 0.9));
+}
+
+/* Epic - 深紅色 */
 .card-detail .badge-epic {
-  color: #a855f7;
-  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.9));
+  color: #C82020;
+  filter: drop-shadow(0 0 10px rgba(200, 32, 32, 0.9));
 }
 
-/* Legendary - 金色/橘色 */
+/* Legendary - 純金色 */
 .card-detail .badge-legendary {
-  color: #f59e0b;
-  filter: drop-shadow(0 0 12px rgba(245, 158, 11, 1));
+  color: #FFD700;
+  filter: drop-shadow(0 0 12px rgba(255, 215, 0, 1));
   animation: badgeGlow 2s infinite alternate;
-  /* 加上呼吸發光 */
-}
-
-/* Mythic - 紅色 */
-.card-detail .badge-mythic {
-  color: #ef4444;
-  filter: drop-shadow(0 0 15px rgba(239, 68, 68, 1));
-  animation: badgeGlow 1.5s infinite alternate;
 }
 
 /* --- 3. 呼吸發光動畫 --- */
@@ -2529,7 +2528,7 @@ img {
   content: '';
   position: absolute;
   inset: -3%;
-  background: radial-gradient(circle at center, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
+  background: radial-gradient(circle at center, rgba(255, 177, 61, 0.2) 0%, transparent 70%);
   z-index: -1;
   animation: detailGlow 3s ease-in-out infinite alternate;
 }
@@ -2703,6 +2702,7 @@ img {
 }
 
 .stat-value {
+  font-family: 'Rajdhani', sans-serif;
   font-size: 2rem;
   font-weight: 800;
   background: var(--primary-gradient);
@@ -2739,8 +2739,9 @@ img {
 }
 
 .collection-series-title {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Rajdhani', sans-serif;
   font-size: 1.3rem;
+  font-weight: 600;
   letter-spacing: 4px;
   color: var(--text-secondary);
   margin-bottom: var(--spacing-sm);
@@ -2785,7 +2786,7 @@ img {
 
 .collection-item-photo {
   height: 140px;
-  background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 50%, #e8eaf6 100%);
+  background: linear-gradient(135deg, #FFF5E0 0%, #FFE8C0 50%, #F5DEB0 100%);
   display: flex;
   align-items: center;
   justify-content: center;
