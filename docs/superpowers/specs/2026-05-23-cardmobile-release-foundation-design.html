@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CardMobile Release Foundation Design</title>
+  <style>
+    :root {
+      --bg: #08090d;
+      --panel: #11141c;
+      --panel-2: #171b25;
+      --line: rgba(255, 255, 255, 0.12);
+      --text: #f6f3ea;
+      --muted: #a9afbd;
+      --gold: #ffd36d;
+      --teal: #46e0c2;
+      --red: #ff6464;
+      --blue: #75b7ff;
+      --violet: #b894ff;
+      --green: #69d58c;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 18% 0%, rgba(255, 211, 109, 0.14), transparent 31rem),
+        radial-gradient(circle at 82% 10%, rgba(70, 224, 194, 0.12), transparent 28rem),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+      line-height: 1.55;
+    }
+
+    a {
+      color: var(--teal);
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
+      gap: 22px;
+      align-items: stretch;
+      min-height: 360px;
+    }
+
+    .hero-copy,
+    .stage-card,
+    .panel,
+    .metric {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025));
+      border-radius: var(--radius);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.34);
+    }
+
+    .hero-copy {
+      padding: 34px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .eyebrow {
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin-top: 12px;
+      font-size: clamp(2.4rem, 6vw, 5.2rem);
+      line-height: 0.96;
+    }
+
+    h2 {
+      margin-bottom: 14px;
+      font-size: 1.65rem;
+    }
+
+    h3 {
+      margin-bottom: 10px;
+      font-size: 1rem;
+      color: var(--gold);
+    }
+
+    .lede {
+      max-width: 760px;
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .hero-tags,
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .tag {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 10px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.055);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .stage-card {
+      position: relative;
+      min-height: 360px;
+      overflow: hidden;
+      padding: 26px;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(255, 211, 109, 0.34), transparent 7rem),
+        linear-gradient(145deg, rgba(117, 183, 255, 0.14), rgba(255, 100, 100, 0.12)),
+        var(--panel);
+    }
+
+    .spotlight {
+      position: absolute;
+      inset: -20% 14% auto;
+      height: 70%;
+      clip-path: polygon(42% 0, 58% 0, 100% 100%, 0 100%);
+      background: linear-gradient(180deg, rgba(255, 247, 205, 0.35), transparent);
+      opacity: 0.75;
+    }
+
+    .mock-card {
+      position: absolute;
+      left: 50%;
+      top: 49%;
+      width: 144px;
+      aspect-ratio: 5 / 7;
+      transform: translate(-50%, -50%) rotate(-2deg);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 211, 109, 0.3)),
+        linear-gradient(135deg, #252a35, #0d0f16);
+      box-shadow:
+        0 0 38px rgba(255, 211, 109, 0.52),
+        0 28px 80px rgba(0, 0, 0, 0.65);
+      overflow: hidden;
+    }
+
+    .mock-card::before {
+      content: "LR";
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      color: #241b02;
+      background: var(--gold);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .mock-card::after {
+      content: "";
+      position: absolute;
+      left: 13px;
+      right: 13px;
+      bottom: 14px;
+      height: 48px;
+      border-radius: 7px;
+      background: rgba(8, 9, 13, 0.52);
+    }
+
+    .stage-label {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .section {
+      margin-top: 24px;
+    }
+
+    .grid-3,
+    .grid-2,
+    .metrics {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .metrics {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .panel,
+    .metric {
+      padding: 20px;
+    }
+
+    .panel p,
+    .panel li,
+    .metric p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .metric strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--text);
+      font-size: 1.7rem;
+      line-height: 1;
+    }
+
+    .bar-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .bar {
+      display: grid;
+      grid-template-columns: 110px 1fr 50px;
+      gap: 12px;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .track {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.09);
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+    }
+
+    .threshold-table,
+    .schema {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .threshold-table th,
+    .threshold-table td,
+    .schema th,
+    .schema td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+
+    .threshold-table th,
+    .schema th {
+      color: var(--gold);
+      background: rgba(255, 255, 255, 0.055);
+      font-size: 13px;
+    }
+
+    .threshold-table tr:last-child td,
+    .schema tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .flow-step {
+      position: relative;
+      min-height: 116px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel-2);
+    }
+
+    .flow-step::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -13px;
+      width: 13px;
+      height: 2px;
+      background: var(--line);
+    }
+
+    .flow-step:last-child::after {
+      display: none;
+    }
+
+    .flow-step b {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      margin-bottom: 10px;
+      border-radius: 999px;
+      color: #07100d;
+      background: var(--teal);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel-2);
+    }
+
+    .time {
+      color: var(--teal);
+      font-weight: 900;
+    }
+
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .checklist li {
+      padding: 12px 12px 12px 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel-2);
+      color: var(--muted);
+      position: relative;
+    }
+
+    .checklist li::before {
+      content: "";
+      position: absolute;
+      left: 13px;
+      top: 16px;
+      width: 12px;
+      height: 12px;
+      border: 2px solid var(--teal);
+      border-radius: 4px;
+    }
+
+    .callout {
+      border-left: 4px solid var(--gold);
+      background: rgba(255, 211, 109, 0.09);
+    }
+
+    code {
+      color: var(--gold);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 5px;
+      padding: 2px 5px;
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      .grid-2,
+      .grid-3,
+      .metrics,
+      .flow,
+      .checklist {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-copy {
+        padding: 24px;
+      }
+
+      .bar {
+        grid-template-columns: 92px 1fr 46px;
+      }
+
+      .timeline-item {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-step::after {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-copy">
+        <div>
+          <div class="eyebrow">CardMobile Public Release Foundation</div>
+          <h1>第一版以抽卡核心體驗為主，做穩、做爽、做可同步。</h1>
+          <p class="lede">方向採 Showcase Stage：訪客可玩、登入後同步收藏、卡池依飽和狀態滾動機率，並修正翻卡音效在關閉後持續播放的 bug。</p>
+        </div>
+        <div class="hero-tags">
+          <span class="tag">Vue 3 + Vite</span>
+          <span class="tag">Supabase Free</span>
+          <span class="tag">No leaderboard in v1</span>
+          <span class="tag">Backend draw API phase 2</span>
+        </div>
+      </div>
+      <div class="stage-card" aria-label="Showcase Stage visual mockup">
+        <div class="spotlight"></div>
+        <div class="mock-card"></div>
+        <div class="stage-label">
+          <span>OPENING CEREMONY</span>
+          <span>SHOWCASE STAGE</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section metrics">
+      <div class="metric">
+        <strong>Guest</strong>
+        <p>免登入直接抽卡，本機先保存。</p>
+      </div>
+      <div class="metric">
+        <strong>Sync</strong>
+        <p>登入後合併本機與雲端收藏。</p>
+      </div>
+      <div class="metric">
+        <strong>Rolling</strong>
+        <p>滿張卡移出卡池，機率重新分配。</p>
+      </div>
+      <div class="metric">
+        <strong>Stage</strong>
+        <p>高標準抽卡動畫與音效節奏。</p>
+      </div>
+    </section>
+
+    <section class="section grid-3">
+      <div class="panel">
+        <h3>第一版必做</h3>
+        <p>修正音效/timer 洩漏、優化抽卡動畫、調整機率與飽和規則、Supabase 收藏同步。</p>
+      </div>
+      <div class="panel">
+        <h3>第一版不做</h3>
+        <p>排行榜、付費、完整反作弊、遠端活動卡池、完整 Vue component 重構。</p>
+      </div>
+      <div class="panel callout">
+        <h3>發布提醒</h3>
+        <p>抽卡仍在前端，公開原型可接受；要防作弊時必須移到後端 API。</p>
+      </div>
+    </section>
+
+    <section class="section grid-2">
+      <div class="panel">
+        <h2>基礎稀有度權重</h2>
+        <div class="bar-list">
+          <div class="bar"><span>N</span><div class="track"><div class="fill" style="width:36%"></div></div><b>36</b></div>
+          <div class="bar"><span>R</span><div class="track"><div class="fill" style="width:25%"></div></div><b>25</b></div>
+          <div class="bar"><span>SR</span><div class="track"><div class="fill" style="width:16%"></div></div><b>16</b></div>
+          <div class="bar"><span>SSR</span><div class="track"><div class="fill" style="width:10%"></div></div><b>10</b></div>
+          <div class="bar"><span>UR</span><div class="track"><div class="fill" style="width:7%"></div></div><b>7</b></div>
+          <div class="bar"><span>EPIC</span><div class="track"><div class="fill" style="width:4%"></div></div><b>4</b></div>
+          <div class="bar"><span>LR</span><div class="track"><div class="fill" style="width:2%"></div></div><b>2</b></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>飽和閾值</h2>
+        <table class="threshold-table">
+          <thead><tr><th>稀有度</th><th>上限</th><th>設計意圖</th></tr></thead>
+          <tbody>
+            <tr><td>N</td><td>200</td><td>承接大量重複抽卡</td></tr>
+            <tr><td>R</td><td>160</td><td>長線收集緩衝</td></tr>
+            <tr><td>SR</td><td>120</td><td>中段重複資產</td></tr>
+            <tr><td>SSR</td><td>80</td><td>開始明顯收斂</td></tr>
+            <tr><td>UR</td><td>50</td><td>高稀有封頂較快</td></tr>
+            <tr><td>EPIC</td><td>20</td><td>稀有重複有限</td></tr>
+            <tr><td>LR</td><td>5</td><td>傳說卡保持珍貴</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section panel">
+      <h2>滾動機率流程</h2>
+      <p>每抽一張都重新讀取目前收藏，排除已飽和卡片，再把剩餘稀有度權重正規化。</p>
+      <div class="flow">
+        <div class="flow-step"><b>1</b><h3>讀取卡包</h3><p>取得目前 pack 內所有卡片。</p></div>
+        <div class="flow-step"><b>2</b><h3>排除飽和</h3><p><code>count >= limit</code> 的卡片移出池。</p></div>
+        <div class="flow-step"><b>3</b><h3>重算權重</h3><p>只有仍有卡片的稀有度參與抽選。</p></div>
+        <div class="flow-step"><b>4</b><h3>即時更新</h3><p>10 連抽途中也會逐張更新飽和狀態。</p></div>
+      </div>
+      <div class="tag-row">
+        <span class="tag">若 N/R 滿池：LR 有效機率約 5.1%</span>
+        <span class="tag">若整包全滿：OPEN 變已集齊</span>
+        <span class="tag">機率 UI 顯示目前有效機率</span>
+      </div>
+    </section>
+
+    <section class="section grid-2">
+      <div class="panel">
+        <h2>Supabase 資料模型</h2>
+        <table class="schema">
+          <thead><tr><th>Table</th><th>欄位</th></tr></thead>
+          <tbody>
+            <tr><td><code>profiles</code></td><td>id, display_name, created_at, updated_at</td></tr>
+            <tr><td><code>player_collections</code></td><td>user_id, card_id, count, updated_at</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:12px;">RLS：使用者只能讀寫自己的收藏。登入合併採加總，再依稀有度上限 clamp。</p>
+      </div>
+      <div class="panel">
+        <h2>後續排程</h2>
+        <div class="timeline">
+          <div class="timeline-item"><div class="time">Phase 1</div><p>前端抽卡、訪客模式、收藏同步、Showcase Stage、bug 修正。</p></div>
+          <div class="timeline-item"><div class="time">Phase 2</div><p>後端權威抽卡 API、draw logs、防作弊、遠端卡池。</p></div>
+          <div class="timeline-item"><div class="time">Phase 3</div><p>完整 Vue component 化、素材 CDN、進階營運系統。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section panel">
+      <h2>翻卡音效 Bug 修法</h2>
+      <div class="flow">
+        <div class="flow-step"><b>A</b><h3>Session ID</h3><p>每次揭曉建立 <code>revealSessionId</code>。</p></div>
+        <div class="flow-step"><b>B</b><h3>Timer Registry</h3><p>所有 timeout 透過 <code>scheduleRevealTimer</code> 登記。</p></div>
+        <div class="flow-step"><b>C</b><h3>Cancel</h3><p>關閉、重抽、切頁清空 timers 並讓舊 callback 失效。</p></div>
+        <div class="flow-step"><b>D</b><h3>Stop SFX</h3><p>停止 cardFlip、newCard、legendary、packOpen 等音效。</p></div>
+      </div>
+    </section>
+
+    <section class="section grid-2">
+      <div class="panel">
+        <h2>抽卡動畫標準</h2>
+        <div class="timeline">
+          <div class="timeline-item"><div class="time">0.0s</div><p>撕包、暗場、舞台光收束。</p></div>
+          <div class="timeline-item"><div class="time">0.4s</div><p>卡片分批進場，保持固定尺寸避免跳版。</p></div>
+          <div class="timeline-item"><div class="time">Flip</div><p>新卡與高稀有卡增加停頓、spotlight、rim glow。</p></div>
+          <div class="timeline-item"><div class="time">LR</div><p>傳說卡進入完整 Showcase overlay。</p></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>效能約束</h2>
+        <ul>
+          <li>動畫優先使用 transform / opacity。</li>
+          <li>overlay inactive 時停止粒子與無限動畫。</li>
+          <li>手機降低粒子數、blur 和 drop-shadow 疊加。</li>
+          <li>支援 <code>prefers-reduced-motion</code>。</li>
+          <li>預載當前抽卡結果，不預載整個素材庫。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section panel">
+      <h2>驗證清單</h2>
+      <ul class="checklist">
+        <li>關閉 overlay 後翻卡、新卡、傳說音效全部停止。</li>
+        <li>重抽前會取消上一輪 reveal timers。</li>
+        <li>飽和卡不再被抽到。</li>
+        <li>10 連抽中途達上限會即時排除。</li>
+        <li>有效機率 UI 會跟著剩餘卡池更新。</li>
+        <li>整包全滿時不能繼續 OPEN。</li>
+        <li>訪客模式無 Supabase 也能玩。</li>
+        <li>登入後本機與雲端收藏加總並 clamp。</li>
+        <li>手機 viewport 不重疊、不跳版。</li>
+        <li><code>npm run build</code> 通過。</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
