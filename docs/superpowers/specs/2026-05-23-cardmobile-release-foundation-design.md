@@ -41,7 +41,7 @@ The app remains a Vue 3 + Vite shell that mounts the existing card game UI and l
 The first release will add small, focused modules around the existing logic rather than a large rewrite:
 
 - `CONFIG.RARITY.WEIGHTS`: base rarity weights.
-- `CONFIG.RARITY.SATURATION_LIMITS`: max owned count per rarity.
+- `CONFIG.RARITY.SATURATION_LIMITS`: max owned count for capped rarities, with EPIC and LR intentionally uncapped.
 - Draw helpers in `js/app.js`: filter saturated cards, group unsaturated cards by rarity, calculate effective rolling odds, and draw from the remaining pool.
 - Reveal controller in `js/app.js`: one place to register timers, cancel reveal sessions, and stop reveal SFX.
 - Supabase client/service in `src` or a small legacy bridge: auth state, collection load, merge, and background sync.
@@ -74,14 +74,16 @@ common: 160
 rare: 120
 superrare: 80
 ultrarare: 50
-epic: 20
-legendary: 5
+epic: null
+legendary: null
 ```
+
+EPIC and LR cards are uncapped. They are never removed from the draw pool by saturation. This keeps premium cards collectible even after repeated pulls, while lower tiers absorb long-tail collection progress.
 
 Before each card draw:
 
 1. Build the selected pack's available card list.
-2. Remove cards where `collection[card.id] >= SATURATION_LIMITS[card.rarity]`.
+2. Remove capped cards where `collection[card.id] >= SATURATION_LIMITS[card.rarity]`.
 3. Group the remaining cards by rarity.
 4. Use only rarities that still have at least one unsaturated card.
 5. Recalculate total weight from those remaining rarity groups.
@@ -108,7 +110,7 @@ epic: 10.3%
 legendary: 5.1%
 ```
 
-If all cards in a pack are saturated, the pack should show a completed state and disable opening. Probability UI must show effective current odds, not only base odds.
+If all capped cards in a pack are saturated, the pack still remains open as long as it contains EPIC or LR cards, because those rarities are uncapped. A pack should show a completed or capped state only when no drawable cards remain, which is unlikely for packs containing uncapped EPIC or LR cards. Probability UI must show effective current odds, not only base odds.
 
 ## Collection Persistence And Sync
 
@@ -135,7 +137,7 @@ Sync flow:
 1. Guest collection loads from `localStorage`.
 2. When the player logs in, fetch cloud collection.
 3. Merge local and cloud collection by adding counts for each card.
-4. Clamp merged counts to the saturation limit for that card rarity.
+4. Clamp merged counts only for capped rarities. EPIC and LR counts are not clamped.
 5. Save merged collection locally and upsert it to Supabase.
 6. After login, draws update local state immediately and sync cloud in the background.
 7. If sync fails, keep play uninterrupted and retry later or on next login/session.
@@ -227,7 +229,7 @@ Optional later optimizations:
 - If `localStorage` is unavailable, keep an in-memory collection and show a non-blocking warning.
 - If Supabase is not configured, auth and sync UI should stay hidden or disabled; guest play must still work.
 - If Supabase sync fails, preserve local progress and retry later.
-- If a selected pack has no unsaturated cards, disable open and show completed state.
+- If a selected pack has no drawable cards after capped rarity filtering, disable open and show completed state.
 - If a pack has no valid cards because of config errors, disable open and show a clear message.
 
 ## Verification
@@ -238,11 +240,11 @@ Functional checks:
 - Closing the overlay during flip-all stops all reveal sounds.
 - Closing the overlay before delayed new-card or legendary sound prevents those sounds.
 - Redrawing cancels old timers before opening the next pack.
-- Saturated cards do not appear in future draws.
+- Saturated capped cards do not appear in future draws.
 - Effective probability UI updates when rarities become saturated.
 - Completed packs cannot be opened.
 - Guest play works without Supabase environment values.
-- Login merge adds local and cloud counts, clamped by saturation limits.
+- Login merge adds local and cloud counts, clamping only capped rarities.
 
 Build and UI checks:
 

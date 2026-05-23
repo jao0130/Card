@@ -518,9 +518,9 @@
             <tr><td>R</td><td>160</td><td>長線收集緩衝</td></tr>
             <tr><td>SR</td><td>120</td><td>中段重複資產</td></tr>
             <tr><td>SSR</td><td>80</td><td>開始明顯收斂</td></tr>
-            <tr><td>UR</td><td>50</td><td>高稀有封頂較快</td></tr>
-            <tr><td>EPIC</td><td>20</td><td>稀有重複有限</td></tr>
-            <tr><td>LR</td><td>5</td><td>傳說卡保持珍貴</td></tr>
+            <tr><td>UR</td><td>50</td><td>最高受限稀有度</td></tr>
+            <tr><td>EPIC</td><td>不設限</td><td>可持續重複抽到</td></tr>
+            <tr><td>LR</td><td>不設限</td><td>傳說卡不因張數移出卡池</td></tr>
           </tbody>
         </table>
       </div>
@@ -528,16 +528,16 @@
 
     <section class="section panel">
       <h2>滾動機率流程</h2>
-      <p>每抽一張都重新讀取目前收藏，排除已飽和卡片，再把剩餘稀有度權重正規化。</p>
+      <p>每抽一張都重新讀取目前收藏，只排除 N 到 UR 的已飽和卡片；EPIC 與 LR 不設限，會保留在卡池中，再把剩餘可抽稀有度權重正規化。</p>
       <div class="flow">
         <div class="flow-step"><b>1</b><h3>讀取卡包</h3><p>取得目前 pack 內所有卡片。</p></div>
-        <div class="flow-step"><b>2</b><h3>排除飽和</h3><p><code>count >= limit</code> 的卡片移出池。</p></div>
+        <div class="flow-step"><b>2</b><h3>排除飽和</h3><p>N 到 UR 若 <code>count >= limit</code> 就移出池；EPIC/LR 保留。</p></div>
         <div class="flow-step"><b>3</b><h3>重算權重</h3><p>只有仍有卡片的稀有度參與抽選。</p></div>
         <div class="flow-step"><b>4</b><h3>即時更新</h3><p>10 連抽途中也會逐張更新飽和狀態。</p></div>
       </div>
       <div class="tag-row">
         <span class="tag">若 N/R 滿池：LR 有效機率約 5.1%</span>
-        <span class="tag">若整包全滿：OPEN 變已集齊</span>
+        <span class="tag">EPIC/LR 不會因張數飽和移出</span>
         <span class="tag">機率 UI 顯示目前有效機率</span>
       </div>
     </section>
@@ -552,7 +552,7 @@
             <tr><td><code>player_collections</code></td><td>user_id, card_id, count, updated_at</td></tr>
           </tbody>
         </table>
-        <p style="margin-top:12px;">RLS：使用者只能讀寫自己的收藏。登入合併採加總，再依稀有度上限 clamp。</p>
+        <p style="margin-top:12px;">RLS：使用者只能讀寫自己的收藏。登入合併採加總，只對 N 到 UR 依稀有度上限 clamp；EPIC/LR 不 clamp。</p>
       </div>
       <div class="panel">
         <h2>後續排程</h2>
@@ -601,12 +601,12 @@
       <ul class="checklist">
         <li>關閉 overlay 後翻卡、新卡、傳說音效全部停止。</li>
         <li>重抽前會取消上一輪 reveal timers。</li>
-        <li>飽和卡不再被抽到。</li>
-        <li>10 連抽中途達上限會即時排除。</li>
+        <li>N 到 UR 的飽和卡不再被抽到。</li>
+        <li>10 連抽中途達上限會即時排除受限稀有度。</li>
         <li>有效機率 UI 會跟著剩餘卡池更新。</li>
-        <li>整包全滿時不能繼續 OPEN。</li>
+        <li>若沒有任何可抽卡，不能繼續 OPEN。</li>
         <li>訪客模式無 Supabase 也能玩。</li>
-        <li>登入後本機與雲端收藏加總並 clamp。</li>
+        <li>登入後本機與雲端收藏加總，只 clamp N 到 UR。</li>
         <li>手機 viewport 不重疊、不跳版。</li>
         <li><code>npm run build</code> 通過。</li>
       </ul>
