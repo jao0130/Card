@@ -56,13 +56,13 @@
  * 可透過 enabled: false 關閉音效，或調整 volume (0.0-1.0) 控制音量
  */
 
-const CONFIG = {
+window.CONFIG = {
   // ========================================
   // 背景音樂設定
   // ========================================
   BGM: {
     enabled: true,           // 是否啟用背景音樂
-    volume: 0.1,             // 背景音樂音量 (0.0 - 1.0)
+    volume: 0.12,            // 背景音樂音量 (0.0 - 1.0)
     shuffle: true,           // 是否隨機播放（輪播列表）
 
     // 大廳 BGM 輪播列表（最多 10 首）
@@ -97,7 +97,7 @@ const CONFIG = {
   // ========================================
   SOUNDS: {
     enabled: true,           // 是否啟用音效
-    volume: 0.5,             // 音量 (0.0 - 1.0)
+    volume: 0.45,            // 音量 (0.0 - 1.0)
 
     // 音效檔案路徑（放置於 sounds/ 資料夾）
     files: {
@@ -126,14 +126,22 @@ const CONFIG = {
       legendary: 'sounds/legendary.mp3',      // 傳說卡特殊音效
     },
     volumes: {
-      packOpen: 0.1,           // 卡包打開音效較小聲
-      packTear: 0.8,           // 卡包撕開音效正常
-      cardFlip: 0.5,           // 翻卡音效較小聲
-      cardFlipAll: 1.0,        // 一次翻開音效
-      newCard7Star: 0.5,       // 7星卡音效最大聲
-      legendary: 0.5,          // 傳說卡音效最大聲
-      buttonClick: 0.1,        // 按鈕點擊音效很小聲
-      // 其他未列出的音效會使用預設 0.8
+      packOpen: 0.16,          // 卡包打開音效較小聲
+      packTear: 0.45,          // 卡包撕開音效正常
+      cardFlip: 0.34,          // 翻卡音效較小聲
+      cardFlipAll: 0.42,       // 一次翻開音效
+      cardEnlarge: 0.26,
+      overlayClose: 0.22,
+      buttonClick: 0.12,       // 按鈕點擊音效很小聲
+      navSwitch: 0.2,
+      newCard1Star: 0.22,
+      newCard2Star: 0.25,
+      newCard3Star: 0.29,
+      newCard4Star: 0.33,
+      newCard5Star: 0.38,
+      newCard6Star: 0.42,
+      newCard7Star: 0.48,      // 7星卡音效最大聲
+      legendary: 0.44,         // 傳說卡音效最大聲
     }
   },
 
@@ -142,13 +150,22 @@ const CONFIG = {
   // ========================================
   RARITY: {
     WEIGHTS: {
-      normal: 40,
+      normal: 36,
       common: 25,
-      rare: 15,
+      rare: 16,
       superrare: 10,
-      ultrarare: 6,
-      epic: 3,
-      legendary: 1,
+      ultrarare: 7,
+      epic: 4,
+      legendary: 2,
+    },
+    SATURATION_LIMITS: {
+      normal: 200,
+      common: 160,
+      rare: 120,
+      superrare: 80,
+      ultrarare: 50,
+      epic: null,
+      legendary: null,
     },
     TEXT: {
       normal: 'N',
@@ -201,7 +218,7 @@ const CONFIG = {
     { id: 'omg', name: 'OMG COLLECTION', order: 14 },
     { id: 'getup', name: 'GET UP COLLECTION', order: 15 },
     { id: 'twice', name: 'TWICE COLLECTION', order: 16 },
-    
+    { id: 'IDLE', name: 'IDLE COLLECTION', order: 17 },
     { id: 'itzyI', name: 'itzy I COLLECTION', order: 20 },
     { id: 'itzyII', name: 'itzy II COLLECTION', order: 21 },
   ],
@@ -305,7 +322,22 @@ const CONFIG = {
         136, 137, 138, 139, 140,
         141, 142]
     },
-    
+    {
+      id: 'IDLE',
+      name: 'IDLE-I',
+      description: '',
+      brandTitle: 'IDLE',
+      brandSub: 'each 5',
+      packLabel: '-new-',
+      cardCount: 10,
+      image: 'images/packs/idle-1.jpg',
+      emoji: '',
+      bgm: 'sounds/bgm/mono.mp3',
+      cards: [143, 144, 145, 146, 147, 148, 149,
+         150, 151, 152, 153, 154, 155, 156,
+         157, 158, 159, 160, 161, 162, 163,
+         164, 165, 166, 167]
+    },
   ],
 
   // ========================================
@@ -469,30 +501,50 @@ const CONFIG = {
     { id: 122, nameChinese: 'MOMO', nameEnglish: 'Momo', nameKorean: '모모', image: 'images/cards/twice/momo-1.jpg', rarity: 'superrare', series: 'twice' },
     { id: 123, nameChinese: 'MOMO', nameEnglish: 'Momo', nameKorean: '모모', image: 'images/cards/twice/momo-2.jpg', rarity: 'ultrarare', series: 'twice' },
     { id: 124, nameChinese: 'MOMO', nameEnglish: 'Momo', nameKorean: '모모', image: 'images/cards/twice/momo-3.jpg', rarity: 'epic', series: 'twice' },
-
     { id: 125, nameChinese: '紗夏', nameEnglish: 'Sana', nameKorean: '사나', image: 'images/cards/twice/sana-1.jpg', rarity: 'superrare', series: 'twice' },
     { id: 126, nameChinese: '紗夏', nameEnglish: 'Sana', nameKorean: '사나', image: 'images/cards/twice/sana-2.jpg', rarity: 'rare', series: 'twice' },
     { id: 127, nameChinese: '紗夏', nameEnglish: 'Sana', nameKorean: '사나', image: 'images/cards/twice/sana.gif', rarity: 'legendary', series: 'twice' },
-
     { id: 128, nameChinese: '志效', nameEnglish: 'Jihyo', nameKorean: '지효', image: 'images/cards/twice/jihyo-1.jpg', rarity: 'normal', series: 'twice' },
     { id: 129, nameChinese: '志效', nameEnglish: 'Jihyo', nameKorean: '지효', image: 'images/cards/twice/jihyo-2.jpg', rarity: 'ultrarare', series: 'twice' },
     { id: 130, nameChinese: '志效', nameEnglish: 'Jihyo', nameKorean: '지효', image: 'images/cards/twice/jihyo.gif', rarity: 'legendary', series: 'twice' },
-
     { id: 131, nameChinese: '美娜', nameEnglish: 'Mina', nameKorean: '미나', image: 'images/cards/twice/mina-1.jpg', rarity: 'superrare', series: 'twice' },
     { id: 132, nameChinese: '美娜', nameEnglish: 'Mina', nameKorean: '미나', image: 'images/cards/twice/mina-2.jpg', rarity: 'ultrarare', series: 'twice' },
     { id: 133, nameChinese: '美娜', nameEnglish: 'Mina', nameKorean: '미나', image: 'images/cards/twice/mina-3.jpg', rarity: 'epic', series: 'twice' },
-
     { id: 134, nameChinese: '多賢', nameEnglish: 'Dahyun', nameKorean: '다현', image: 'images/cards/twice/dahyun-1.jpg', rarity: 'ultrarare', series: 'twice' },
     { id: 135, nameChinese: '多賢', nameEnglish: 'Dahyun', nameKorean: '다현', image: 'images/cards/twice/dahyun-2.jpg', rarity: 'rare', series: 'twice' },
     { id: 136, nameChinese: '多賢', nameEnglish: 'Dahyun', nameKorean: '다현', image: 'images/cards/twice/dahyun-3.jpg', rarity: 'epic', series: 'twice' },
-
     { id: 137, nameChinese: '彩瑛', nameEnglish: 'Chaeyoung', nameKorean: '채영', image: 'images/cards/twice/chaeyoung-1.jpg', rarity: 'common', series: 'twice' },
     { id: 138, nameChinese: '彩瑛', nameEnglish: 'Chaeyoung', nameKorean: '채영', image: 'images/cards/twice/chaeyoung-2.jpg', rarity: 'superrare', series: 'twice' },
     { id: 139, nameChinese: '彩瑛', nameEnglish: 'Chaeyoung', nameKorean: '채영', image: 'images/cards/twice/chaeyoung-3.jpg', rarity: 'ultrarare', series: 'twice' },
-
     { id: 140, nameChinese: '子瑜', nameEnglish: 'Tzuyu', nameKorean: '쯔위', image: 'images/cards/twice/tzuyu-1.jpg', rarity: 'superrare', series: 'twice' },
     { id: 141, nameChinese: '子瑜', nameEnglish: 'Tzuyu', nameKorean: '쯔위', image: 'images/cards/twice/tzuyu-2.jpg', rarity: 'ultrarare', series: 'twice' },
     { id: 142, nameChinese: '子瑜', nameEnglish: 'Tzuyu', nameKorean: '쯔위', image: 'images/cards/twice/tzuyu.gif', rarity: 'legendary', series: 'twice' },
+
+    { id: 143, nameChinese: '曺薇娟', nameEnglish: 'Miyeon', nameKorean: '조미연', image: 'images/cards/idle/miyeon-1.jpg', rarity: 'common', series: 'IDLE' },
+    { id: 144, nameChinese: '曺薇娟', nameEnglish: 'Miyeon', nameKorean: '조미연', image: 'images/cards/idle/miyeon-2.jpg', rarity: 'superrare', series: 'IDLE' },
+    { id: 145, nameChinese: '曺薇娟', nameEnglish: 'Miyeon', nameKorean: '조미연', image: 'images/cards/idle/miyeon-3.jpg', rarity: 'ultrarare', series: 'IDLE' },
+    { id: 146, nameChinese: '曺薇娟', nameEnglish: 'Miyeon', nameKorean: '조미연', image: 'images/cards/idle/miyeon-4.jpg', rarity: 'epic', series: 'IDLE' },
+    { id: 147, nameChinese: '曺薇娟', nameEnglish: 'Miyeon', nameKorean: '조미연', image: 'images/cards/idle/miyeon.gif', rarity: 'legendary', series: 'IDLE' },
+    { id: 148, nameChinese: '金米妮', nameEnglish: 'Minnie', nameKorean: '민니', image: 'images/cards/idle/minnie-1.jpg', rarity: 'common', series: 'IDLE' },
+    { id: 149, nameChinese: '金米妮', nameEnglish: 'Minnie', nameKorean: '민니', image: 'images/cards/idle/minnie-2.jpg', rarity: 'rare', series: 'IDLE' },
+    { id: 150, nameChinese: '金米妮', nameEnglish: 'Minnie', nameKorean: '민니', image: 'images/cards/idle/minnie-3.jpg', rarity: 'superrare', series: 'IDLE' },
+    { id: 151, nameChinese: '金米妮', nameEnglish: 'Minnie', nameKorean: '민니', image: 'images/cards/idle/minnie-4.jpg', rarity: 'epic', series: 'IDLE' },
+    { id: 152, nameChinese: '金米妮', nameEnglish: 'Minnie', nameKorean: '민니', image: 'images/cards/idle/minnie.gif', rarity: 'legendary', series: 'IDLE' },
+    { id: 153, nameChinese: '田小娟', nameEnglish: 'Soyeon', nameKorean: '전소연', image: 'images/cards/idle/soyeon-1.jpg', rarity: 'normal', series: 'IDLE' },
+    { id: 154, nameChinese: '田小娟', nameEnglish: 'Soyeon', nameKorean: '전소연', image: 'images/cards/idle/soyeon-2.jpg', rarity: 'common', series: 'IDLE' },
+    { id: 155, nameChinese: '田小娟', nameEnglish: 'Soyeon', nameKorean: '전소연', image: 'images/cards/idle/soyeon-3.jpg', rarity: 'superrare', series: 'IDLE' },
+    { id: 156, nameChinese: '田小娟', nameEnglish: 'Soyeon', nameKorean: '전소연', image: 'images/cards/idle/soyeon-4.jpg', rarity: 'ultrarare', series: 'IDLE' },
+    { id: 157, nameChinese: '田小娟', nameEnglish: 'Soyeon', nameKorean: '전소연', image: 'images/cards/idle/soyeon.gif', rarity: 'legendary', series: 'IDLE' },
+    { id: 158, nameChinese: '宋雨琦', nameEnglish: 'Yuqi', nameKorean: '우기', image: 'images/cards/idle/yuqi-1.jpg', rarity: 'rare', series: 'IDLE' },
+    { id: 159, nameChinese: '宋雨琦', nameEnglish: 'Yuqi', nameKorean: '우기', image: 'images/cards/idle/yuqi-2.jpg', rarity: 'superrare', series: 'IDLE' },
+    { id: 160, nameChinese: '宋雨琦', nameEnglish: 'Yuqi', nameKorean: '우기', image: 'images/cards/idle/yuqi-3.jpg', rarity: 'ultrarare', series: 'IDLE' },
+    { id: 161, nameChinese: '宋雨琦', nameEnglish: 'Yuqi', nameKorean: '우기', image: 'images/cards/idle/yuqi-4.jpg', rarity: 'epic', series: 'IDLE' },
+    { id: 162, nameChinese: '宋雨琦', nameEnglish: 'Yuqi', nameKorean: '우기', image: 'images/cards/idle/yuqi.gif', rarity: 'legendary', series: 'IDLE' },
+    { id: 163, nameChinese: '葉舒華', nameEnglish: 'Shuhua', nameKorean: '슈화', image: 'images/cards/idle/shuhua-1.jpg', rarity: 'normal', series: 'IDLE' },
+    { id: 164, nameChinese: '葉舒華', nameEnglish: 'Shuhua', nameKorean: '슈화', image: 'images/cards/idle/shuhua-2.jpg', rarity: 'rare', series: 'IDLE' },
+    { id: 165, nameChinese: '葉舒華', nameEnglish: 'Shuhua', nameKorean: '슈화', image: 'images/cards/idle/shuhua-3.jpg', rarity: 'ultrarare', series: 'IDLE' },
+    { id: 166, nameChinese: '葉舒華', nameEnglish: 'Shuhua', nameKorean: '슈화', image: 'images/cards/idle/shuhua-4.jpg', rarity: 'epic', series: 'IDLE' },
+    { id: 167, nameChinese: '葉舒華', nameEnglish: 'Shuhua', nameKorean: '슈화', image: 'images/cards/idle/shuhua.gif', rarity: 'legendary', series: 'IDLE' },
 
 
   ]

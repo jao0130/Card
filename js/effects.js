@@ -196,8 +196,9 @@
     if (!card || !overlay) return;
 
     // 生成光效元素
-    if (sparkleLayer) generateSparkles(sparkleLayer, 25);
-    if (particles) generateParticles(particles, 35);
+    const isMobile = window.matchMedia?.('(max-width: 640px)').matches;
+    if (sparkleLayer) generateSparkles(sparkleLayer, isMobile ? 12 : 22);
+    if (particles) generateParticles(particles, isMobile ? 14 : 28);
 
     // 設置卡片展示
     if (showcase) {
@@ -225,7 +226,7 @@
   /**
    * 關閉傳說卡動畫
    */
-  function closeLegendaryAnimation() {
+  function closeLegendaryAnimation(options = {}) {
     const overlay = document.getElementById('legendaryAnimationOverlay');
     const sparkleLayer = document.getElementById('sparkleLayer');
     const particles = document.getElementById('legendaryParticles');
@@ -236,10 +237,16 @@
     document.body.style.overflow = '';
 
     // 清除生成的元素
-    setTimeout(() => {
+    const cleanup = () => {
       if (sparkleLayer) sparkleLayer.innerHTML = '';
       if (particles) particles.innerHTML = '';
-    }, 500);
+    };
+
+    if (options.immediate) {
+      cleanup();
+    } else {
+      setTimeout(cleanup, 500);
+    }
   }
 
   // ========================================

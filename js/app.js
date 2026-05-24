@@ -12,6 +12,7 @@
 
 (function() {
   'use strict';
+  const CONFIG = window.CONFIG;
 
   // ========================================
   // 快取與狀態
@@ -20,6 +21,10 @@
   const packMap = new Map();
   let currentPack = null;
   let collection = {};
+  let syncSession = null;
+  let syncUser = null;
+  let syncTimer = null;
+  const syncEnv = window.CARDMOBILE_ENV || {};
   let currentDrawnCards = [];  // 當前抽到的卡片（含首次抽取標記）
 
   // DOM 快取
@@ -27,6 +32,8 @@
 
   // 音效快取
   const audioCache = new Map();
+  let revealSessionId = 0;
+  const revealTimers = new Set();
 
   // 模板快取
   const templates = {
@@ -61,8 +68,70 @@
       audio.play().catch(() => {
         // 忽略自動播放限制錯誤
       });
+      return audio;
     } catch (e) {
       // 音效載入失敗時靜默處理
+    }
+  }
+
+  function stopSound(soundKey) {
+    const audio = audioCache.get(soundKey);
+    if (!audio) return;
+
+    try {
+      audio.pause();
+      audio.currentTime = 0;
+    } catch (e) {}
+  }
+
+  function stopSounds(soundKeys) {
+    soundKeys.forEach(stopSound);
+  }
+
+  function stopRevealSounds() {
+    stopSounds([
+      'cardFlip',
+      'cardFlipAll',
+      'packOpen',
+      'legendary',
+      'newCard1Star',
+      'newCard2Star',
+      'newCard3Star',
+      'newCard4Star',
+      'newCard5Star',
+      'newCard6Star',
+      'newCard7Star'
+    ]);
+  }
+
+  function scheduleRevealTimer(callback, delay, sessionId = revealSessionId) {
+    const timerId = setTimeout(() => {
+      revealTimers.delete(timerId);
+      if (sessionId !== revealSessionId) return;
+      callback();
+    }, delay);
+
+    revealTimers.add(timerId);
+    return timerId;
+  }
+
+  function cancelRevealSequence({ stopAudio = true } = {}) {
+    revealSessionId++;
+    revealTimers.forEach(timerId => clearTimeout(timerId));
+    revealTimers.clear();
+
+    if (stopAudio) {
+      stopRevealSounds();
+    }
+
+    if (window.CardEffects?.closeLegendaryAnimation) {
+      window.CardEffects.closeLegendaryAnimation({ immediate: true });
+    }
+
+    if (DOM.flipAllBtn) {
+      DOM.flipAllBtn.disabled = false;
+      DOM.flipAllBtn.textContent = 'FLIP ALL';
+      DOM.flipAllBtn.classList.remove('draw-again');
     }
   }
 
@@ -197,22 +266,22 @@
     // Update individual sound volumes proportionally
     if (CONFIG.SOUNDS.volumes) {
       const baseVolumes = {
-        packOpen: 0.1,
-        packTear: 0.8,
-        cardFlip: 0.5,
-        cardFlipAll: 0.6,
-        cardEnlarge: 0.5,
-        overlayClose: 0.3,
-        buttonClick: 0.4,
-        navSwitch: 0.4,
-        newCard1Star: 0.3,
-        newCard2Star: 0.35,
-        newCard3Star: 0.4,
-        newCard4Star: 0.45,
-        newCard5Star: 0.5,
-        newCard6Star: 0.5,
-        newCard7Star: 0.5,
-        legendary: 0.5
+        packOpen: 0.16,
+        packTear: 0.45,
+        cardFlip: 0.34,
+        cardFlipAll: 0.42,
+        cardEnlarge: 0.26,
+        overlayClose: 0.22,
+        buttonClick: 0.12,
+        navSwitch: 0.2,
+        newCard1Star: 0.22,
+        newCard2Star: 0.25,
+        newCard3Star: 0.29,
+        newCard4Star: 0.33,
+        newCard5Star: 0.38,
+        newCard6Star: 0.42,
+        newCard7Star: 0.48,
+        legendary: 0.44
       };
 
       for (const [key, baseVol] of Object.entries(baseVolumes)) {
@@ -248,6 +317,7 @@
     buildTemplates();
     renderLobby();
     bindEvents();
+    startCloudSync();
   
     // 獲取我們新增的進入層
     const startOverlay = document.getElementById('startOverlay');
@@ -299,6 +369,16 @@
     DOM.cardDetailOverlay = document.getElementById('cardDetailOverlay');
     DOM.cardDetail = document.getElementById('cardDetail');
     DOM.cardDetailClose = document.getElementById('cardDetailClose');
+
+    // Optional cloud sync controls
+    DOM.syncPanel = document.getElementById('syncPanel');
+    DOM.syncTitle = document.getElementById('syncTitle');
+    DOM.syncStatus = document.getElementById('syncStatus');
+    DOM.syncEmailInput = document.getElementById('syncEmailInput');
+    DOM.syncPasswordInput = document.getElementById('syncPasswordInput');
+    DOM.syncLoginBtn = document.getElementById('syncLoginBtn');
+    DOM.syncSignupBtn = document.getElementById('syncSignupBtn');
+    DOM.syncLogoutBtn = document.getElementById('syncLogoutBtn');
   }
 
   function buildDataMaps() {
@@ -326,6 +406,244 @@
   // ========================================
   // 模板建構
   // ========================================
+  function isSyncConfigured() {
+    return Boolean(syncEnv.supabaseUrl && syncEnv.supabaseAnonKey);
+  }
+
+  function setSyncStatus(title, message) {
+    if (DOM.syncTitle) DOM.syncTitle.textContent = title;
+    if (DOM.syncStatus) DOM.syncStatus.textContent = message;
+  }
+
+  function loadSyncSession() {
+    try {
+      const saved = localStorage.getItem('cardMobileSupabaseSession');
+      syncSession = saved ? JSON.parse(saved) : null;
+    } catch (e) {
+      syncSession = null;
+    }
+  }
+
+  function saveSyncSession(session) {
+    syncSession = session;
+    if (!session) {
+      localStorage.removeItem('cardMobileSupabaseSession');
+      return;
+    }
+    localStorage.setItem('cardMobileSupabaseSession', JSON.stringify(session));
+  }
+
+  function normalizeAuthSession(data) {
+    const session = data?.session || data;
+    if (!session?.access_token) return null;
+
+    return {
+      access_token: session.access_token,
+      refresh_token: session.refresh_token || null,
+      token_type: session.token_type || 'bearer',
+      expires_at: session.expires_at
+        ? Number(session.expires_at) * 1000
+        : Date.now() + (Number(session.expires_in || 3600) * 1000)
+    };
+  }
+
+  function readSessionFromHash() {
+    if (!location.hash.includes('access_token=')) return;
+    const params = new URLSearchParams(location.hash.slice(1));
+    const accessToken = params.get('access_token');
+    if (!accessToken) return;
+
+    saveSyncSession({
+      access_token: accessToken,
+      refresh_token: params.get('refresh_token'),
+      token_type: params.get('token_type') || 'bearer',
+      expires_at: Date.now() + (Number(params.get('expires_in') || 3600) * 1000)
+    });
+
+    history.replaceState(null, document.title, location.pathname + location.search);
+  }
+
+  async function supabaseRequest(path, options = {}) {
+    const url = `${syncEnv.supabaseUrl.replace(/\/$/, '')}${path}`;
+    const headers = {
+      apikey: syncEnv.supabaseAnonKey,
+      'Content-Type': 'application/json',
+      ...options.headers
+    };
+
+    if (syncSession?.access_token) {
+      headers.Authorization = `Bearer ${syncSession.access_token}`;
+    }
+
+    const response = await fetch(url, { ...options, headers });
+    if (!response.ok) {
+      const message = await response.text().catch(() => response.statusText);
+      throw new Error(message || response.statusText);
+    }
+
+    if (response.status === 204) return null;
+    return response.json().catch(() => null);
+  }
+
+  function clampCollectionCount(cardId, count) {
+    const card = cardMap.get(Number(cardId));
+    if (!card) return count;
+    const limit = getSaturationLimit(card.rarity);
+    return Number.isFinite(limit) ? Math.min(count, limit) : count;
+  }
+
+  function mergeCollections(localCollection, cloudRows) {
+    const merged = { ...localCollection };
+    cloudRows.forEach(row => {
+      const cardId = Number(row.card_id);
+      const current = Number(merged[cardId] || 0);
+      const incoming = Number(row.count || 0);
+      merged[cardId] = clampCollectionCount(cardId, current + incoming);
+    });
+    return merged;
+  }
+
+  async function fetchSyncUser() {
+    if (!syncSession?.access_token) return null;
+    const user = await supabaseRequest('/auth/v1/user', { method: 'GET' });
+    syncUser = user;
+    return user;
+  }
+
+  async function fetchCloudCollection() {
+    if (!syncUser?.id) return [];
+    return supabaseRequest(`/rest/v1/player_collections?select=card_id,count&user_id=eq.${syncUser.id}`, {
+      method: 'GET'
+    }) || [];
+  }
+
+  async function upsertCloudCollection() {
+    if (!syncUser?.id) return;
+
+    const rows = Object.entries(collection)
+      .filter(([, count]) => Number(count) > 0)
+      .map(([cardId, count]) => ({
+        user_id: syncUser.id,
+        card_id: Number(cardId),
+        count: clampCollectionCount(cardId, Number(count)),
+        updated_at: new Date().toISOString()
+      }));
+
+    if (rows.length === 0) return;
+
+    await supabaseRequest('/rest/v1/player_collections?on_conflict=user_id,card_id', {
+      method: 'POST',
+      headers: { Prefer: 'resolution=merge-duplicates' },
+      body: JSON.stringify(rows)
+    });
+  }
+
+  function scheduleCollectionSync() {
+    if (!syncUser?.id) return;
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(() => {
+      upsertCloudCollection()
+        .then(() => setSyncStatus('Synced', syncUser.email || 'Cloud collection updated'))
+        .catch(() => setSyncStatus('Sync pending', 'Will retry next action'));
+    }, 600);
+  }
+
+  async function startCloudSync() {
+    if (!isSyncConfigured()) {
+      setSyncStatus('Guest mode', 'Supabase env not configured');
+      return;
+    }
+
+    readSessionFromHash();
+    loadSyncSession();
+
+    if (!syncSession?.access_token) {
+      setSyncStatus('Guest mode', 'Enter email to sync');
+      return;
+    }
+
+    try {
+      setSyncStatus('Syncing', 'Loading cloud collection...');
+      await fetchSyncUser();
+      const cloudRows = await fetchCloudCollection();
+      collection = mergeCollections(collection, cloudRows || []);
+      saveCollection();
+      await upsertCloudCollection();
+      renderCollection();
+      setSyncStatus('Synced', syncUser.email || 'Cloud collection ready');
+      if (DOM.syncLoginBtn) DOM.syncLoginBtn.hidden = true;
+      if (DOM.syncSignupBtn) DOM.syncSignupBtn.hidden = true;
+      if (DOM.syncEmailInput) DOM.syncEmailInput.hidden = true;
+      if (DOM.syncPasswordInput) DOM.syncPasswordInput.hidden = true;
+      if (DOM.syncLogoutBtn) DOM.syncLogoutBtn.hidden = false;
+    } catch (e) {
+      saveSyncSession(null);
+      setSyncStatus('Guest mode', 'Sync login expired');
+    }
+  }
+
+  function readAuthCredentials() {
+    const email = DOM.syncEmailInput?.value?.trim();
+    const password = DOM.syncPasswordInput?.value || '';
+
+    if (!email) {
+      setSyncStatus('Email needed', 'Enter your account email');
+      return null;
+    }
+
+    if (password.length < 6) {
+      setSyncStatus('Password needed', 'Use at least 6 characters');
+      return null;
+    }
+
+    return { email, password };
+  }
+
+  async function authenticateWithPassword(mode) {
+    if (!isSyncConfigured()) {
+      setSyncStatus('Guest mode', 'Supabase env not configured');
+      return;
+    }
+
+    const credentials = readAuthCredentials();
+    if (!credentials) return;
+
+    try {
+      const isSignup = mode === 'signup';
+      setSyncStatus(isSignup ? 'Creating account' : 'Signing in', credentials.email);
+      const data = await supabaseRequest(isSignup ? '/auth/v1/signup' : '/auth/v1/token?grant_type=password', {
+        method: 'POST',
+        body: JSON.stringify(credentials)
+      });
+
+      const session = normalizeAuthSession(data);
+      if (!session) {
+        setSyncStatus('Check email', 'Confirm account before login');
+        return;
+      }
+
+      saveSyncSession(session);
+      await startCloudSync();
+    } catch (e) {
+      setSyncStatus('Auth failed', 'Check email or password');
+    }
+  }
+
+  function logoutSync() {
+    saveSyncSession(null);
+    syncUser = null;
+    clearTimeout(syncTimer);
+    if (DOM.syncLoginBtn) DOM.syncLoginBtn.hidden = false;
+    if (DOM.syncSignupBtn) DOM.syncSignupBtn.hidden = false;
+    if (DOM.syncEmailInput) DOM.syncEmailInput.hidden = false;
+    if (DOM.syncPasswordInput) {
+      DOM.syncPasswordInput.hidden = false;
+      DOM.syncPasswordInput.value = '';
+    }
+    if (DOM.syncLogoutBtn) DOM.syncLogoutBtn.hidden = true;
+    setSyncStatus('Guest mode', 'Local collection only');
+  }
+
   function buildTemplates() {
     // Pack card template
     templates.packCard = (pack) => `
@@ -563,10 +881,11 @@
 
   function renderDrawnCards(cardData) {
     const fragment = document.createDocumentFragment();
+    const sessionId = revealSessionId;
 
     cardData.forEach(({ card, isFirstTime }, index) => {
       const cardEl = document.createElement('div');
-      cardEl.className = 'card';
+      cardEl.className = `card card-rarity-${card.rarity}`;
       cardEl.dataset.cardId = card.id;
       cardEl.dataset.isFirstTime = isFirstTime ? '1' : '0';
       cardEl.dataset.starCount = CONFIG.RARITY.STARS[card.rarity] || 1;
@@ -576,9 +895,9 @@
       fragment.appendChild(cardEl);
 
       const delayTime = 0.2 + index * 0.15;
-      setTimeout(() => {
+      scheduleRevealTimer(() => {
         playSound('packOpen'); // 每出一張卡就播一次音效
-      }, delayTime * 1000);
+      }, delayTime * 1000, sessionId);
       // Trigger reveal animation
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -591,17 +910,71 @@
     DOM.cardsContainer.appendChild(fragment);
 
     // Reset flip button state
-    DOM.flipAllBtn.textContent = '一次翻開';
+    DOM.flipAllBtn.textContent = 'FLIP ALL';
     DOM.flipAllBtn.classList.remove('draw-again');
   }
 
   // ========================================
   // 抽卡邏輯
   // ========================================
-  function drawCard() {
-    const availableCards = currentPack.cards
+  function getSaturationLimit(rarity) {
+    return CONFIG.RARITY.SATURATION_LIMITS?.[rarity] ?? null;
+  }
+
+  function isCappedRarity(rarity) {
+    return Number.isFinite(getSaturationLimit(rarity));
+  }
+
+  function getCardCount(cardId, sourceCollection = collection) {
+    return Number(sourceCollection[cardId] || 0);
+  }
+
+  function isCardSaturated(card, sourceCollection = collection) {
+    const limit = getSaturationLimit(card.rarity);
+    if (!Number.isFinite(limit)) return false;
+    return getCardCount(card.id, sourceCollection) >= limit;
+  }
+
+  function getPackCards(pack = currentPack) {
+    if (!pack) return [];
+    return pack.cards
       .map(id => cardMap.get(id))
       .filter(Boolean);
+  }
+
+  function getDrawableCards(pack = currentPack, sourceCollection = collection) {
+    return getPackCards(pack).filter(card => !isCardSaturated(card, sourceCollection));
+  }
+
+  function groupCardsByRarity(cards) {
+    const rarityGroups = {};
+    for (const card of cards) {
+      if (!rarityGroups[card.rarity]) {
+        rarityGroups[card.rarity] = [];
+      }
+      rarityGroups[card.rarity].push(card);
+    }
+    return rarityGroups;
+  }
+
+  function getEffectiveRarityWeights(pack = currentPack, sourceCollection = collection) {
+    const drawableCards = getDrawableCards(pack, sourceCollection);
+    const rarityGroups = groupCardsByRarity(drawableCards);
+    const effectiveWeights = {};
+    let totalWeight = 0;
+
+    for (const rarity of Object.keys(rarityGroups)) {
+      const weight = CONFIG.RARITY.WEIGHTS[rarity] || 0;
+      if (weight <= 0) continue;
+      effectiveWeights[rarity] = weight;
+      totalWeight += weight;
+    }
+
+    return { drawableCards, rarityGroups, effectiveWeights, totalWeight };
+  }
+
+  function drawCard(sourceCollection = collection) {
+    const availableCards = getDrawableCards(currentPack, sourceCollection);
 
     if (availableCards.length === 0) return null;
 
@@ -643,9 +1016,12 @@
 
   function drawMultipleCards(count) {
     const cards = [];
+    const drawCollection = { ...collection };
     for (let i = 0; i < count; i++) {
-      const card = drawCard();
-      if (card) cards.push(card);
+      const card = drawCard(drawCollection);
+      if (!card) break;
+      cards.push(card);
+      drawCollection[card.id] = (drawCollection[card.id] || 0) + 1;
     }
     return cards;
   }
@@ -656,12 +1032,13 @@
   function renderProbabilityInfo(pack) {
     if (!pack || !DOM.packProbabilityInfo) return;
 
-    const availableCards = pack.cards
-      .map(id => cardMap.get(id))
-      .filter(Boolean);
+    const availableCards = getDrawableCards(pack);
 
     if (availableCards.length === 0) {
-      DOM.packProbabilityInfo.innerHTML = '';
+      DOM.packProbabilityInfo.innerHTML = `
+        <div class="probability-title">DRAW ODDS</div>
+        <div class="probability-empty">This pack has no drawable capped cards left.</div>
+      `;
       return;
     }
 
@@ -695,9 +1072,10 @@
     for (const rarity of sortedRarities) {
       const weight = weights[rarity] || 0;
       const probability = ((weight / totalWeight) * 100).toFixed(1);
+      const statusText = isCappedRarity(rarity) ? 'capped' : 'uncapped';
       rarityHtml += `
         <div class="probability-item rarity-${rarity}">
-          <span class="rarity-name">${rarityText[rarity] || rarity}</span>
+          <span class="rarity-name">${rarityText[rarity] || rarity} <small>${statusText}</small></span>
           <span class="rarity-chance">${probability}%</span>
         </div>
       `;
@@ -740,7 +1118,16 @@
   // ========================================
   // 頁面控制
   // ========================================
+  function updatePackOpenState(pack = currentPack) {
+    if (!pack || !DOM.openPackBtn) return;
+    const hasDrawableCards = getDrawableCards(pack).length > 0;
+    DOM.openPackBtn.disabled = !hasDrawableCards;
+    DOM.openPackBtn.textContent = hasDrawableCards ? 'OPEN' : 'COMPLETE';
+    DOM.cardPack.classList.toggle('pack-complete', !hasDrawableCards);
+  }
+
   function switchPage(pageId) {
+    cancelRevealSequence({ stopAudio: true });
     DOM.navTabs.forEach(tab => {
       tab.classList.toggle('active', tab.dataset.page === pageId);
     });
@@ -776,6 +1163,7 @@
 
     // Render probability info
     renderProbabilityInfo(currentPack);
+    updatePackOpenState(currentPack);
 
     // Reset pack state
     DOM.cardPack.style.visibility = 'visible';
@@ -791,18 +1179,30 @@
 
   function openPack() {
     if (!currentPack) return;
+    if (DOM.openPackBtn.disabled) return;
+    cancelRevealSequence({ stopAudio: true });
+    const sessionId = revealSessionId;
 
     playSound('packTear');
     playBGM('packOpening');
     DOM.openPackBtn.disabled = true;
     DOM.cardPack.classList.add('pack-tearing');
 
-    setTimeout(() => {
+    scheduleRevealTimer(() => {
       DOM.cardPack.classList.remove('pack-tearing');
       DOM.cardPack.style.visibility = 'hidden';
 
       // Draw cards and track first-time draws
       const drawnCards = drawMultipleCards(currentPack.cardCount);
+      if (drawnCards.length === 0) {
+        DOM.cardPack.classList.remove('pack-tearing');
+        DOM.cardPack.style.visibility = 'visible';
+        DOM.openPackBtn.disabled = true;
+        DOM.openPackBtn.textContent = 'COMPLETE';
+        renderProbabilityInfo(currentPack);
+        playPackBGM(currentPack);
+        return;
+      }
 
       // Check if any legendary cards were drawn
       const hasLegendary = drawnCards.some(card => card.rarity === 'legendary');
@@ -814,32 +1214,36 @@
         return { card, isFirstTime };
       });
       saveCollection();
+      scheduleCollectionSync();
+      renderProbabilityInfo(currentPack);
 
       // Render and show
-      DOM.cardsOverlay.classList.add('active');
+      DOM.cardsOverlay.classList.add('active', 'stage-reveal');
       renderDrawnCards(currentDrawnCards);
 
       // Reset flip button to initial state
-      DOM.flipAllBtn.textContent = '一次翻開';
+      DOM.flipAllBtn.textContent = 'FLIP ALL';
       DOM.flipAllBtn.classList.remove('draw-again');
       DOM.flipAllBtn.disabled = false;
       DOM.openPackBtn.disabled = false;
+      updatePackOpenState(currentPack);
 
       // 如果抽到傳說卡，稍後播放傳說卡BGM
       if (hasLegendary) {
         // 傳說卡BGM會在翻牌時觸發
       }
-    }, 1400);
+    }, 1400, sessionId);
   }
 
   function closeOverlay() {
-    DOM.cardsOverlay.classList.remove('active');
+    cancelRevealSequence({ stopAudio: true });
+    DOM.cardsOverlay.classList.remove('active', 'stage-reveal');
     DOM.cardPack.style.visibility = 'visible';
     playSound('overlayClose');
     playPackBGM(currentPack); // 返回卡包專屬BGM或大廳BGM
 
     // Reset flip button state
-    DOM.flipAllBtn.textContent = '一次翻開';
+    DOM.flipAllBtn.textContent = 'FLIP ALL';
     DOM.flipAllBtn.classList.remove('draw-again');
   }
 
@@ -848,6 +1252,7 @@
   // ========================================
   function flipCard(cardEl) {
     if (cardEl.classList.contains('flipped')) return;
+    const sessionId = revealSessionId;
 
     cardEl.classList.add('flipped');
     playSound('cardFlip');
@@ -860,7 +1265,7 @@
 
     if (isFirstTime) {
       // 延遲播放，讓翻卡音效先響
-      setTimeout(() => {
+      scheduleRevealTimer(() => {
         // 傳說卡播放特殊音效和BGM，並顯示傳說卡動畫
         if (rarity === 'legendary') {
           playSound('legendary');
@@ -869,13 +1274,13 @@
           // 顯示傳說卡光效動畫
           const legendaryCard = cardMap.get(cardId);
           if (legendaryCard) {
-            setTimeout(() => {
+            scheduleRevealTimer(() => {
               showLegendaryAnimation(legendaryCard);
-            }, 500);
+            }, 500, sessionId);
           }
         }
         playNewCardSound(starCount);
-      }, 300);
+      }, 300, sessionId);
     }
   }
 
@@ -884,7 +1289,7 @@
     if (DOM.flipAllBtn.classList.contains('draw-again')) {
       // Re-draw cards directly
       closeOverlay();
-      setTimeout(() => {
+      scheduleRevealTimer(() => {
         openPack();
       }, 100);
       return;
@@ -899,6 +1304,7 @@
 
     playSound('cardFlipAll');
     DOM.flipAllBtn.disabled = true;
+    const sessionId = revealSessionId;
 
     // Collect all cards info first
     const cardsInfo = Array.from(cards).map(card => ({
@@ -920,9 +1326,9 @@
     function flipNextCard() {
       if (currentIndex >= cardsInfo.length) {
         // All cards flipped, play final sound if needed
-        setTimeout(() => {
+        scheduleRevealTimer(() => {
           changeToDrawAgainMode();
-        }, 300);
+        }, 300, sessionId);
         return;
       }
 
@@ -935,7 +1341,7 @@
         if (cardInfo.rarity === 'legendary') hasLegendary = true;
 
         // Play sound for this new card
-        setTimeout(() => {
+        scheduleRevealTimer(() => {
           if (cardInfo.rarity === 'legendary') {
             playSound('legendary');
             playBGM('legendary');
@@ -944,21 +1350,21 @@
             const cardId = parseInt(cardInfo.element.dataset.cardId);
             const legendaryCard = cardMap.get(cardId);
             if (legendaryCard) {
-              setTimeout(() => {
+              scheduleRevealTimer(() => {
                 showLegendaryAnimation(legendaryCard);
-              }, 500);
+              }, 500, sessionId);
             }
           }
           playNewCardSound(cardInfo.starCount);
-        }, 300);
+        }, 300, sessionId);
 
         // Wait longer for new card sound effect to finish
         currentIndex++;
-        setTimeout(flipNextCard, 1200); // Longer pause for new cards
+        scheduleRevealTimer(flipNextCard, 1200, sessionId); // Longer pause for new cards
       } else {
         // Normal card - continue quickly
         currentIndex++;
-        setTimeout(flipNextCard, 100);
+        scheduleRevealTimer(flipNextCard, 100, sessionId);
       }
     }
 
@@ -967,7 +1373,7 @@
   }
 
   function changeToDrawAgainMode() {
-    DOM.flipAllBtn.textContent = '再抽一次';
+    DOM.flipAllBtn.textContent = 'DRAW AGAIN';
     DOM.flipAllBtn.classList.add('draw-again');
     DOM.flipAllBtn.disabled = false;
   }
@@ -1159,6 +1565,24 @@
       playSound('buttonClick');
       switchPage('lobby');
     });
+
+    if (DOM.syncLoginBtn) {
+      DOM.syncLoginBtn.addEventListener('click', () => authenticateWithPassword('login'));
+    }
+
+    if (DOM.syncSignupBtn) {
+      DOM.syncSignupBtn.addEventListener('click', () => authenticateWithPassword('signup'));
+    }
+
+    if (DOM.syncPasswordInput) {
+      DOM.syncPasswordInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') authenticateWithPassword('login');
+      });
+    }
+
+    if (DOM.syncLogoutBtn) {
+      DOM.syncLogoutBtn.addEventListener('click', logoutSync);
+    }
 
     // ESC key to close modals
     document.addEventListener('keydown', (e) => {

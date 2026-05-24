@@ -172,6 +172,84 @@ img {
   opacity: 1;
 }
 
+.sync-panel {
+  width: min(1120px, calc(100% - 32px));
+  margin: var(--spacing-md) auto 0;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  border: 1px solid var(--surface-2);
+  border-radius: var(--radius-sm);
+  background: rgba(13, 13, 15, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.sync-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sync-copy strong {
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sync-copy span {
+  color: var(--text-tertiary);
+  font-size: 0.78rem;
+}
+
+.sync-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sync-email-input,
+.sync-password-input {
+  width: 190px;
+  height: 34px;
+  padding: 0 10px;
+  color: var(--text-primary);
+  border: 1px solid var(--surface-3);
+  border-radius: var(--radius-sm);
+  background: var(--surface-1);
+  outline: none;
+}
+
+.sync-password-input {
+  width: 150px;
+}
+
+.sync-email-input:focus,
+.sync-password-input:focus {
+  border-color: var(--accent-teal);
+}
+
+.sync-btn {
+  height: 34px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: #07100d;
+  background: var(--accent-teal);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.sync-btn.secondary {
+  color: var(--text-primary);
+  background: var(--surface-2);
+  border: 1px solid var(--surface-3);
+}
+
 /* ============================================
      PAGE CONTAINER
      ============================================ */
@@ -1112,6 +1190,27 @@ img {
   padding: var(--spacing-xl) var(--spacing-lg);
 }
 
+.cards-overlay.stage-reveal {
+  background:
+    radial-gradient(ellipse at 50% 8%, rgba(255, 211, 109, 0.18), transparent 34%),
+    radial-gradient(ellipse at 50% 100%, rgba(45, 219, 179, 0.08), transparent 42%),
+    rgba(7, 8, 12, 0.96);
+}
+
+.cards-overlay.stage-reveal::before {
+  content: '';
+  position: fixed;
+  top: -10vh;
+  left: 50%;
+  width: min(72vw, 780px);
+  height: 82vh;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 244, 190, 0.22), transparent 72%);
+  clip-path: polygon(42% 0, 58% 0, 100% 100%, 0 100%);
+  opacity: 0.78;
+}
+
 .cards-overlay.active {
   display: flex;
   flex-direction: column;
@@ -1147,6 +1246,46 @@ img {
 
 .card.revealed {
   animation: cardReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.stage-reveal .card-rarity-ultrarare.revealed,
+.stage-reveal .card-rarity-epic.revealed,
+.stage-reveal .card-rarity-legendary.revealed {
+  animation-duration: 1s;
+}
+
+.stage-reveal .card-rarity-epic .card-inner,
+.stage-reveal .card-rarity-legendary .card-inner {
+  box-shadow:
+    0 18px 52px rgba(0, 0, 0, 0.52),
+    0 0 34px rgba(255, 211, 109, 0.28);
+}
+
+.stage-reveal .card-rarity-legendary.revealed::before {
+  content: '';
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.28), transparent 62%);
+  opacity: 0;
+  pointer-events: none;
+  animation: stageLegendarySpotlight 1.4s ease forwards;
+}
+
+@keyframes stageLegendarySpotlight {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  45% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.42;
+    transform: scale(1.08);
+  }
 }
 
 @keyframes cardReveal {
@@ -2665,6 +2804,71 @@ img {
 .close-overlay-btn:hover {
   background: var(--surface-3);
   transform: translateY(-2px);
+}
+
+.pack-complete {
+  opacity: 0.58;
+  filter: grayscale(0.55);
+}
+
+.probability-item small {
+  margin-left: 6px;
+  color: var(--text-tertiary);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.probability-empty {
+  padding: var(--spacing-md);
+  color: var(--text-secondary);
+  border: 1px solid var(--surface-2);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card.revealed,
+  .stage-reveal .card-rarity-ultrarare.revealed,
+  .stage-reveal .card-rarity-epic.revealed,
+  .stage-reveal .card-rarity-legendary.revealed {
+    animation: reducedCardReveal 0.2s ease forwards;
+  }
+
+  .card-back-shine,
+  .card-photo-holo,
+  .legendary-aura,
+  .legendary-rays,
+  .legendary-particle {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .card-inner {
+    transition: transform 0.45s ease, box-shadow 0.2s ease;
+  }
+}
+
+@keyframes reducedCardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card.flipped:hover .card-inner {
+  transform: rotateY(180deg) translateY(-5px);
 }
 
 /* ============================================
