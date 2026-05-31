@@ -18,6 +18,7 @@ function run(command, args, options = {}) {
     const child = execFile(command, args, {
       cwd,
       maxBuffer: 1024 * 1024 * 8,
+      shell: isWindows,
       windowsHide: true,
       ...options,
     }, (error, stdout, stderr) => {
@@ -40,7 +41,7 @@ function stream(command, args) {
   return new Promise((resolve, reject) => {
     const child = spawn(command, args, {
       cwd,
-      shell: false,
+      shell: isWindows,
       stdio: 'inherit',
       windowsHide: true,
     })
