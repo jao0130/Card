@@ -15,10 +15,11 @@ const bins = {
 
 function run(command, args, options = {}) {
   return new Promise((resolve, reject) => {
+    const useShell = isWindows && command.endsWith('.cmd')
     const child = execFile(command, args, {
       cwd,
       maxBuffer: 1024 * 1024 * 8,
-      shell: isWindows,
+      shell: useShell,
       windowsHide: true,
       ...options,
     }, (error, stdout, stderr) => {
@@ -39,9 +40,10 @@ function run(command, args, options = {}) {
 
 function stream(command, args) {
   return new Promise((resolve, reject) => {
+    const useShell = isWindows && command.endsWith('.cmd')
     const child = spawn(command, args, {
       cwd,
-      shell: isWindows,
+      shell: useShell,
       stdio: 'inherit',
       windowsHide: true,
     })
