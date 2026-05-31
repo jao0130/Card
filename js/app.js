@@ -387,6 +387,12 @@
   }
 
   function loadCollection() {
+    if (isSyncConfigured()) {
+      collection = {};
+      localStorage.removeItem('cardCollection');
+      return;
+    }
+
     try {
       const saved = localStorage.getItem('cardCollection');
       collection = saved ? JSON.parse(saved) : {};
@@ -396,6 +402,11 @@
   }
 
   function saveCollection() {
+    if (isSyncConfigured()) {
+      localStorage.removeItem('cardCollection');
+      return;
+    }
+
     try {
       localStorage.setItem('cardCollection', JSON.stringify(collection));
     } catch (e) {
@@ -492,15 +503,16 @@
     return Number.isFinite(limit) ? Math.min(count, limit) : count;
   }
 
-  function mergeCollections(localCollection, cloudRows) {
-    const merged = { ...localCollection };
+  function collectionFromCloudRows(cloudRows) {
+    const nextCollection = {};
     cloudRows.forEach(row => {
       const cardId = Number(row.card_id);
-      const current = Number(merged[cardId] || 0);
       const incoming = Number(row.count || 0);
-      merged[cardId] = clampCollectionCount(cardId, current + incoming);
+      if (incoming > 0) {
+        nextCollection[cardId] = clampCollectionCount(cardId, incoming);
+      }
     });
-    return merged;
+    return nextCollection;
   }
 
   async function fetchSyncUser() {
@@ -558,6 +570,8 @@
     loadSyncSession();
 
     if (!syncSession?.access_token) {
+      collection = {};
+      renderCollection();
       setSyncStatus('Guest mode', 'Enter email to sync');
       return;
     }
@@ -566,9 +580,7 @@
       setSyncStatus('Syncing', 'Loading cloud collection...');
       await fetchSyncUser();
       const cloudRows = await fetchCloudCollection();
-      collection = mergeCollections(collection, cloudRows || []);
-      saveCollection();
-      await upsertCloudCollection();
+      collection = collectionFromCloudRows(cloudRows || []);
       renderCollection();
       setSyncStatus('Synced', syncUser.email || 'Cloud collection ready');
       if (DOM.syncLoginBtn) DOM.syncLoginBtn.hidden = true;
@@ -633,6 +645,8 @@
     saveSyncSession(null);
     syncUser = null;
     clearTimeout(syncTimer);
+    collection = {};
+    renderCollection();
     if (DOM.syncLoginBtn) DOM.syncLoginBtn.hidden = false;
     if (DOM.syncSignupBtn) DOM.syncSignupBtn.hidden = false;
     if (DOM.syncEmailInput) DOM.syncEmailInput.hidden = false;

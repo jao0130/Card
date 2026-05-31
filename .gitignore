@@ -8,3 +8,5 @@ dist
 !.env.example
 Card.mp4
 Command.txt
+.vercel
+.env*.local
