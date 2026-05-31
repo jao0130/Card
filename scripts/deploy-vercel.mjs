@@ -13,7 +13,11 @@ const bins = {
 }
 
 function quoteCmdArg(value) {
-  return `"${String(value).replace(/"/g, '\\"')}"`
+  const text = String(value)
+  if (/^[A-Za-z0-9_.:=/-]+$/.test(text)) {
+    return text
+  }
+  return `"${text.replace(/"/g, '""')}"`
 }
 
 function commandForPlatform(command, args) {
