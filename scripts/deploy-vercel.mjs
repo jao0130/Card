@@ -1,6 +1,5 @@
 import { execFile, spawn } from 'node:child_process'
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
-import { tmpdir } from 'node:os'
+import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
 const cwd = process.cwd()
@@ -13,13 +12,28 @@ const bins = {
   vercel: isWindows ? 'vercel.cmd' : 'vercel',
 }
 
+function quoteCmdArg(value) {
+  return `"${String(value).replace(/"/g, '\\"')}"`
+}
+
+function commandForPlatform(command, args) {
+  if (!isWindows || !command.endsWith('.cmd')) {
+    return { command, args }
+  }
+
+  const commandLine = [command, ...args].map(quoteCmdArg).join(' ')
+  return {
+    command: 'cmd.exe',
+    args: ['/d', '/s', '/c', commandLine],
+  }
+}
+
 function run(command, args, options = {}) {
   return new Promise((resolve, reject) => {
-    const useShell = isWindows && command.endsWith('.cmd')
-    const child = execFile(command, args, {
+    const executable = commandForPlatform(command, args)
+    const child = execFile(executable.command, executable.args, {
       cwd,
       maxBuffer: 1024 * 1024 * 8,
-      shell: useShell,
       windowsHide: true,
       ...options,
     }, (error, stdout, stderr) => {
@@ -40,10 +54,9 @@ function run(command, args, options = {}) {
 
 function stream(command, args) {
   return new Promise((resolve, reject) => {
-    const useShell = isWindows && command.endsWith('.cmd')
-    const child = spawn(command, args, {
+    const executable = commandForPlatform(command, args)
+    const child = spawn(executable.command, executable.args, {
       cwd,
-      shell: useShell,
       stdio: 'inherit',
       windowsHide: true,
     })
@@ -92,20 +105,13 @@ async function assertVercelLogin() {
 }
 
 async function syncVercelEnv(env) {
-  const tempDir = await mkdtemp(join(tmpdir(), 'card-vercel-env-'))
-  try {
-    for (const name of REQUIRED_ENV) {
-      const tempFile = join(tempDir, name)
-      await writeFile(tempFile, env[name], 'utf8')
-
-      for (const target of ['production', 'preview']) {
-        const updateCommand = `${bins.vercel} env update ${name} ${target} --yes < "${tempFile}"`
-        await run(isWindows ? 'cmd' : 'sh', isWindows ? ['/c', updateCommand] : ['-c', updateCommand])
-        log(`Updated ${name} for ${target} (${env[name].length} chars)`)
-      }
+  for (const name of REQUIRED_ENV) {
+    for (const target of ['production', 'preview']) {
+      await run(bins.vercel, ['env', 'update', name, target, '--yes'], {
+        input: env[name],
+      })
+      log(`Updated ${name} for ${target} (${env[name].length} chars)`)
     }
-  } finally {
-    await rm(tempDir, { recursive: true, force: true })
   }
 }
 
