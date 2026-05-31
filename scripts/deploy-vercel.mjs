@@ -6,6 +6,12 @@ import { join } from 'node:path'
 const cwd = process.cwd()
 const PROD_URL = process.env.CARD_PROD_URL || 'https://card-nine-livid.vercel.app'
 const REQUIRED_ENV = ['VITE_SUPABASE_URL', 'VITE_SUPABASE_ANON_KEY']
+const isWindows = process.platform === 'win32'
+const bins = {
+  git: 'git',
+  npm: isWindows ? 'npm.cmd' : 'npm',
+  vercel: isWindows ? 'vercel.cmd' : 'vercel',
+}
 
 function run(command, args, options = {}) {
   return new Promise((resolve, reject) => {
@@ -71,14 +77,14 @@ async function readDotEnv() {
 }
 
 async function assertCleanGit() {
-  const { stdout } = await run('git', ['status', '--short'])
+  const { stdout } = await run(bins.git, ['status', '--short'])
   if (stdout.trim()) {
     throw new Error(`Git working tree is not clean:\n${stdout}`)
   }
 }
 
 async function assertVercelLogin() {
-  const { stdout } = await run('vercel', ['whoami'])
+  const { stdout } = await run(bins.vercel, ['whoami'])
   log(`Vercel account: ${stdout.trim().split(/\r?\n/).at(-1)}`)
 }
 
@@ -90,7 +96,8 @@ async function syncVercelEnv(env) {
       await writeFile(tempFile, env[name], 'utf8')
 
       for (const target of ['production', 'preview']) {
-        await run('cmd', ['/c', `vercel env update ${name} ${target} --yes < "${tempFile}"`])
+        const updateCommand = `${bins.vercel} env update ${name} ${target} --yes < "${tempFile}"`
+        await run(isWindows ? 'cmd' : 'sh', isWindows ? ['/c', updateCommand] : ['-c', updateCommand])
         log(`Updated ${name} for ${target} (${env[name].length} chars)`)
       }
     }
@@ -143,10 +150,10 @@ async function main() {
   await syncVercelEnv(env)
 
   log('Running local production build')
-  await stream('npm', ['run', 'build'])
+  await stream(bins.npm, ['run', 'build'])
 
   log('Deploying to Vercel production')
-  await stream('vercel', ['--prod', '--yes'])
+  await stream(bins.vercel, ['--prod', '--yes'])
 
   log('Verifying production URL')
   await verifyProductionBundle()
