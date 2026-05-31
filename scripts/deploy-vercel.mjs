@@ -21,7 +21,7 @@ function commandForPlatform(command, args) {
     return { command, args }
   }
 
-  const commandLine = [command, ...args].map(quoteCmdArg).join(' ')
+  const commandLine = [command, ...args.map(quoteCmdArg)].join(' ')
   return {
     command: 'cmd.exe',
     args: ['/d', '/s', '/c', commandLine],
